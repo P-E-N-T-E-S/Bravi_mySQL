@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS Fornecedor (
     CEP INTEGER,
     Numero INTEGER,
     Inscricao_Estadual INTEGER,
-    Razao_Social VARCHAR(50)  -- Alterado para VARCHAR(50)
+    Razao_Social VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Cliente (
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Cliente (
     CEP INTEGER,
     Numero INTEGER,
     Inscricao_Estadual INTEGER,
-    Razao_Social VARCHAR(50)  -- Alterado para VARCHAR(50)
+    Razao_Social VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Produto (
@@ -44,13 +44,13 @@ CREATE TABLE IF NOT EXISTS Produto (
 
 CREATE TABLE IF NOT EXISTS _Fornece (
     fk_Produto_NSM INTEGER,
-    fk_Fornecedor_CNPJ VARCHAR(50),  -- Corrigido para VARCHAR(50)
+    fk_Fornecedor_CNPJ VARCHAR(50),
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     data DATE
 );
 
 CREATE TABLE IF NOT EXISTS _Compra (
-    fk_Cliente_CNPJ VARCHAR(50),  -- Alterado para VARCHAR(50)
+    fk_Cliente_CNPJ VARCHAR(50),
     fk_Produto_NSM INTEGER,
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     data DATE
