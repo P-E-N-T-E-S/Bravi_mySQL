@@ -1,13 +1,15 @@
 package br.com.Bravi.estoque.mapper;
 
 import br.com.Bravi.estoque.Estoque;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MapperEstoque {
+public class MapperEstoque implements RowMapper<Estoque> {
 
-    public Estoque mapRowToEstoque(ResultSet rs) throws SQLException {
+    @Override
+    public Estoque mapRow(ResultSet rs, int rowNum) throws SQLException {
         Estoque estoque = new Estoque();
         estoque.setSetor(rs.getInt("setor"));
         estoque.setQtd(rs.getInt("qtd"));

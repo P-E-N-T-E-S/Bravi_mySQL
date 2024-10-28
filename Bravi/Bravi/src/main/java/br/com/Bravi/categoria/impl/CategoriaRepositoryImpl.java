@@ -40,12 +40,12 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
     @Override
     public List<Categoria> listar() {
         String sql = "SELECT * FROM Categoria";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> categoriaMapper.mapRow(rs));
+        return jdbcTemplate.query(sql, (rs, rowNum) -> categoriaMapper.mapRow(rs, rowNum));
     }
 
     @Override
     public Categoria buscarPorId(int id) {
         String sql = "SELECT * FROM Categoria WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> categoriaMapper.mapRow(rs));
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> categoriaMapper.mapRow(rs, rowNum));
     }
 }

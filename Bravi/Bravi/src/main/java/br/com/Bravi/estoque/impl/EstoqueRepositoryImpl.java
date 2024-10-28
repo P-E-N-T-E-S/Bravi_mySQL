@@ -6,8 +6,6 @@ import br.com.Bravi.estoque.mapper.MapperEstoque;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -42,16 +40,12 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     @Override
     public List<Estoque> listar() {
         String sql = "SELECT * FROM Estoque";
-        return jdbcTemplate.query(sql, this::mapRowToEstoque);
+        return jdbcTemplate.query(sql, mapper);
     }
 
     @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
         String sql = "SELECT * FROM Estoque WHERE setor = ? AND fk_Produto_NSM = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{setor, produtoNsm}, this::mapRowToEstoque);
-    }
-
-    private Estoque mapRowToEstoque(ResultSet rs, int rowNum) throws SQLException {
-        return mapper.mapRowToEstoque(rs);
+        return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
     }
 }
