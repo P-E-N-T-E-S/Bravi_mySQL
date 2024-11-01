@@ -26,7 +26,7 @@ public class CompraController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable int id, @RequestBody Compra compra) {
-        compra.setId(id); // Ajusta o ID no objeto compra
+        compra.setId(id);
         compraService.atualizarCompra(compra);
         return ResponseEntity.ok().build();
     }

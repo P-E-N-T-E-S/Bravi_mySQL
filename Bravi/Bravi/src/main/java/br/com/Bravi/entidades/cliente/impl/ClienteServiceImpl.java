@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.cliente.impl;
 import br.com.Bravi.entidades.cliente.Cliente;
 import br.com.Bravi.entidades.cliente.ClienteRepository;
 import br.com.Bravi.entidades.cliente.ClienteService;
+import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +24,17 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void alterar(Cliente cliente) {
+        if (clienteRepository.buscarPorCNPJ(cliente.getCnpj()) == null) {
+            throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cliente.getCnpj() + " não encontrado");
+        }
         clienteRepository.alterar(cliente);
     }
 
     @Override
     public void excluir(String cnpj) {
+        if (clienteRepository.buscarPorCNPJ(cnpj) == null) {
+            throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cnpj + " não encontrado");
+        }
         clienteRepository.excluir(cnpj);
     }
 
@@ -38,6 +45,10 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente buscarPorCNPJ(String cnpj) {
-        return clienteRepository.buscarPorCNPJ(cnpj);
+        Cliente cliente = clienteRepository.buscarPorCNPJ(cnpj);
+        if (cliente == null) {
+            throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cnpj + " não encontrado");
+        }
+        return cliente;
     }
 }

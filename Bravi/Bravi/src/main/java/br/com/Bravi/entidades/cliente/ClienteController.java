@@ -1,5 +1,7 @@
 package br.com.Bravi.entidades.cliente;
 
+import br.com.Bravi.entidades.cliente.impl.ClienteServiceImpl;
+import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +12,9 @@ import java.util.List;
 @RequestMapping("/cliente")
 public class ClienteController {
 
-    private final ClienteService clienteService;
+    private final ClienteServiceImpl clienteService;
 
-    public ClienteController(ClienteService clienteService) {
+    public ClienteController(ClienteServiceImpl clienteService) {
         this.clienteService = clienteService;
     }
 
@@ -25,14 +27,22 @@ public class ClienteController {
     @PutMapping("/{cnpj}")
     public ResponseEntity<String> alterarCliente(@PathVariable String cnpj, @RequestBody Cliente cliente) {
         cliente.setCnpj(cnpj);
-        clienteService.alterar(cliente);
-        return new ResponseEntity<>("Cliente alterado com sucesso!", HttpStatus.OK);
+        try {
+            clienteService.alterar(cliente);
+            return new ResponseEntity<>("Cliente alterado com sucesso!", HttpStatus.OK);
+        } catch (ClienteNaoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{cnpj}")
     public ResponseEntity<String> excluirCliente(@PathVariable String cnpj) {
-        clienteService.excluir(cnpj);
-        return new ResponseEntity<>("Cliente excluído com sucesso!", HttpStatus.OK);
+        try {
+            clienteService.excluir(cnpj);
+            return new ResponseEntity<>("Cliente excluído com sucesso!", HttpStatus.OK);
+        } catch (ClienteNaoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
@@ -42,8 +52,12 @@ public class ClienteController {
     }
 
     @GetMapping("/{cnpj}")
-    public ResponseEntity<Cliente> buscarClientePorCNPJ(@PathVariable String cnpj) {
-        Cliente cliente = clienteService.buscarPorCNPJ(cnpj);
-        return new ResponseEntity<>(cliente, HttpStatus.OK);
+    public ResponseEntity<?> buscarClientePorCNPJ(@PathVariable String cnpj) {
+        try {
+            Cliente cliente = clienteService.buscarPorCNPJ(cnpj);
+            return new ResponseEntity<>(cliente, HttpStatus.OK);
+        } catch (ClienteNaoEncontradoException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

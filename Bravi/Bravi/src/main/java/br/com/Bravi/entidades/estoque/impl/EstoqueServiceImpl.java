@@ -4,6 +4,7 @@ import br.com.Bravi.entidades.estoque.Estoque;
 import br.com.Bravi.entidades.estoque.EstoqueRepository;
 import br.com.Bravi.entidades.estoque.EstoqueService;
 import org.springframework.stereotype.Service;
+import br.com.Bravi.exceptions.EstoqueNotFoundException;
 
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     @Override
     public Estoque buscarEstoquePorId(int setor, int produtoNsm) {
-        return estoqueRepository.buscarPorId(setor, produtoNsm);
+        Estoque estoque = estoqueRepository.buscarPorId(setor, produtoNsm);
+        if (estoque == null) {
+            throw new EstoqueNotFoundException("Estoque não encontrado para setor " + setor + " e produto NSM " + produtoNsm);
+        }
+        return estoque;
     }
 }
