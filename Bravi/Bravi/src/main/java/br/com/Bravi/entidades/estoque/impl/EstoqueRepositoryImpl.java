@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.estoque.impl;
 import br.com.Bravi.entidades.estoque.Estoque;
 import br.com.Bravi.entidades.estoque.EstoqueRepository;
 import br.com.Bravi.entidades.estoque.mapper.MapperEstoque;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +47,10 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
         String sql = "SELECT * FROM Estoque WHERE setor = ? AND fk_Produto_NSM = ?";
-        return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
+        try {
+            return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

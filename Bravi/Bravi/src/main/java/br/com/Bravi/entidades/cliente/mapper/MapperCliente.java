@@ -12,13 +12,14 @@ public class MapperCliente implements RowMapper<Cliente> {
     @Override
     public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
         String cnpj = rs.getString("CNPJ");
+        String nome = rs.getString("Nome");
         String rua = rs.getString("Rua");
         String bairro = rs.getString("Bairro");
-        int cep = rs.getInt("CEP");
+        String cep = rs.getString("CEP");
         int numero = rs.getInt("Numero");
-        int inscricaoEstadual = rs.getInt("Inscricao_Estadual");
+        String inscricaoEstadual = rs.getString("Inscricao_Estadual");
         String razaoSocial = rs.getString("Razao_Social");
 
-        return new Cliente(cnpj, rua, bairro, cep, numero, inscricaoEstadual, razaoSocial);
+        return new Cliente(cnpj, rua, bairro, cep, numero, inscricaoEstadual, razaoSocial, nome);
     }
 }

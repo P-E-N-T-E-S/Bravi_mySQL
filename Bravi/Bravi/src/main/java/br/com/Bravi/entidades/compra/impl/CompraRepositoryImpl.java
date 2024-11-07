@@ -3,6 +3,8 @@ package br.com.Bravi.entidades.compra.impl;
 import br.com.Bravi.entidades.compra.Compra;
 import br.com.Bravi.entidades.compra.CompraRepository;
 import br.com.Bravi.entidades.compra.mapper.MapperCompra;
+import br.com.Bravi.exceptions.CompraNaoEncontradaException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +48,10 @@ public class CompraRepositoryImpl implements CompraRepository {
     @Override
     public Compra buscarPorId(int id) {
         String sql = "SELECT * FROM _Compra WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapperCompra);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapperCompra);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada.");
+        }
     }
 }

@@ -2,6 +2,11 @@ CREATE DATABASE IF NOT EXISTS BDBravi;
 
 USE BDBravi;
 
+CREATE TABLE IF NOT EXISTS Categoria (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50)
+);
+
 CREATE TABLE IF NOT EXISTS Funcionario (
     Setor VARCHAR(50),
     Cargo VARCHAR(50),
@@ -10,27 +15,29 @@ CREATE TABLE IF NOT EXISTS Funcionario (
     Data_de_Nascimento DATE,
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
-    CEP INTEGER,
+    CEP VARCHAR(10),
     Numero INTEGER,
     CPF_GERENTE VARCHAR(14)
 );
 
 CREATE TABLE IF NOT EXISTS Fornecedor (
     categoria VARCHAR(50),
-    CNPJ VARCHAR(50) PRIMARY KEY,
+    CNPJ VARCHAR(20) PRIMARY KEY,
+    Nome VARCHAR(50),
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
-    CEP INTEGER,
+    CEP VARCHAR(10),
     Numero INTEGER,
-    Inscricao_Estadual INTEGER,
+    Inscricao_Estadual VARCHAR(50),
     Razao_Social VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Cliente (
-    CNPJ VARCHAR(50) PRIMARY KEY,
+    CNPJ VARCHAR(20) PRIMARY KEY,
+    Nome VARCHAR(50),
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
-    CEP INTEGER,
+    CEP VARCHAR(10),
     Numero INTEGER,
     Inscricao_Estadual INTEGER,
     Razao_Social VARCHAR(50)
@@ -39,18 +46,20 @@ CREATE TABLE IF NOT EXISTS Cliente (
 CREATE TABLE IF NOT EXISTS Produto (
     NSM INTEGER PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(50),
-    Descrição VARCHAR(50)
+    Descrição VARCHAR(50),
+    fk_Categoria_id INTEGER,
+    FOREIGN KEY (fk_Categoria_id) REFERENCES Categoria(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS _Fornece (
     fk_Produto_NSM INTEGER,
-    fk_Fornecedor_CNPJ VARCHAR(50),
+    fk_Fornecedor_CNPJ VARCHAR(20),
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     data DATE
 );
 
 CREATE TABLE IF NOT EXISTS _Compra (
-    fk_Cliente_CNPJ VARCHAR(50),
+    fk_Cliente_CNPJ VARCHAR(20),
     fk_Produto_NSM INTEGER,
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     data DATE
@@ -66,11 +75,6 @@ CREATE TABLE IF NOT EXISTS Nota_out (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     data DATE,
     fk__Fornece_id INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS Categoria (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Telefone (
@@ -91,6 +95,7 @@ CREATE TABLE IF NOT EXISTS Estoque (
     PRIMARY KEY (setor, fk_Produto_NSM)
 );
 
+-- Chaves estrangeiras
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionario_2
     FOREIGN KEY (CPF_GERENTE)
     REFERENCES Funcionario (CPF);

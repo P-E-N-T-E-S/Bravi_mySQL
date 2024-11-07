@@ -4,8 +4,9 @@ import br.com.Bravi.entidades.compra.Compra;
 import br.com.Bravi.entidades.compra.CompraRepository;
 import br.com.Bravi.entidades.compra.CompraService;
 import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
+import br.com.Bravi.exceptions.CompraNaoEncontradaException;
+import br.com.Bravi.exceptions.InternalServerErrorException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,10 +31,15 @@ public class CompraServiceImpl implements CompraService {
 
     @Override
     public void atualizarCompra(Compra compra) {
-        if (compraRepository.buscarPorId(compra.getId()) == null) {
-            throw new ClienteNaoEncontradoException("Compra não encontrada.");
+        Compra compraExistente = compraRepository.buscarPorId(compra.getId());
+        if (compraExistente == null) {
+            throw new CompraNaoEncontradaException("Compra não encontrada.");
         }
-        compraRepository.atualizar(compra);
+        try {
+            compraRepository.atualizar(compra);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao atualizar a compra.");
+        }
     }
 
     @Override
@@ -50,8 +56,10 @@ public class CompraServiceImpl implements CompraService {
     public Compra buscarCompraPorId(int id) {
         try {
             return compraRepository.buscarPorId(id);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
+        } catch (CompraNaoEncontradaException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro interno ao buscar compra.");
         }
     }
 }

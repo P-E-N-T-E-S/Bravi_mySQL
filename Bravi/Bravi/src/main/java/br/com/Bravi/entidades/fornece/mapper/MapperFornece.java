@@ -2,7 +2,7 @@ package br.com.Bravi.entidades.fornece.mapper;
 
 import br.com.Bravi.entidades.fornece.Fornece;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;  // Add this import
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

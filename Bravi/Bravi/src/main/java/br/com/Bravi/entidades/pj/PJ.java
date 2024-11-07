@@ -5,18 +5,18 @@ public class PJ {
     private String cnpj;
     private String rua;
     private String bairro;
-    private int cep;
+    private String cep;
     private int numero;
-    private int inscricaoEstadual;
+    private String inscricaoEstadual;
     private String razaoSocial;
 
-    public PJ(String cnpj, String rua, String bairro, int cep, int numero, int inscricaoEstadual, String razaoSocial) {
+    public PJ(String cnpj, String rua, String bairro, String cep, int numero, String inscricaoEstadual, String razaoSocial) {
         this.cnpj = cnpj;
         this.rua = rua;
         this.bairro = bairro;
         this.cep = cep;
         this.numero = numero;
-        this.inscricaoEstadual = inscricaoEstadual;
+        this.inscricaoEstadual = inscricaoEstadual;  // Certifique-se de que esse campo seja String
         this.razaoSocial = razaoSocial;
     }
 
@@ -46,11 +46,11 @@ public class PJ {
         this.bairro = bairro;
     }
 
-    public int getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
@@ -62,11 +62,11 @@ public class PJ {
         this.numero = numero;
     }
 
-    public int getInscricaoEstadual() {
+    public String getInscricaoEstadual() {
         return inscricaoEstadual;
     }
 
-    public void setInscricaoEstadual(int inscricaoEstadual) {
+    public void setInscricaoEstadual(String inscricaoEstadual) {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
@@ -84,9 +84,9 @@ public class PJ {
                 "cnpj='" + cnpj + '\'' +
                 ", rua='" + rua + '\'' +
                 ", bairro='" + bairro + '\'' +
-                ", cep=" + cep +
+                ", cep='" + cep + '\'' +
                 ", numero=" + numero +
-                ", inscricaoEstadual=" + inscricaoEstadual +
+                ", inscricaoEstadual='" + inscricaoEstadual + '\'' +
                 ", razaoSocial='" + razaoSocial + '\'' +
                 '}';
     }

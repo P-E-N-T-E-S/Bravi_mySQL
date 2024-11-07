@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.categoria.impl;
 import br.com.Bravi.entidades.categoria.Categoria;
 import br.com.Bravi.entidades.categoria.CategoriaRepository;
 import br.com.Bravi.entidades.categoria.mapper.MapperCategoria;
+import br.com.Bravi.exceptions.CategoriaNaoEncontradaException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -35,8 +36,16 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 
     @Override
     public void excluir(int id) {
-        String sql = "DELETE FROM Categoria WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        // Aqui também, ajuste se a lógica de verificação de produtos mudou
+        String sqlVerificaProdutos = "SELECT COUNT(*) FROM Produto WHERE fk_Categoria_id = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlVerificaProdutos, Integer.class, id);
+
+        if (count != null && count > 0) {
+            String sql = "DELETE FROM Categoria WHERE id = ?";
+            jdbcTemplate.update(sql, id);
+        } else {
+            throw new CategoriaNaoEncontradaException("Categoria com ID " + id + " não encontrada ou não está associada a produtos.");
+        }
     }
 
     @Override

@@ -22,9 +22,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public void inserir(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Cliente (CNPJ, Nome, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 cliente.getCnpj(),
+                cliente.getNome(),
                 cliente.getRua(),
                 cliente.getBairro(),
                 cliente.getCep(),
@@ -35,8 +36,9 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public void alterar(Cliente cliente) {
-        String sql = "UPDATE Cliente SET Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
+        String sql = "UPDATE Cliente SET Nome = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
         jdbcTemplate.update(sql,
+                cliente.getNome(),
                 cliente.getRua(),
                 cliente.getBairro(),
                 cliente.getCep(),

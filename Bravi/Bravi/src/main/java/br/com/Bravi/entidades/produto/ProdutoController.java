@@ -30,7 +30,8 @@ public class ProdutoController {
             produtoService.atualizarProduto(produto);
             return new ResponseEntity<>("Produto atualizado com sucesso!", HttpStatus.OK);
         } catch (ProdutoNaoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            String mensagem = "Produto com NSM " + nsm + " não encontrado para atualização.";
+            return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -40,7 +41,8 @@ public class ProdutoController {
             produtoService.removerProduto(nsm);
             return new ResponseEntity<>("Produto removido com sucesso!", HttpStatus.OK);
         } catch (ProdutoNaoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            String mensagem = "Produto com NSM " + nsm + " não encontrado para remoção.";
+            return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -51,10 +53,10 @@ public class ProdutoController {
     }
 
     @GetMapping("/{nsm}")
-    public ResponseEntity<Produto> obterProdutoPorNsm(@PathVariable int nsm) {
+    public ResponseEntity<?> obterProdutoPorNsm(@PathVariable int nsm) {
         Produto produto = produtoService.obterProdutoPorNsm(nsm);
         if (produto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Produto não encontrado para o NSM " + nsm, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(produto, HttpStatus.OK);
     }

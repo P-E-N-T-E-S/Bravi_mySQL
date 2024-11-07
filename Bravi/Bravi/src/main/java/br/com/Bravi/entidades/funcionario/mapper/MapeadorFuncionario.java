@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class MapeadorFuncionario implements RowMapper <Funcionario> {
+public class MapeadorFuncionario implements RowMapper<Funcionario> {
 
     @Override
     public Funcionario mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -19,7 +19,7 @@ public class MapeadorFuncionario implements RowMapper <Funcionario> {
         Date dataDeNascimento = rs.getDate("Data_de_Nascimento");
         String rua = rs.getString("Rua");
         String bairro = rs.getString("Bairro");
-        int cep = rs.getInt("CEP");
+        String cep = rs.getString("CEP");
         int numero = rs.getInt("Numero");
         String cpfGerente = rs.getString("CPF_GERENTE");
 

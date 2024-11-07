@@ -3,21 +3,21 @@ USE BDBravi;
 -- Inserindo registros na tabela Funcionario
 INSERT INTO Funcionario (Setor, Cargo, CPF, Nome, Data_de_Nascimento, Rua, Bairro, CEP, Numero, CPF_GERENTE)
 VALUES
-('Administrativo', 'Gerente', '44444444444', 'João Silva', '1978-06-21', 'Rua A', 'Centro', 12345678, 10, NULL),
-('Financeiro', 'Analista', '55555555555', 'Maria Oliveira', '1985-08-12', 'Rua B', 'Zona Sul', 23456789, 20, '44444444444'),
-('Vendas', 'Vendedor', '66666666666', 'Carlos Souza', '1990-11-30', 'Rua C', 'Zona Norte', 34567890, 30, '44444444444');
+('Administrativo', 'Gerente', '44444444444', 'João Silva', '1978-06-21', 'Rua A', 'Centro', '12345678', 10, NULL),
+('Financeiro', 'Analista', '55555555555', 'Maria Oliveira', '1985-08-12', 'Rua B', 'Zona Sul', '23456789', 20, '44444444444'),
+('Vendas', 'Vendedor', '66666666666', 'Carlos Souza', '1990-11-30', 'Rua C', 'Zona Norte', '34567890', 30, '44444444444');
 
--- Populando a tabela Fornecedor com CNPJs únicos
-INSERT INTO Fornecedor (categoria, CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
+-- Populando a tabela Fornecedor com CNPJs únicos e incluindo o nome
+INSERT INTO Fornecedor (categoria, CNPJ, Nome, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
 VALUES
-('Limpeza', '12345678901234', 'Av. das Indústrias', 'Industrial', 56789012, 100, 987654321, 123456),
-('Tecnologia', '23456789012346', 'Rua do Comércio', 'Centro', 67890123, 200, 876543210, 234567); -- Alterei o último dígito do CNPJ para evitar duplicidade
+('Limpeza', '12345678901234', 'Fornecedor A', 'Av. das Indústrias', 'Industrial', '56789012', 100, 987654321, 'Fornecedor A LTDA'),
+('Tecnologia', '23456789012346', 'Fornecedor B', 'Rua do Comércio', 'Centro', '67890123', 200, 876543210, 'Fornecedor B LTDA'); -- Alterei o último dígito do CNPJ para evitar duplicidade
 
--- Populando a tabela Cliente
-INSERT INTO Cliente (CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
+-- Populando a tabela Cliente e incluindo o nome
+INSERT INTO Cliente (CNPJ, Nome, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
 VALUES
-('34567890123456', 'Av. Central', 'Centro', 78901234, 300, 765432109, 345678),
-('45678901234567', 'Rua Nova', 'Zona Oeste', 89012345, 400, 654321098, 456789);
+('34567890123456', 'Cliente A', 'Av. Central', 'Centro', '78901234', 300, 765432109, 'Cliente A LTDA'),
+('45678901234567', 'Cliente B', 'Rua Nova', 'Zona Oeste', '89012345', 400, 654321098, 'Cliente B LTDA');
 
 -- Populando a tabela Produto
 INSERT INTO Produto (NSM, Nome, Descrição)

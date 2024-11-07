@@ -22,48 +22,43 @@ public class ForneceController {
     }
 
     @PostMapping
-    public ResponseEntity<String> inserirFornece(@RequestBody Fornece fornece) {
+    public ResponseEntity<Void> inserirFornece(@RequestBody Fornece fornece) {
         try {
             forneceService.inserirFornece(fornece);
-            return new ResponseEntity<>("Fornecedor inserido com sucesso!", HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarFornece(@PathVariable int id, @RequestBody Fornece fornece) {
-        fornece.setId(id);
+    @PutMapping
+    public ResponseEntity<Void> atualizarFornece(@RequestBody Fornece fornece) {
         try {
             forneceService.atualizarFornece(fornece);
-            return new ResponseEntity<>("Fornecedor atualizado com sucesso!", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluirFornece(@PathVariable int id) {
+    public ResponseEntity<Void> excluirFornece(@PathVariable int id) {
         try {
             forneceService.excluirFornece(id);
-            return new ResponseEntity<>("Fornecedor excluído com sucesso!", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ForneceNaoEncontradoException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping
     public ResponseEntity<List<Fornece>> listarFornece() {
-        List<Fornece> forneceList = forneceService.listarFornece();
-        return ResponseEntity.ok(forneceList);
+        return new ResponseEntity<>(forneceService.listarFornece(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Fornece> buscarFornecePorId(@PathVariable int id) {
         Fornece fornece = forneceService.buscarFornecePorId(id);
-        if (fornece == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(fornece);
+        return fornece != null ? new ResponseEntity<>(fornece, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

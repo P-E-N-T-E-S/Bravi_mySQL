@@ -1,6 +1,7 @@
 package br.com.Bravi.entidades.compra;
 
 import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
+import br.com.Bravi.exceptions.CompraNaoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,8 @@ public class CompraController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Compra criada com sucesso.");
         } catch (ClienteNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
         }
     }
 
@@ -33,8 +36,10 @@ public class CompraController {
         try {
             compraService.atualizarCompra(compra);
             return ResponseEntity.ok("Compra atualizada com sucesso.");
-        } catch (ClienteNaoEncontradoException e) {
+        } catch (CompraNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a compra: " + e.getMessage());
         }
     }
 
@@ -52,11 +57,13 @@ public class CompraController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Compra> buscarPorId(@PathVariable int id) {
-        Compra compra = compraService.buscarCompraPorId(id);
-        if (compra != null) {
+        try {
+            Compra compra = compraService.buscarCompraPorId(id);
             return ResponseEntity.ok(compra);
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (CompraNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

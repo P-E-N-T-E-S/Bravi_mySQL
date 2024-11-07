@@ -11,12 +11,12 @@ public class Funcionario {
     private Date dataDeNascimento;
     private String rua;
     private String bairro;
-    private int cep;
-    private int numero;
+    private String cep;
+    private Integer numero;
     private String cpfGerente;
 
     public Funcionario(String setor, String cargo, String cpf, String nome, Date dataDeNascimento,
-                       String rua, String bairro, int cep, int numero, String cpfGerente) {
+                       String rua, String bairro, String cep, Integer numero, String cpfGerente) {
         this.setor = setor;
         this.cargo = cargo;
         this.cpf = cpf;
@@ -28,8 +28,6 @@ public class Funcionario {
         this.numero = numero;
         this.cpfGerente = cpfGerente;
     }
-
-    public Funcionario() {}
 
     public String getSetor() {
         return setor;
@@ -87,19 +85,19 @@ public class Funcionario {
         this.bairro = bairro;
     }
 
-    public int getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
@@ -121,7 +119,7 @@ public class Funcionario {
                 ", dataDeNascimento=" + dataDeNascimento +
                 ", rua='" + rua + '\'' +
                 ", bairro='" + bairro + '\'' +
-                ", cep=" + cep +
+                ", cep='" + cep + '\'' +
                 ", numero=" + numero +
                 ", cpfGerente='" + cpfGerente + '\'' +
                 '}';
