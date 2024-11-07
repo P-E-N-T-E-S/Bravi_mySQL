@@ -2,8 +2,9 @@ package br.com.Bravi.entidades.cliente.impl;
 
 import br.com.Bravi.entidades.cliente.Cliente;
 import br.com.Bravi.entidades.cliente.ClienteRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import br.com.Bravi.entidades.cliente.mapper.MapperCliente;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     private final JdbcTemplate jdbcTemplate;
     private final MapperCliente clienteMapper;
 
-    public ClienteRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public ClienteRepositoryImpl(JdbcTemplate jdbcTemplate, MapperCliente clienteMapper) {
         this.jdbcTemplate = jdbcTemplate;
-        this.clienteMapper = new MapperCliente();
+        this.clienteMapper = clienteMapper;
     }
 
     @Override
@@ -60,6 +61,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Override
     public Cliente buscarPorCNPJ(String cnpj) {
         String sql = "SELECT * FROM Cliente WHERE CNPJ = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, clienteMapper::mapRow);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, clienteMapper::mapRow);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

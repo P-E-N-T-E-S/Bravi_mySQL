@@ -3,8 +3,10 @@ package br.com.Bravi.entidades.estoque.impl;
 import br.com.Bravi.entidades.estoque.Estoque;
 import br.com.Bravi.entidades.estoque.EstoqueRepository;
 import br.com.Bravi.entidades.estoque.EstoqueService;
-import org.springframework.stereotype.Service;
 import br.com.Bravi.exceptions.EstoqueNotFoundException;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -19,7 +21,11 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     @Override
     public void adicionarEstoque(Estoque estoque) {
-        estoqueRepository.inserir(estoque);
+        try {
+            estoqueRepository.inserir(estoque);
+        } catch (DataIntegrityViolationException e) {
+            throw new ProdutoNaoEncontradoException("Produto com NSM " + estoque.getProdutoNsm() + " não encontrado.");
+        }
     }
 
     @Override

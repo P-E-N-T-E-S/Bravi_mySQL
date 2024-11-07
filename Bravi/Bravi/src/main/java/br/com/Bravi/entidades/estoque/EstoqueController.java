@@ -1,5 +1,7 @@
 package br.com.Bravi.entidades.estoque;
 
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
+import br.com.Bravi.exceptions.EstoqueNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +19,25 @@ public class EstoqueController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> adicionarEstoque(@RequestBody Estoque estoque) {
-        estoqueService.adicionarEstoque(estoque);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<String> adicionarEstoque(@RequestBody Estoque estoque) {
+        try {
+            estoqueService.adicionarEstoque(estoque);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Estoque adicionado com sucesso.");
+        } catch (ProdutoNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PutMapping
-    public ResponseEntity<Void> atualizarEstoque(@RequestBody Estoque estoque) {
+    public ResponseEntity<String> atualizarEstoque(@RequestBody Estoque estoque) {
         estoqueService.atualizarEstoque(estoque);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Estoque atualizado com sucesso.");
     }
 
     @DeleteMapping("/{setor}/{produtoNsm}")
-    public ResponseEntity<Void> removerEstoque(@PathVariable int setor, @PathVariable int produtoNsm) {
+    public ResponseEntity<String> removerEstoque(@PathVariable int setor, @PathVariable int produtoNsm) {
         estoqueService.removerEstoque(setor, produtoNsm);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Estoque removido com sucesso.");
     }
 
     @GetMapping
@@ -41,8 +47,12 @@ public class EstoqueController {
     }
 
     @GetMapping("/{setor}/{produtoNsm}")
-    public ResponseEntity<Estoque> buscarEstoquePorId(@PathVariable int setor, @PathVariable int produtoNsm) {
-        Estoque estoque = estoqueService.buscarEstoquePorId(setor, produtoNsm);
-        return estoque != null ? ResponseEntity.ok(estoque) : ResponseEntity.notFound().build();
+    public ResponseEntity<?> buscarEstoquePorId(@PathVariable int setor, @PathVariable int produtoNsm) {
+        try {
+            Estoque estoque = estoqueService.buscarEstoquePorId(setor, produtoNsm);
+            return ResponseEntity.ok(estoque);
+        } catch (EstoqueNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

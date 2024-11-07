@@ -2,6 +2,7 @@ package br.com.Bravi.entidades.categoria;
 
 import br.com.Bravi.entidades.categoria.impl.CategoriaServiceImpl;
 import br.com.Bravi.exceptions.CategoriaNaoEncontradaException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,12 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<String> inserir(@RequestBody Categoria categoria) {
-        categoriaService.inserir(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Categoria criada com sucesso");
+        try {
+            categoriaService.inserir(categoria);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Categoria criada com sucesso");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: Categoria já existe ou violação de integridade");
+        }
     }
 
     @PutMapping("/{id}")

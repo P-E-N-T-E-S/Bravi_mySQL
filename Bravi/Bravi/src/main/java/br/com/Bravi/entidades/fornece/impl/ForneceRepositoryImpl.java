@@ -3,6 +3,9 @@ package br.com.Bravi.entidades.fornece.impl;
 import br.com.Bravi.entidades.fornece.Fornece;
 import br.com.Bravi.entidades.fornece.ForneceRepository;
 import br.com.Bravi.entidades.fornece.mapper.MapperFornece;
+import br.com.Bravi.exceptions.ForneceNaoEncontradoException;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
+import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,19 +25,34 @@ public class ForneceRepositoryImpl implements ForneceRepository {
     @Override
     public void inserir(Fornece fornece) {
         String sql = "INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, data) VALUES (?, ?, ?)";
+        if (!produtoExiste(fornece.getProdutoNsm())) {
+            throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM: " + fornece.getProdutoNsm());
+        }
+        if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
+            throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
+        }
         jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData());
     }
 
     @Override
     public void atualizar(Fornece fornece) {
         String sql = "UPDATE _Fornece SET fk_Produto_NSM = ?, fk_Fornecedor_CNPJ = ?, data = ? WHERE id = ?";
+        if (!produtoExiste(fornece.getProdutoNsm())) {
+            throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM: " + fornece.getProdutoNsm());
+        }
+        if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
+            throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
+        }
         jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getId());
     }
 
     @Override
     public void excluir(int id) {
         String sql = "DELETE FROM _Fornece WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        if (rowsAffected == 0) {
+            throw new ForneceNaoEncontradoException("Fornecedor com ID " + id + " não encontrado.");
+        }
     }
 
     @Override
@@ -46,6 +64,19 @@ public class ForneceRepositoryImpl implements ForneceRepository {
     @Override
     public Fornece buscarPorId(int id) {
         String sql = "SELECT * FROM _Fornece WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapperFornece);
+        List<Fornece> forneceList = jdbcTemplate.query(sql, new Object[]{id}, mapperFornece);
+        return forneceList.isEmpty() ? null : forneceList.get(0);
+    }
+
+    private boolean produtoExiste(int nsm) {
+        String sql = "SELECT COUNT(*) FROM Produto WHERE NSM = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
+        return count != null && count > 0;
+    }
+
+    private boolean fornecedorExiste(String cnpj) {
+        String sql = "SELECT COUNT(*) FROM Fornecedor WHERE CNPJ = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, Integer.class);
+        return count != null && count > 0;
     }
 }

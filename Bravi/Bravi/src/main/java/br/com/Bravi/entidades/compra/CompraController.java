@@ -1,6 +1,6 @@
 package br.com.Bravi.entidades.compra;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,22 +13,29 @@ public class CompraController {
 
     private final CompraService compraService;
 
-    @Autowired
     public CompraController(CompraService compraService) {
         this.compraService = compraService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> inserir(@RequestBody Compra compra) {
-        compraService.inserirCompra(compra);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<String> inserir(@RequestBody Compra compra) {
+        try {
+            compraService.inserirCompra(compra);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Compra criada com sucesso.");
+        } catch (ClienteNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable int id, @RequestBody Compra compra) {
+    public ResponseEntity<String> atualizar(@PathVariable int id, @RequestBody Compra compra) {
         compra.setId(id);
-        compraService.atualizarCompra(compra);
-        return ResponseEntity.ok().build();
+        try {
+            compraService.atualizarCompra(compra);
+            return ResponseEntity.ok("Compra atualizada com sucesso.");
+        } catch (ClienteNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

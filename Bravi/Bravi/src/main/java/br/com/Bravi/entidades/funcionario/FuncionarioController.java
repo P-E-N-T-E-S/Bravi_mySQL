@@ -2,6 +2,7 @@ package br.com.Bravi.entidades.funcionario;
 
 import br.com.Bravi.exceptions.CampoDeAlteracaoNaoEncontradoException;
 import br.com.Bravi.exceptions.FiltroNaoDisponivelException;
+import br.com.Bravi.exceptions.FuncionarioNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,20 +34,12 @@ public class FuncionarioController {
     @GetMapping("/{filtro}")
     public ResponseEntity<Object> buscarFuncionarioFiltro(@PathVariable String filtro, @RequestParam String valor) {
         try {
-            switch (filtro.toLowerCase()) {
-                case "cpf":
-                    return new ResponseEntity<>(funcionarioService.buscarPorCPF(valor), HttpStatus.OK);
-                case "setor":
-                    return new ResponseEntity<>(funcionarioService.buscarPorSetor(valor), HttpStatus.OK);
-                case "nome":
-                    return new ResponseEntity<>(funcionarioService.buscarPorNome(valor), HttpStatus.OK);
-                case "cargo":
-                    return new ResponseEntity<>(funcionarioService.buscarPorCargo(valor), HttpStatus.OK);
-                default:
-                    throw new FiltroNaoDisponivelException(filtro);
-            }
+            Funcionario funcionario = buscarFuncionarioPorFiltro(filtro, valor);
+            return new ResponseEntity<>(funcionario, HttpStatus.OK);
+        } catch (FuncionarioNaoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Funcionário não encontrado com o filtro: " + filtro);
         } catch (FiltroNaoDisponivelException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filtro " + e.getMessage() + " não disponível");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Filtro " + e.getMessage() + " não disponível");
         }
     }
 
@@ -56,18 +49,24 @@ public class FuncionarioController {
             Funcionario funcionario = buscarFuncionarioPorFiltro(filtro, valor);
             funcionarioService.excluir(funcionario);
             return new ResponseEntity<>("Funcionário deletado com sucesso!", HttpStatus.OK);
+        } catch (FuncionarioNaoEncontradoException e) {
+            return new ResponseEntity<>("Funcionário não encontrado com o filtro: " + filtro, HttpStatus.NOT_FOUND);
         } catch (FiltroNaoDisponivelException e) {
-            return new ResponseEntity<>("Filtro não disponível", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Filtro não disponível", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{filtro}")
-    public ResponseEntity<String> atualizarFuncionarioFiltro(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String, Object> alteracoes) {
+    public ResponseEntity<String> atualizarFuncionarioFiltro(@PathVariable String filtro, @RequestParam String valor, @RequestBody Funcionario funcionario) {
         try {
-            Funcionario funcionario = buscarFuncionarioPorFiltro(filtro, valor);
+            Funcionario funcionarioExistente = buscarFuncionarioPorFiltro(filtro, valor);
+            funcionario.setCpf(funcionarioExistente.getCpf());
+            funcionarioService.alterar(funcionario);
             return new ResponseEntity<>("Funcionário atualizado com sucesso!", HttpStatus.OK);
+        } catch (FuncionarioNaoEncontradoException e) {
+            return new ResponseEntity<>("Funcionário não encontrado com o filtro: " + filtro, HttpStatus.NOT_FOUND);
         } catch (FiltroNaoDisponivelException e) {
-            return new ResponseEntity<>("Filtro não encontrado", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Filtro não disponível", HttpStatus.BAD_REQUEST);
         } catch (CampoDeAlteracaoNaoEncontradoException e) {
             return new ResponseEntity<>("Campo para alteração: " + e.getMessage() + " indisponível", HttpStatus.BAD_REQUEST);
         }

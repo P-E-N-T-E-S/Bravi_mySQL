@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.produto.impl;
 import br.com.Bravi.entidades.produto.Produto;
 import br.com.Bravi.entidades.produto.ProdutoRepository;
 import br.com.Bravi.entidades.produto.ProdutoService;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +24,19 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void atualizarProduto(Produto produto) {
+        Produto produtoExistente = produtoRepository.buscarPorNsm(produto.getNsm());
+        if (produtoExistente == null) {
+            throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM " + produto.getNsm());
+        }
         produtoRepository.alterar(produto);
     }
 
     @Override
     public void removerProduto(int nsm) {
+        Produto produtoExistente = produtoRepository.buscarPorNsm(nsm);
+        if (produtoExistente == null) {
+            throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM " + nsm);
+        }
         produtoRepository.excluir(nsm);
     }
 
