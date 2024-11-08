@@ -23,12 +23,13 @@ public class FornecedorController {
             fornecedorService.adicionarFornecedor(fornecedor);
             return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
-    @PutMapping
-    public ResponseEntity<String> atualizarFornecedor(@RequestBody Fornecedor fornecedor) {
+    @PutMapping("/{cnpj}")
+    public ResponseEntity<String> atualizarFornecedor(@PathVariable String cnpj, @RequestBody Fornecedor fornecedor) {
+        fornecedor.setCnpj(cnpj);
         try {
             fornecedorService.atualizarFornecedor(fornecedor);
             return new ResponseEntity<>("Fornecedor atualizado com sucesso!", HttpStatus.OK);

@@ -31,15 +31,19 @@ public class ForneceController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<Void> atualizarFornece(@RequestBody Fornece fornece) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarFornece(@PathVariable int id, @RequestBody Fornece fornece) {
+        fornece.setId(id);
         try {
             forneceService.atualizarFornece(fornece);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Fornecedor atualizado com sucesso!", HttpStatus.OK);
         } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException | ForneceNaoEncontradoException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirFornece(@PathVariable int id) {
