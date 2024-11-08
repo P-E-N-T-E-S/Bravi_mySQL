@@ -36,7 +36,7 @@ public class ForneceController {
         try {
             forneceService.atualizarFornece(fornece);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException e) {
+        } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException | ForneceNaoEncontradoException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -58,7 +58,11 @@ public class ForneceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Fornece> buscarFornecePorId(@PathVariable int id) {
-        Fornece fornece = forneceService.buscarFornecePorId(id);
-        return fornece != null ? new ResponseEntity<>(fornece, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Fornece fornece = forneceService.buscarFornecePorId(id);
+            return new ResponseEntity<>(fornece, HttpStatus.OK);
+        } catch (ForneceNaoEncontradoException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

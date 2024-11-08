@@ -6,7 +6,7 @@ import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import br.com.Bravi.utils.CollectionUtils;
+
 import java.util.List;
 
 @Repository
@@ -69,21 +69,16 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 
     @Override
     public List<Fornecedor> listar() {
-        try {
-            String sql = "SELECT * FROM Fornecedor";
-            return jdbcTemplate.query(sql, (rs, rowNum) -> new Fornecedor(
-                    rs.getString("categoria"),
-                    rs.getString("CNPJ"),
-                    rs.getString("Rua"),
-                    rs.getString("Bairro"),
-                    rs.getString("CEP"),
-                    rs.getInt("Numero"),
-                    rs.getString("Inscricao_Estadual"),
-                    rs.getString("Razao_Social")
-            ));
-        } catch (DataAccessException e) {
-            System.err.println("Erro ao listar fornecedores: " + e.getMessage());
-            return CollectionUtils.emptyList();
-        }
+        String sql = "SELECT * FROM Fornecedor";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Fornecedor(
+                rs.getString("categoria"),
+                rs.getString("CNPJ"),
+                rs.getString("Rua"),
+                rs.getString("Bairro"),
+                rs.getString("CEP"),
+                rs.getInt("Numero"),
+                rs.getString("Inscricao_Estadual"),
+                rs.getString("Razao_Social")
+        ));
     }
 }

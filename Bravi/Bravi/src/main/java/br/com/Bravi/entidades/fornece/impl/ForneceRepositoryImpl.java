@@ -43,7 +43,10 @@ public class ForneceRepositoryImpl implements ForneceRepository {
         if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
         }
-        jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getId());
+        int rowsAffected = jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getId());
+        if (rowsAffected == 0) {
+            throw new ForneceNaoEncontradoException("Fornece com ID " + fornece.getId() + " não encontrado.");
+        }
     }
 
     @Override
@@ -51,7 +54,7 @@ public class ForneceRepositoryImpl implements ForneceRepository {
         String sql = "DELETE FROM _Fornece WHERE id = ?";
         int rowsAffected = jdbcTemplate.update(sql, id);
         if (rowsAffected == 0) {
-            throw new ForneceNaoEncontradoException("Fornecedor com ID " + id + " não encontrado.");
+            throw new ForneceNaoEncontradoException("Fornece com ID " + id + " não encontrado.");
         }
     }
 
@@ -65,7 +68,10 @@ public class ForneceRepositoryImpl implements ForneceRepository {
     public Fornece buscarPorId(int id) {
         String sql = "SELECT * FROM _Fornece WHERE id = ?";
         List<Fornece> forneceList = jdbcTemplate.query(sql, new Object[]{id}, mapperFornece);
-        return forneceList.isEmpty() ? null : forneceList.get(0);
+        if (forneceList.isEmpty()) {
+            throw new ForneceNaoEncontradoException("Fornece com ID " + id + " não encontrado.");
+        }
+        return forneceList.get(0);
     }
 
     private boolean produtoExiste(int nsm) {

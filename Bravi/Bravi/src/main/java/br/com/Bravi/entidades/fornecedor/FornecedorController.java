@@ -23,7 +23,7 @@ public class FornecedorController {
             fornecedorService.adicionarFornecedor(fornecedor);
             return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
@@ -55,5 +55,11 @@ public class FornecedorController {
         } catch (FornecedorNaoEncontradoException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Fornecedor>> listarFornecedores() {
+        List<Fornecedor> fornecedores = fornecedorService.listarFornecedores();
+        return new ResponseEntity<>(fornecedores, HttpStatus.OK);
     }
 }
