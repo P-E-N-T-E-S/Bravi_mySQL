@@ -36,7 +36,6 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 
     @Override
     public void excluir(int id) {
-        // Aqui também, ajuste se a lógica de verificação de produtos mudou
         String sqlVerificaProdutos = "SELECT COUNT(*) FROM Produto WHERE fk_Categoria_id = ?";
         Integer count = jdbcTemplate.queryForObject(sqlVerificaProdutos, Integer.class, id);
 

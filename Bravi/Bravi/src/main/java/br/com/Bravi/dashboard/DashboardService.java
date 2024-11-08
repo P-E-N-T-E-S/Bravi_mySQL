@@ -13,9 +13,7 @@ public interface DashboardService {
 
     List<Double> getEvolucaoVendas();
 
-    Map<Integer, Double> getFaturamentoPorAno();
-
-    List<Map<String, String>> getMaioresFornecedores();
+    Map<String, Object> getFaturamentoPorAno();
 
     List<Map<String, String>> getMaioresCompradores();
 

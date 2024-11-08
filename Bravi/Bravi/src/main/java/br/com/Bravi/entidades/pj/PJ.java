@@ -16,7 +16,7 @@ public class PJ {
         this.bairro = bairro;
         this.cep = cep;
         this.numero = numero;
-        this.inscricaoEstadual = inscricaoEstadual;  // Certifique-se de que esse campo seja String
+        this.inscricaoEstadual = inscricaoEstadual;
         this.razaoSocial = razaoSocial;
     }
 

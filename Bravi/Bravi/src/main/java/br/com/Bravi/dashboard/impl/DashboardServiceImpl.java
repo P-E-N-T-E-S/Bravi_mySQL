@@ -2,18 +2,23 @@ package br.com.Bravi.dashboard.impl;
 
 import br.com.Bravi.dashboard.DashboardRepository;
 import br.com.Bravi.dashboard.DashboardService;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 public class DashboardServiceImpl implements DashboardService {
 
     private final DashboardRepository dashboardRepository;
+    private final JdbcTemplate jdbcTemplate;
 
-    public DashboardServiceImpl(DashboardRepository dashboardRepository) {
+    public DashboardServiceImpl(DashboardRepository dashboardRepository, JdbcTemplate jdbcTemplate) {
         this.dashboardRepository = dashboardRepository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -37,18 +42,33 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public Map<Integer, Double> getFaturamentoPorAno() {
-        return dashboardRepository.getFaturamentoPorAno();
-    }
-
-    @Override
-    public List<Map<String, String>> getMaioresFornecedores() {
-        return dashboardRepository.getMaioresFornecedores();
+    public Map<String, Object> getFaturamentoPorAno() {
+        List<Map<String, Object>> query = dashboardRepository.getFaturamentoPorAno();
+        List<String> anos = new ArrayList<>();
+        List<BigDecimal> valores = new ArrayList<>();
+        for (Map<String, Object> map : query) {
+            anos.add((String) map.get("ano"));
+            valores.add((BigDecimal) map.get("valor"));
+        }
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("anos", anos);
+        resposta.put("valores", valores);
+        return resposta;
     }
 
     @Override
     public List<Map<String, String>> getMaioresCompradores() {
-        return dashboardRepository.getMaioresCompradores();
+        String sql = "SELECT nome, valor, ativo FROM compradores ORDER BY valor DESC LIMIT 5";
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+        List<Map<String, String>> resultMapList = new ArrayList<>();
+        for (Map<String, Object> row : result) {
+            Map<String, String> map = new HashMap<>();
+            map.put("nome", (String) row.get("nome"));
+            map.put("valor", row.get("valor").toString());
+            map.put("ativo", row.get("ativo").toString());
+            resultMapList.add(map);
+        }
+        return resultMapList;
     }
 
     @Override

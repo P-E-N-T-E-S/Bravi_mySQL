@@ -5,7 +5,7 @@ import br.com.Bravi.entidades.pj.PJ;
 public class Fornecedor extends PJ {
 
     private String categoria;
-    private String inscricaoEstadual;  // Mudado para String
+    private String inscricaoEstadual;
 
     public Fornecedor(String categoria, String cnpj, String rua, String bairro, String cep,
                       int numero, String inscricaoEstadual, String razaoSocial) {

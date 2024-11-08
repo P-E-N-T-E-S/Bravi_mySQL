@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @Repository
 public class DashboardRepositoryImpl implements DashboardRepository {
@@ -43,43 +42,18 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public Map<Integer, Double> getFaturamentoPorAno() {
-        String sql = "SELECT ano, SUM(valor) AS faturamento FROM faturamento GROUP BY ano";
-        List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
-
-        Map<Integer, Double> faturamentoPorAno = new HashMap<>();
-        for (Map<String, Object> row : resultList) {
-            Integer ano = (Integer) row.get("ano");
-            Double faturamento = (Double) row.get("faturamento");
-            faturamentoPorAno.put(ano, faturamento);
-        }
-        return faturamentoPorAno;
-    }
-
-    @Override
-    public List<Map<String, String>> getMaioresCompradores() {
+    public Map<String, Object> getMaioresCompradores() {
         String sql = "SELECT nome, valor, ativo FROM compradores ORDER BY valor DESC LIMIT 5";
-        return jdbcTemplate.queryForList(sql).stream()
-                .map(row -> {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("nome", (String) row.get("nome"));
-                    map.put("valor", String.valueOf(row.get("valor")));
-                    map.put("ativo", String.valueOf(row.get("ativo")));
-                    return map;
-                })
-                .collect(Collectors.toList());
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("maiores_compradores", result);
+        return resultMap;
     }
 
     @Override
-    public List<Map<String, String>> getMaioresFornecedores() {
-        String sql = "SELECT nome FROM fornecedores ORDER BY nome";
-        return jdbcTemplate.queryForList(sql).stream()
-                .map(row -> {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("nome", (String) row.get("nome"));
-                    return map;
-                })
-                .collect(Collectors.toList());
+    public List<Map<String, Object>> getFaturamentoPorAno() {
+        String sql = "SELECT ano, SUM(valor) AS valor FROM faturamento GROUP BY ano ORDER BY ano";
+        return jdbcTemplate.queryForList(sql);
     }
 
     @Override

@@ -38,18 +38,13 @@ public class DashboardController {
     }
 
     @GetMapping("/faturamento-por-ano")
-    public Map<Integer, Double> getFaturamentoPorAno() {
+    public Map<String, Object> getFaturamentoPorAno() {
         return dashboardService.getFaturamentoPorAno();
     }
 
     @GetMapping("/maiores-compradores")
     public List<Map<String, String>> getMaioresCompradores() {
         return dashboardService.getMaioresCompradores();
-    }
-
-    @GetMapping("/maiores-fornecedores")
-    public List<Map<String, String>> getMaioresFornecedores() {
-        return dashboardService.getMaioresFornecedores();
     }
 
     @GetMapping("/categorias")
