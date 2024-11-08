@@ -1,5 +1,7 @@
-package br.com.Bravi.dashboard;
+package br.com.Bravi.dashboard.impl;
 
+import br.com.Bravi.dashboard.DashboardRepository;
+import br.com.Bravi.dashboard.DashboardService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

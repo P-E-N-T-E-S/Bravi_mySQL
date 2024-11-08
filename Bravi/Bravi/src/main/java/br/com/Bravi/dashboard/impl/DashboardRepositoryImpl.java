@@ -1,5 +1,6 @@
-package br.com.Bravi.dashboard;
+package br.com.Bravi.dashboard.impl;
 
+import br.com.Bravi.dashboard.DashboardRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
