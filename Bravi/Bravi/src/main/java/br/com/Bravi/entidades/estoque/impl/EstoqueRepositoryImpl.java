@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.estoque.impl;
 import br.com.Bravi.entidades.estoque.Estoque;
 import br.com.Bravi.entidades.estoque.EstoqueRepository;
 import br.com.Bravi.entidades.estoque.mapper.MapperEstoque;
+import br.com.Bravi.exceptions.EstoqueNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -50,7 +51,7 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
         try {
             return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new EstoqueNotFoundException("Estoque com setor " + setor + " e produto NSM " + produtoNsm + " não encontrado.");
         }
     }
 }

@@ -86,18 +86,30 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
     @Override
     public Funcionario buscarPorSetor(String setor) {
         String sql = "SELECT * FROM funcionario WHERE Setor = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{setor}, funcionarioMapper::mapRow);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{setor}, funcionarioMapper::mapRow);
+        } catch (EmptyResultDataAccessException e) {
+            throw new FuncionarioNaoEncontradoException("Nenhum funcionário encontrado no setor " + setor + ".");
+        }
     }
 
     @Override
     public Funcionario buscarPorNome(String nome) {
         String sql = "SELECT * FROM funcionario WHERE Nome = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{nome}, funcionarioMapper::mapRow);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{nome}, funcionarioMapper::mapRow);
+        } catch (EmptyResultDataAccessException e) {
+            throw new FuncionarioNaoEncontradoException("Funcionário com nome " + nome + " não encontrado.");
+        }
     }
 
     @Override
     public Funcionario buscarPorCargo(String cargo) {
         String sql = "SELECT * FROM funcionario WHERE Cargo = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{cargo}, funcionarioMapper::mapRow);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{cargo}, funcionarioMapper::mapRow);
+        } catch (EmptyResultDataAccessException e) {
+            throw new FuncionarioNaoEncontradoException("Nenhum funcionário encontrado com o cargo " + cargo + ".");
+        }
     }
 }

@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.cliente.impl;
 import br.com.Bravi.entidades.cliente.Cliente;
 import br.com.Bravi.entidades.cliente.ClienteRepository;
 import br.com.Bravi.entidades.cliente.mapper.MapperCliente;
+import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -66,7 +67,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, clienteMapper::mapRow);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cnpj + " não encontrado: " + e.getMessage());
         }
     }
 }

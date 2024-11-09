@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.produto.impl;
 import br.com.Bravi.entidades.produto.Produto;
 import br.com.Bravi.entidades.produto.ProdutoRepository;
 import br.com.Bravi.entidades.produto.mapper.MapperProduto;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -29,13 +30,21 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public void alterar(Produto produto) {
         String sql = "UPDATE Produto SET Nome = ?, Descrição = ?, fk_Categoria_id = ? WHERE NSM = ?";
-        jdbcTemplate.update(sql, produto.getNome(), produto.getDescricao(), produto.getFkCategoriaId(), produto.getNsm());
+        int rowsAffected = jdbcTemplate.update(sql, produto.getNome(), produto.getDescricao(), produto.getFkCategoriaId(), produto.getNsm());
+
+        if (rowsAffected == 0) {
+            throw new ProdutoNaoEncontradoException("Produto com NSM " + produto.getNsm() + " não encontrado.");
+        }
     }
 
     @Override
     public void excluir(int nsm) {
         String sql = "DELETE FROM Produto WHERE NSM = ?";
-        jdbcTemplate.update(sql, nsm);
+        int rowsAffected = jdbcTemplate.update(sql, nsm);
+
+        if (rowsAffected == 0) {
+            throw new ProdutoNaoEncontradoException("Produto com NSM " + nsm + " não encontrado.");
+        }
     }
 
     @Override
@@ -50,7 +59,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{nsm}, produtoMapper);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new ProdutoNaoEncontradoException("Produto com NSM " + nsm + " não encontrado.");
         }
     }
 }

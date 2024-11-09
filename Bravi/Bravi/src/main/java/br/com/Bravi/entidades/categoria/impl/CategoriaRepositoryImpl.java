@@ -60,7 +60,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
             Categoria categoria = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> categoriaMapper.mapRow(rs, rowNum));
             return Optional.ofNullable(categoria);
         } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
+            throw new CategoriaNaoEncontradaException("Categoria com ID " + id + " não encontrada: " + e.getMessage());
         }
     }
 
