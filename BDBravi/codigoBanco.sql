@@ -135,3 +135,31 @@ ALTER TABLE Categoria_Produto ADD CONSTRAINT FK_Categoria_Produto_2
 ALTER TABLE Estoque ADD CONSTRAINT FK_Estoque_2
     FOREIGN KEY (fk_Produto_NSM)
     REFERENCES Produto (NSM);
+
+-- Tabela para controle de acesso de usuários
+CREATE TABLE IF NOT EXISTS Usuario (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    usuario VARCHAR(50) NOT NULL,
+    senha VARCHAR(50) NOT NULL,
+    fk_Funcionario_CPF VARCHAR(14) NOT NULL,
+    isGerente BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (fk_Funcionario_CPF) REFERENCES Funcionario(CPF) ON DELETE CASCADE
+);
+
+DELIMITER //
+
+CREATE TRIGGER after_funcionario_insert
+AFTER INSERT ON Funcionario
+FOR EACH ROW
+BEGIN
+    DECLARE cargoGerente BOOLEAN DEFAULT FALSE;
+
+    IF NEW.Cargo = 'Gerente' THEN
+        SET cargoGerente = TRUE;
+    END IF;
+
+    INSERT INTO Usuario (usuario, senha, fk_Funcionario_CPF, isGerente)
+    VALUES (NEW.CPF, NEW.Nome, NEW.CPF, cargoGerente);
+END //
+
+DELIMITER ;
