@@ -38,7 +38,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
     @Override
     public void alterar(Fornecedor fornecedor) {
         if (!cnpjExiste(fornecedor.getCnpj())) {
-            throw new FornecedorNaoEncontradoException("Fornecedor com CNPJ " + fornecedor.getCnpj() + " não encontrado.");
+            throw new FornecedorNaoEncontradoException("Fornecedor não encontrado com o CNPJ fornecido.");
         }
         String sql = "UPDATE Fornecedor SET categoria = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
         jdbcTemplate.update(sql, fornecedor.getCategoria(), fornecedor.getRua(), fornecedor.getBairro(),
@@ -49,7 +49,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
     @Override
     public void excluir(String cnpj) {
         if (!cnpjExiste(cnpj)) {
-            throw new FornecedorNaoEncontradoException("Fornecedor com CNPJ " + cnpj + " não encontrado.");
+            throw new FornecedorNaoEncontradoException("Fornecedor não encontrado com o CNPJ fornecido.");
         }
         String sql = "DELETE FROM Fornecedor WHERE CNPJ = ?";
         jdbcTemplate.update(sql, cnpj);
@@ -58,7 +58,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
     @Override
     public Fornecedor buscarPorCNPJ(String cnpj) {
         if (!cnpjExiste(cnpj)) {
-            throw new FornecedorNaoEncontradoException("Fornecedor com CNPJ " + cnpj + " não encontrado.");
+            throw new FornecedorNaoEncontradoException("Fornecedor não encontrado com o CNPJ fornecido.");
         }
         String sql = "SELECT * FROM Fornecedor WHERE CNPJ = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, (rs, rowNum) -> new Fornecedor(

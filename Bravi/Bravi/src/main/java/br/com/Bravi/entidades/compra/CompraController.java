@@ -44,9 +44,15 @@ public class CompraController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable int id) {
-        compraService.excluirCompra(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> excluir(@PathVariable int id) {
+        try {
+            compraService.excluirCompra(id);
+            return ResponseEntity.noContent().build();
+        } catch (CompraNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir a compra: " + e.getMessage());
+        }
     }
 
     @GetMapping

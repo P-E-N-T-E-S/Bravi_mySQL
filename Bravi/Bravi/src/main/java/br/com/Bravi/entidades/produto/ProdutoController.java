@@ -17,6 +17,11 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
+    @ExceptionHandler(ProdutoNaoEncontradoException.class)
+    public ResponseEntity<String> handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping
     public ResponseEntity<String> adicionarProduto(@RequestBody Produto produto) {
         produtoService.adicionarProduto(produto);
@@ -26,24 +31,14 @@ public class ProdutoController {
     @PutMapping("/{nsm}")
     public ResponseEntity<String> atualizarProduto(@PathVariable int nsm, @RequestBody Produto produto) {
         produto.setNsm(nsm);
-        try {
-            produtoService.atualizarProduto(produto);
-            return new ResponseEntity<>("Produto atualizado com sucesso!", HttpStatus.OK);
-        } catch (ProdutoNaoEncontradoException e) {
-            String mensagem = "Produto com NSM " + nsm + " não encontrado para atualização.";
-            return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
-        }
+        produtoService.atualizarProduto(produto);
+        return new ResponseEntity<>("Produto atualizado com sucesso!", HttpStatus.OK);
     }
 
     @DeleteMapping("/{nsm}")
     public ResponseEntity<String> removerProduto(@PathVariable int nsm) {
-        try {
-            produtoService.removerProduto(nsm);
-            return new ResponseEntity<>("Produto removido com sucesso!", HttpStatus.OK);
-        } catch (ProdutoNaoEncontradoException e) {
-            String mensagem = "Produto com NSM " + nsm + " não encontrado para remoção.";
-            return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
-        }
+        produtoService.removerProduto(nsm);
+        return new ResponseEntity<>("Produto removido com sucesso!", HttpStatus.OK);
     }
 
     @GetMapping
@@ -53,11 +48,8 @@ public class ProdutoController {
     }
 
     @GetMapping("/{nsm}")
-    public ResponseEntity<?> obterProdutoPorNsm(@PathVariable int nsm) {
+    public ResponseEntity<Produto> obterProdutoPorNsm(@PathVariable int nsm) {
         Produto produto = produtoService.obterProdutoPorNsm(nsm);
-        if (produto == null) {
-            return new ResponseEntity<>("Produto não encontrado para o NSM " + nsm, HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(produto, HttpStatus.OK);
     }
 }

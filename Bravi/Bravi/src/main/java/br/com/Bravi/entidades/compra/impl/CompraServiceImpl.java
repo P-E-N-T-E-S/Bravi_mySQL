@@ -44,7 +44,13 @@ public class CompraServiceImpl implements CompraService {
 
     @Override
     public void excluirCompra(int id) {
-        compraRepository.excluir(id);
+        try {
+            compraRepository.excluir(id);
+        } catch (CompraNaoEncontradaException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro interno ao excluir a compra.");
+        }
     }
 
     @Override

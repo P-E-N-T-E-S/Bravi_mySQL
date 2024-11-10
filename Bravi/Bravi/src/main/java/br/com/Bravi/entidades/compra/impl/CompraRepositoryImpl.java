@@ -36,7 +36,10 @@ public class CompraRepositoryImpl implements CompraRepository {
     @Override
     public void excluir(int id) {
         String sql = "DELETE FROM _Compra WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        if (rowsAffected == 0) {
+            throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada para exclusão.");
+        }
     }
 
     @Override
