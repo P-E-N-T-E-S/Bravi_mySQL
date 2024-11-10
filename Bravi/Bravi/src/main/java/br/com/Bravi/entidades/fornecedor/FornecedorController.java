@@ -45,12 +45,12 @@ public class FornecedorController {
     }
 
     @GetMapping("/{cnpj}")
-    public ResponseEntity<Fornecedor> buscarFornecedorPorCNPJ(@PathVariable String cnpj) {
+    public ResponseEntity<Object> buscarFornecedorPorCNPJ(@PathVariable String cnpj) {
         try {
             Fornecedor fornecedor = fornecedorService.buscarFornecedorPorCNPJ(cnpj);
             return new ResponseEntity<>(fornecedor, HttpStatus.OK);
         } catch (FornecedorNaoEncontradoException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
