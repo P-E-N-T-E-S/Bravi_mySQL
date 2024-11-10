@@ -19,36 +19,64 @@ public class DashboardController {
 
     @GetMapping("/faturamento")
     public Map<String, Object> getFaturamento() {
-        return dashboardService.getFaturamento();
+        try {
+            return dashboardService.getFaturamento();
+        } catch (Exception e) {
+            return Map.of("error", "Erro ao obter faturamento: " + e.getMessage());
+        }
     }
 
     @GetMapping("/meta")
     public Map<String, Object> getMeta() {
-        return dashboardService.getMeta();
+        try {
+            return dashboardService.getMeta();
+        } catch (Exception e) {
+            return Map.of("error", "Erro ao obter meta: " + e.getMessage());
+        }
     }
 
     @GetMapping("/lucro")
     public Map<String, Object> getLucro() {
-        return dashboardService.getLucro();
+        try {
+            return dashboardService.getLucro();
+        } catch (Exception e) {
+            return Map.of("error", "Erro ao obter lucro: " + e.getMessage());
+        }
     }
 
     @GetMapping("/evolucao-vendas")
     public List<Double> getEvolucaoVendas() {
-        return dashboardService.getEvolucaoVendas();
+        try {
+            return dashboardService.getEvolucaoVendas();
+        } catch (Exception e) {
+            return List.of();
+        }
     }
 
     @GetMapping("/faturamento-por-ano")
     public Map<String, Object> getFaturamentoPorAno() {
-        return dashboardService.getFaturamentoPorAno();
+        try {
+            return dashboardService.getFaturamentoPorAno();
+        } catch (Exception e) {
+            return Map.of("error", "Erro ao obter faturamento por ano: " + e.getMessage());
+        }
     }
 
     @GetMapping("/maiores-compradores")
     public List<Map<String, String>> getMaioresCompradores() {
-        return dashboardService.getMaioresCompradores();
+        try {
+            return dashboardService.getMaioresCompradores();
+        } catch (Exception e) {
+            return List.of();
+        }
     }
 
     @GetMapping("/categorias")
     public List<String> getCategorias() {
-        return dashboardService.getCategorias();
+        try {
+            return dashboardService.getCategorias();
+        } catch (Exception e) {
+            return List.of();
+        }
     }
 }

@@ -2,8 +2,8 @@ package br.com.Bravi.entidades.fornecedor.impl;
 
 import br.com.Bravi.entidades.fornecedor.Fornecedor;
 import br.com.Bravi.entidades.fornecedor.FornecedorRepository;
+import br.com.Bravi.exceptions.FornecedorJaExistenteException;
 import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
     @Override
     public void inserir(Fornecedor fornecedor) {
         if (cnpjExiste(fornecedor.getCnpj())) {
-            throw new RuntimeException("Fornecedor com o CNPJ " + fornecedor.getCnpj() + " já existe.");
+            throw new FornecedorJaExistenteException("Fornecedor com o CNPJ " + fornecedor.getCnpj() + " já existe.");
         }
         String sql = "INSERT INTO Fornecedor (categoria, CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, fornecedor.getCategoria(), fornecedor.getCnpj(), fornecedor.getRua(),

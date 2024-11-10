@@ -19,18 +19,14 @@ public class FornecedorController {
 
     @PostMapping
     public ResponseEntity<String> adicionarFornecedor(@RequestBody Fornecedor fornecedor) {
-        try {
-            fornecedorService.adicionarFornecedor(fornecedor);
-            return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+        fornecedorService.adicionarFornecedor(fornecedor);
+        return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{cnpj}")
     public ResponseEntity<String> atualizarFornecedor(@PathVariable String cnpj, @RequestBody Fornecedor fornecedor) {
-        fornecedor.setCnpj(cnpj);
         try {
+            fornecedor.setCnpj(cnpj);
             fornecedorService.atualizarFornecedor(fornecedor);
             return new ResponseEntity<>("Fornecedor atualizado com sucesso!", HttpStatus.OK);
         } catch (FornecedorNaoEncontradoException e) {

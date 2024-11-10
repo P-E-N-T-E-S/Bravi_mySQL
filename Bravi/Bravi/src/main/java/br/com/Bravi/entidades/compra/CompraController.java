@@ -62,14 +62,14 @@ public class CompraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Compra> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
         try {
             Compra compra = compraService.buscarCompraPorId(id);
             return ResponseEntity.ok(compra);
         } catch (CompraNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar a compra: " + e.getMessage());
         }
     }
 }

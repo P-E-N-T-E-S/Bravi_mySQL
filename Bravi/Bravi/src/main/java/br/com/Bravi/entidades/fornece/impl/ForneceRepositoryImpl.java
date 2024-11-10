@@ -54,7 +54,7 @@ public class ForneceRepositoryImpl implements ForneceRepository {
         String sql = "DELETE FROM _Fornece WHERE id = ?";
         int rowsAffected = jdbcTemplate.update(sql, id);
         if (rowsAffected == 0) {
-            throw new ForneceNaoEncontradoException("Fornece não encontrado.");
+            throw new ForneceNaoEncontradoException("Fornece com ID " + id + " não encontrado para exclusão.");
         }
     }
 
@@ -69,7 +69,7 @@ public class ForneceRepositoryImpl implements ForneceRepository {
         String sql = "SELECT * FROM _Fornece WHERE id = ?";
         List<Fornece> forneceList = jdbcTemplate.query(sql, new Object[]{id}, mapperFornece);
         if (forneceList.isEmpty()) {
-            throw new ForneceNaoEncontradoException("Fornece não encontrado.");
+            throw new ForneceNaoEncontradoException("Fornece com ID " + id + " não encontrado.");
         }
         return forneceList.get(0);
     }

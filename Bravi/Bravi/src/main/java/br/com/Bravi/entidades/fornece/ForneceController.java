@@ -46,12 +46,12 @@ public class ForneceController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirFornece(@PathVariable int id) {
+    public ResponseEntity<String> excluirFornece(@PathVariable int id) {
         try {
             forneceService.excluirFornece(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ForneceNaoEncontradoException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,12 +61,12 @@ public class ForneceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Fornece> buscarFornecePorId(@PathVariable int id) {
+    public ResponseEntity<String> buscarFornecePorId(@PathVariable int id) {
         try {
             Fornece fornece = forneceService.buscarFornecePorId(id);
-            return new ResponseEntity<>(fornece, HttpStatus.OK);
+            return new ResponseEntity<>(fornece.toString(), HttpStatus.OK);
         } catch (ForneceNaoEncontradoException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }
