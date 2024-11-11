@@ -55,14 +55,20 @@ CREATE TABLE IF NOT EXISTS _Fornece (
     fk_Produto_NSM INTEGER,
     fk_Fornecedor_CNPJ VARCHAR(20),
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE
+    data DATE,
+    valor DECIMAL(10, 2)
 );
 
 CREATE TABLE IF NOT EXISTS _Compra (
     fk_Cliente_CNPJ VARCHAR(20),
     fk_Produto_NSM INTEGER,
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE
+    data DATE,
+    valor DECIMAL(10, 2),
+    FOREIGN KEY (fk_Cliente_CNPJ)
+    REFERENCES Cliente (CNPJ),
+    FOREIGN KEY (fk_Produto_NSM)
+    REFERENCES Produto (NSM)
 );
 
 CREATE TABLE IF NOT EXISTS Nota_in (

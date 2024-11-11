@@ -11,7 +11,7 @@ VALUES
 INSERT INTO Fornecedor (categoria, CNPJ, Nome, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
 VALUES
 ('Limpeza', '12345678901234', 'Fornecedor A', 'Av. das Indústrias', 'Industrial', '56789012', 100, 987654321, 'Fornecedor A LTDA'),
-('Tecnologia', '23456789012346', 'Fornecedor B', 'Rua do Comércio', 'Centro', '67890123', 200, 876543210, 'Fornecedor B LTDA'); -- Alterei o último dígito do CNPJ para evitar duplicidade
+('Tecnologia', '23456789012346', 'Fornecedor B', 'Rua do Comércio', 'Centro', '67890123', 200, 876543210, 'Fornecedor B LTDA');
 
 -- Populando a tabela Cliente e incluindo o nome
 INSERT INTO Cliente (CNPJ, Nome, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social)
@@ -25,17 +25,17 @@ VALUES
 (1, 'Sabão Líquido', 'Produto de limpeza para uso geral'),
 (2, 'Notebook', 'Computador portátil de última geração');
 
--- Populando a tabela _Fornece
-INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, id, data)
+-- Populando a tabela _Fornece com a coluna `valor`
+INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, id, data, valor)
 VALUES
-(1, '12345678901234', 1, '2024-01-15'),
-(2, '23456789012346', 2, '2024-02-20'); -- CNPJ corrigido para corresponder ao valor inserido em Fornecedor
+(1, '12345678901234', 1, '2024-01-15', 150.00),
+(2, '23456789012346', 2, '2024-02-20', 2500.00);
 
--- Populando a tabela _Compra
-INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, id, data)
+-- Populando a tabela _Compra com a coluna `valor`
+INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, id, data, valor)
 VALUES
-('34567890123456', 1, 1, '2024-03-05'),
-('45678901234567', 2, 2, '2024-04-10');
+('34567890123456', 1, 1, '2024-03-05', 25.00),
+('45678901234567', 2, 2, '2024-04-10', 2500.00);
 
 -- Populando a tabela Nota_in
 INSERT INTO Nota_in (id, data, fk__Compra_id)

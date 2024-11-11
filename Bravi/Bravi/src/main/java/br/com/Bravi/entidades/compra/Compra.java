@@ -8,18 +8,21 @@ public class Compra {
     private String clienteCnpj;
     private int produtoNsm;
     private Date data;
+    private double valor;
 
-    public Compra(int id, String clienteCnpj, int produtoNsm, Date data) {
+    public Compra(int id, String clienteCnpj, int produtoNsm, Date data, double valor) {
         this.id = id;
         this.clienteCnpj = clienteCnpj;
         this.produtoNsm = produtoNsm;
         this.data = data;
+        this.valor = valor;
     }
 
-    public Compra(String clienteCnpj, int produtoNsm, Date data) {
+    public Compra(String clienteCnpj, int produtoNsm, Date data, double valor) {
         this.clienteCnpj = clienteCnpj;
         this.produtoNsm = produtoNsm;
         this.data = data;
+        this.valor = valor;
     }
 
     public Compra() {}
@@ -56,6 +59,14 @@ public class Compra {
         this.data = data;
     }
 
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
     @Override
     public String toString() {
         return "Compra{" +
@@ -63,6 +74,7 @@ public class Compra {
                 ", clienteCnpj='" + clienteCnpj + '\'' +
                 ", produtoNsm=" + produtoNsm +
                 ", data=" + data +
+                ", valor=" + valor +
                 '}';
     }
 }

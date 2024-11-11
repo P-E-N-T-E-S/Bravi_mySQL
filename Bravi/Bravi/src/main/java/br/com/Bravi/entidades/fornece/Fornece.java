@@ -8,18 +8,21 @@ public class Fornece {
     private int produtoNsm;
     private String fornecedorCnpj;
     private Date data;
+    private double valor;
 
-    public Fornece(int id, int produtoNsm, String fornecedorCnpj, Date data) {
+    public Fornece(int id, int produtoNsm, String fornecedorCnpj, Date data, double valor) {
         this.id = id;
         this.produtoNsm = produtoNsm;
         this.fornecedorCnpj = fornecedorCnpj;
         this.data = data;
+        this.valor = valor;
     }
 
-    public Fornece(int produtoNsm, String fornecedorCnpj, Date data) {
+    public Fornece(int produtoNsm, String fornecedorCnpj, Date data, double valor) {
         this.produtoNsm = produtoNsm;
         this.fornecedorCnpj = fornecedorCnpj;
         this.data = data;
+        this.valor = valor;
     }
 
     public Fornece() {}
@@ -56,6 +59,14 @@ public class Fornece {
         this.data = data;
     }
 
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
     @Override
     public String toString() {
         return "Fornece{" +
@@ -63,6 +74,7 @@ public class Fornece {
                 ", produtoNsm=" + produtoNsm +
                 ", fornecedorCnpj='" + fornecedorCnpj + '\'' +
                 ", data=" + data +
+                ", valor=" + valor +
                 '}';
     }
 }

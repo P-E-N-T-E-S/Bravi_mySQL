@@ -23,14 +23,14 @@ public class CompraRepositoryImpl implements CompraRepository {
 
     @Override
     public void inserir(Compra compra) {
-        String sql = "INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, data) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData());
+        String sql = "INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, data, valor) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData(), compra.getValor());
     }
 
     @Override
     public void atualizar(Compra compra) {
-        String sql = "UPDATE _Compra SET fk_Cliente_CNPJ = ?, fk_Produto_NSM = ?, data = ? WHERE id = ?";
-        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData(), compra.getId());
+        String sql = "UPDATE _Compra SET fk_Cliente_CNPJ = ?, fk_Produto_NSM = ?, data = ?, valor = ? WHERE id = ?";
+        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData(), compra.getValor(), compra.getId());
     }
 
     @Override

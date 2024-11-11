@@ -24,26 +24,26 @@ public class ForneceRepositoryImpl implements ForneceRepository {
 
     @Override
     public void inserir(Fornece fornece) {
-        String sql = "INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, data) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, data, valor) VALUES (?, ?, ?, ?)";
         if (!produtoExiste(fornece.getProdutoNsm())) {
             throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM: " + fornece.getProdutoNsm());
         }
         if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
         }
-        jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData());
+        jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getValor());
     }
 
     @Override
     public void atualizar(Fornece fornece) {
-        String sql = "UPDATE _Fornece SET fk_Produto_NSM = ?, fk_Fornecedor_CNPJ = ?, data = ? WHERE id = ?";
+        String sql = "UPDATE _Fornece SET fk_Produto_NSM = ?, fk_Fornecedor_CNPJ = ?, data = ?, valor = ? WHERE id = ?";
         if (!produtoExiste(fornece.getProdutoNsm())) {
             throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM: " + fornece.getProdutoNsm());
         }
         if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
         }
-        int rowsAffected = jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getId());
+        int rowsAffected = jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getValor(), fornece.getId());
         if (rowsAffected == 0) {
             throw new ForneceNaoEncontradoException("Fornece com ID " + fornece.getId() + " não encontrado.");
         }

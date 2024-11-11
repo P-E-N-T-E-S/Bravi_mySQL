@@ -19,57 +19,48 @@ public class CompraController {
     }
 
     @PostMapping
-    public ResponseEntity<String> inserir(@RequestBody Compra compra) {
+    public ResponseEntity<Void> inserirCompra(@RequestBody Compra compra) {
         try {
             compraService.inserirCompra(compra);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Compra criada com sucesso.");
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (ClienteNaoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> atualizar(@PathVariable int id, @RequestBody Compra compra) {
-        compra.setId(id);
+    @PutMapping
+    public ResponseEntity<Void> atualizarCompra(@RequestBody Compra compra) {
         try {
             compraService.atualizarCompra(compra);
-            return ResponseEntity.ok("Compra atualizada com sucesso.");
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (CompraNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar a compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluir(@PathVariable int id) {
+    public ResponseEntity<Void> excluirCompra(@PathVariable("id") int id) {
         try {
             compraService.excluirCompra(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (CompraNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir a compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Compra>> listar() {
-        List<Compra> compraList = compraService.listarCompra();
-        return ResponseEntity.ok(compraList);
+    public ResponseEntity<List<Compra>> listarCompra() {
+        List<Compra> compras = compraService.listarCompra();
+        return ResponseEntity.ok(compras);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Compra> buscarCompraPorId(@PathVariable("id") int id) {
         try {
             Compra compra = compraService.buscarCompraPorId(id);
             return ResponseEntity.ok(compra);
         } catch (CompraNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar a compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

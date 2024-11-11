@@ -5,7 +5,6 @@ import br.com.Bravi.dashboard.DashboardService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,10 +45,10 @@ public class DashboardServiceImpl implements DashboardService {
     public Map<String, Object> getFaturamentoPorAno() {
         List<Map<String, Object>> query = dashboardRepository.getFaturamentoPorAno();
         List<String> anos = new ArrayList<>();
-        List<BigDecimal> valores = new ArrayList<>();
+        List<Double> valores = new ArrayList<>();
         for (Map<String, Object> map : query) {
-            anos.add((String) map.get("ano"));
-            valores.add(new BigDecimal(map.get("valor").toString()));
+            anos.add(map.get("ano").toString());
+            valores.add((Double) map.get("valor"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("anos", anos);
@@ -59,14 +58,13 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<Map<String, String>> getMaioresCompradores() {
-        String sql = "SELECT nome, valor, ativo FROM compradores ORDER BY valor DESC LIMIT 5";
-        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+        Map<String, Object> data = dashboardRepository.getMaioresCompradores();
         List<Map<String, String>> resultMapList = new ArrayList<>();
-        for (Map<String, Object> row : result) {
+        List<Map<String, Object>> compradores = (List<Map<String, Object>>) data.get("maiores_compradores");
+        for (Map<String, Object> row : compradores) {
             Map<String, String> map = new HashMap<>();
-            map.put("nome", (String) row.get("nome"));
-            map.put("valor", row.get("valor").toString());
-            map.put("ativo", row.get("ativo").toString());
+            map.put("nome", (String) row.get("Nome"));
+            map.put("total_compras", row.get("total_compras").toString());
             resultMapList.add(map);
         }
         return resultMapList;

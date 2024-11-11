@@ -16,6 +16,7 @@ public class MapperFornece implements RowMapper<Fornece> {
         fornece.setProdutoNsm(rs.getInt("fk_Produto_NSM"));
         fornece.setFornecedorCnpj(rs.getString("fk_Fornecedor_CNPJ"));
         fornece.setData(rs.getDate("data"));
+        fornece.setValor(rs.getDouble("valor"));
         return fornece;
     }
 }
