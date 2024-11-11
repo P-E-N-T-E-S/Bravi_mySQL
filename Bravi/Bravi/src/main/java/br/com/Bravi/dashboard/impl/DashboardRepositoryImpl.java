@@ -25,7 +25,6 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Object> getMeta() {
-        // Definido como o faturamento do ano de 2023, como mencionado
         String sql = "SELECT SUM(valor) AS meta_2023 FROM _Compra WHERE YEAR(data) = 2023";
         return jdbcTemplate.queryForMap(sql);
     }
