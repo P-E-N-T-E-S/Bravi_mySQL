@@ -5,6 +5,7 @@ import br.com.Bravi.dashboard.DashboardService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public class DashboardServiceImpl implements DashboardService {
         List<Double> valores = new ArrayList<>();
         for (Map<String, Object> map : query) {
             anos.add(map.get("ano").toString());
-            valores.add((Double) map.get("valor"));
+            valores.add(((BigDecimal) map.get("valor")).doubleValue());
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("anos", anos);

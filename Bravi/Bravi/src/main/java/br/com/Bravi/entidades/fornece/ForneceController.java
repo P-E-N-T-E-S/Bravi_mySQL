@@ -22,12 +22,12 @@ public class ForneceController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> inserirFornece(@RequestBody Fornece fornece) {
+    public ResponseEntity<String> inserirFornece(@RequestBody Fornece fornece) {
         try {
             forneceService.inserirFornece(fornece);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Fornecedor inserido com sucesso!", HttpStatus.CREATED);
         } catch (ProdutoNaoEncontradoException | FornecedorNaoEncontradoException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -44,12 +44,11 @@ public class ForneceController {
         }
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirFornece(@PathVariable int id) {
         try {
             forneceService.excluirFornece(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Fornecedor excluído com sucesso!", HttpStatus.NO_CONTENT);
         } catch (ForneceNaoEncontradoException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
