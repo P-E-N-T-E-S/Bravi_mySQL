@@ -37,16 +37,10 @@ public class CompraRepositoryImpl implements CompraRepository {
 
     @Override
     public void excluir(int id) {
-        try {
-            String sql = "DELETE FROM _Compra WHERE id = ?";
-            int rowsAffected = jdbcTemplate.update(sql, id);
-            if (rowsAffected == 0) {
-                throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada para exclusão.");
-            }
-        } catch (DataIntegrityViolationException e) {
-            throw new InternalServerErrorException("Erro de integridade referencial ao excluir a compra.");
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Erro interno ao excluir a compra: " + e.getMessage());
+        String sql = "DELETE FROM _Compra WHERE id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        if (rowsAffected == 0) {
+            throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada para exclusão.");
         }
     }
 
