@@ -4,6 +4,8 @@ import br.com.Bravi.entidades.compra.Compra;
 import br.com.Bravi.entidades.compra.CompraRepository;
 import br.com.Bravi.entidades.compra.mapper.MapperCompra;
 import br.com.Bravi.exceptions.CompraNaoEncontradaException;
+import br.com.Bravi.exceptions.InternalServerErrorException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
