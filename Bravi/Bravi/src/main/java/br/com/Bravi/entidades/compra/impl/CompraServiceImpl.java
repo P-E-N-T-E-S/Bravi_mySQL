@@ -56,7 +56,6 @@ public class CompraServiceImpl implements CompraService {
             throw new InternalServerErrorException("Erro interno ao excluir a compra.");
         }
     }
-
     @Override
     public List<Compra> listarCompra() {
         return compraRepository.listar();
