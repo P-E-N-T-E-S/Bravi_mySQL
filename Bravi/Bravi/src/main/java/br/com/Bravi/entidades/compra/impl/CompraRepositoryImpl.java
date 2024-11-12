@@ -4,6 +4,8 @@ import br.com.Bravi.entidades.compra.Compra;
 import br.com.Bravi.entidades.compra.CompraRepository;
 import br.com.Bravi.entidades.compra.mapper.MapperCompra;
 import br.com.Bravi.exceptions.CompraNaoEncontradaException;
+import br.com.Bravi.exceptions.InternalServerErrorException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -35,10 +37,16 @@ public class CompraRepositoryImpl implements CompraRepository {
 
     @Override
     public void excluir(int id) {
-        String sql = "DELETE FROM _Compra WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(sql, id);
-        if (rowsAffected == 0) {
-            throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada para exclusão.");
+        try {
+            String sql = "DELETE FROM _Compra WHERE id = ?";
+            int rowsAffected = jdbcTemplate.update(sql, id);
+            if (rowsAffected == 0) {
+                throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada para exclusão.");
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new InternalServerErrorException("Erro de integridade referencial ao excluir a compra.");
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro interno ao excluir a compra: " + e.getMessage());
         }
     }
 
