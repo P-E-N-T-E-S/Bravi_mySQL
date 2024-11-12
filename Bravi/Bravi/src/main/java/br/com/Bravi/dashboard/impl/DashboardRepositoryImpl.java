@@ -31,7 +31,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Object> getLucro() {
-        String sql = "SELECT SUM(fc.valor - f.valor) AS lucro " +
+        String sql = "SELECT SUM(f.valor - fc.valor) AS lucro " +
                 "FROM _Compra fc JOIN _Fornece f ON fc.fk_Produto_NSM = f.fk_Produto_NSM";
         return jdbcTemplate.queryForMap(sql);
     }
