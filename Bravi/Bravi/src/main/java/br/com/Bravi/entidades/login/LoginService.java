@@ -1,5 +1,6 @@
 package br.com.Bravi.entidades.login;
 
 public interface LoginService {
-    boolean autenticar(Login login);
+    String autenticar(Login login);
+    String validarCredenciais(String usuario, String senha);
 }

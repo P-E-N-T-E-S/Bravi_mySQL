@@ -17,9 +17,28 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public boolean autenticar(Login login) {
-        Login usuarioNoBanco = loginRepository.buscarPorUsuario(login.getUsuario());
+    public String validarCredenciais(String usuario, String senha) {
+        if (usuario == null || !usuario.matches("\\d{11}")) {
+            return "O usuário deve conter exatamente 11 dígitos numéricos.";
+        }
+        if (senha == null || senha.isEmpty()) {
+            return "A senha não pode estar vazia.";
+        }
+        return null;
+    }
 
-        return usuarioNoBanco != null && usuarioNoBanco.getSenha().equals(login.getSenha());
+    @Override
+    public String autenticar(Login login) {
+        String erroValidacao = validarCredenciais(login.getUsuario(), login.getSenha());
+        if (erroValidacao != null) {
+            return erroValidacao;
+        }
+
+        Login usuarioNoBanco = loginRepository.buscarPorUsuario(login.getUsuario());
+        if (usuarioNoBanco == null || !usuarioNoBanco.getSenha().equals(login.getSenha())) {
+            return "Credenciais inválidas.";
+        }
+
+        return null;
     }
 }

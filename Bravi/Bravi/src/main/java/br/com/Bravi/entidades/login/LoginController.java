@@ -25,23 +25,15 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam("usuario") String usuario, @RequestParam("senha") String senha, Model model) {
         try {
-            if (usuario == null || !usuario.matches("\\d{11}")) {
-                model.addAttribute("error", "O usuário deve conter exatamente 11 dígitos numéricos.");
-                return "login";
-            }
-
-            if (senha == null || senha.isEmpty()) {
-                model.addAttribute("error", "A senha não pode estar vazia.");
-                return "login";
-            }
-
             Login login = new Login(usuario, senha);
-            if (loginService.autenticar(login)) {
-                return "layout";
-            } else {
-                model.addAttribute("error", "Credenciais inválidas.");
+            String error = loginService.autenticar(login);
+
+            if (error != null) {
+                model.addAttribute("error", error);
                 return "login";
             }
+
+            return "layout";
         } catch (Exception e) {
             model.addAttribute("error", "Erro interno: " + e.getMessage());
             return "login";
