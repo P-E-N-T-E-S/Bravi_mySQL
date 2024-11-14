@@ -83,11 +83,6 @@ CREATE TABLE IF NOT EXISTS Nota_out (
     fk__Fornece_id INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS Telefone (
-    Telefone_PK INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    fk_Funcionario_CPF VARCHAR(14)
-);
-
 CREATE TABLE IF NOT EXISTS Categoria_Produto (
     fk_Produto_NSM INTEGER,
     fk_Categoria_id INTEGER,
@@ -101,7 +96,6 @@ CREATE TABLE IF NOT EXISTS Estoque (
     PRIMARY KEY (setor, fk_Produto_NSM)
 );
 
--- Chaves estrangeiras
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionario_2
     FOREIGN KEY (CPF_GERENTE)
     REFERENCES Funcionario (CPF);
@@ -142,7 +136,6 @@ ALTER TABLE Estoque ADD CONSTRAINT FK_Estoque_2
     FOREIGN KEY (fk_Produto_NSM)
     REFERENCES Produto (NSM);
 
--- Tabela para controle de acesso de usuários
 CREATE TABLE IF NOT EXISTS Usuario (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     usuario VARCHAR(50) NOT NULL,

@@ -79,15 +79,6 @@ VALUES
 (3, 'Equipamentos'),
 (4, 'Portáteis');
 
--- Populando a tabela Telefone
-INSERT INTO Telefone (Telefone_PK, fk_Funcionario_CPF)
-VALUES
-(12345678, '44444444444'),
-(87654321, '55555555555'),
-(11223344, '77777777777'),
-(55667788, '88888888888'),
-(99112233, '99999999999');
-
 -- Populando a tabela Categoria_Produto
 INSERT INTO Categoria_Produto (fk_Produto_NSM, fk_Categoria_id)
 VALUES
