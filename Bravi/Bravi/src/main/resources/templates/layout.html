@@ -30,7 +30,7 @@
 
   <nav style='margin-top: 20%;'>
 
-    <a th:href="$">
+    <a href="$">
       <button>
         <span>
           <i href="" class="material-symbols-outlined"> finance_mode </i>
@@ -80,7 +80,7 @@
     </a>
 
 
-    <a th:href="@{/logout}" style='margin-top: auto'>
+    <a href="@{/logout}" style='margin-top: auto'>
       <button>
         <span>
           <i class="material-symbols-outlined"> logout </i>
@@ -106,7 +106,7 @@
       </span>
   </button>
 
-  <a th:href="$">
+  <a href="$">
     <button>
         <span>
           <i href="" class="material-symbols-outlined"> finance_mode </i>
@@ -167,6 +167,6 @@
 </nav>
 
 <main class="main">
-  <div th:replace="fragments/main :: main"></div>
+  <div replace="fragments/main :: main"></div>
 </main>
 </body>
