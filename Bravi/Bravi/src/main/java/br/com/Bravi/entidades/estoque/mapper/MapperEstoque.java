@@ -11,7 +11,7 @@ public class MapperEstoque implements RowMapper<Estoque> {
     @Override
     public Estoque mapRow(ResultSet rs, int rowNum) throws SQLException {
         Estoque estoque = new Estoque();
-        estoque.setSetor(rs.getInt("setor"));
+        estoque.setSetor(rs.getInt("fk_Setor_id"));
         estoque.setQtd(rs.getInt("qtd"));
         estoque.setProdutoNsm(rs.getInt("fk_Produto_NSM"));
         return estoque;

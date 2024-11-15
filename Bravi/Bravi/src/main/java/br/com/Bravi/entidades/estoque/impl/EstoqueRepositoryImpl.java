@@ -23,31 +23,25 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
 
     @Override
     public void inserir(Estoque estoque) {
-        String sql = "INSERT INTO Estoque (setor, qtd, fk_Produto_NSM) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Estoque (fk_Setor_id, qtd, fk_Produto_NSM) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, mapper.mapEstoqueToParams(estoque));
     }
 
     @Override
     public void atualizar(Estoque estoque) {
-        String sql = "UPDATE Estoque SET qtd = ? WHERE setor = ? AND fk_Produto_NSM = ?";
+        String sql = "UPDATE Estoque SET qtd = ? WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
         jdbcTemplate.update(sql, estoque.getQtd(), estoque.getSetor(), estoque.getProdutoNsm());
     }
 
     @Override
     public void excluir(int setor, int produtoNsm) {
-        String sql = "DELETE FROM Estoque WHERE setor = ? AND fk_Produto_NSM = ?";
+        String sql = "DELETE FROM Estoque WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
         jdbcTemplate.update(sql, setor, produtoNsm);
     }
 
     @Override
-    public List<Estoque> listar() {
-        String sql = "SELECT * FROM Estoque";
-        return jdbcTemplate.query(sql, mapper);
-    }
-
-    @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
-        String sql = "SELECT * FROM Estoque WHERE setor = ? AND fk_Produto_NSM = ?";
+        String sql = "SELECT * FROM Estoque WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
         try {
             return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
         } catch (EmptyResultDataAccessException e) {

@@ -6,6 +6,8 @@ import br.com.Bravi.entidades.compra.CompraService;
 import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import br.com.Bravi.exceptions.CompraNaoEncontradaException;
 import br.com.Bravi.exceptions.InternalServerErrorException;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
+import br.com.Bravi.exceptions.EstoqueInsuficienteException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,10 @@ public class CompraServiceImpl implements CompraService {
     public void inserirCompra(Compra compra) {
         try {
             compraRepository.inserir(compra);
+        } catch (ProdutoNaoEncontradoException e) {
+            throw new ProdutoNaoEncontradoException("Não foi possível realizar a compra, produto não encontrado.");
+        } catch (EstoqueInsuficienteException e) {
+            throw new EstoqueInsuficienteException("Não foi possível realizar a compra, estoque insuficiente.");
         } catch (DataIntegrityViolationException e) {
             throw new ClienteNaoEncontradoException("CNPJ do cliente não existe.");
         }
@@ -56,6 +62,7 @@ public class CompraServiceImpl implements CompraService {
             throw new InternalServerErrorException("Erro interno ao excluir a compra.");
         }
     }
+
     @Override
     public List<Compra> listarCompra() {
         return compraRepository.listar();
