@@ -19,8 +19,12 @@ public class FornecedorController {
 
     @PostMapping
     public ResponseEntity<String> adicionarFornecedor(@RequestBody Fornecedor fornecedor) {
-        fornecedorService.adicionarFornecedor(fornecedor);
-        return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
+        try {
+            fornecedorService.adicionarFornecedor(fornecedor);
+            return new ResponseEntity<>("Fornecedor adicionado com sucesso!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro ao adicionar fornecedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{cnpj}")

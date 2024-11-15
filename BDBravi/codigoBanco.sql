@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Funcionario (
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
     CEP VARCHAR(10),
-    Numero INTEGER,
+    Numero VARCHAR(50),
     CPF_GERENTE VARCHAR(14)
 );
 
@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS Fornecedor (
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
     CEP VARCHAR(10),
-    Numero INTEGER,
+    Numero VARCHAR(50),
+    Numero2 VARCHAR(50),
     Inscricao_Estadual VARCHAR(50),
     Razao_Social VARCHAR(50)
 );
@@ -38,7 +39,8 @@ CREATE TABLE IF NOT EXISTS Cliente (
     Rua VARCHAR(50),
     Bairro VARCHAR(50),
     CEP VARCHAR(10),
-    Numero INTEGER,
+    Numero VARCHAR(50),
+    Numero2  VARCHAR(50),
     Inscricao_Estadual INTEGER,
     Razao_Social VARCHAR(50)
 );
@@ -162,3 +164,60 @@ BEGIN
 END //
 
 DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER after_compra_insert
+AFTER INSERT ON _Compra
+FOR EACH ROW
+BEGIN
+    DECLARE produto_existe INT;
+
+    SET produto_existe = 0;
+
+    SELECT COUNT(*) INTO produto_existe
+    FROM Estoque
+    WHERE fk_Produto_NSM = NEW.fk_Produto_NSM;
+
+    IF produto_existe > 0 THEN
+        UPDATE Estoque
+        SET qtd = qtd + 1
+        WHERE fk_Produto_NSM = NEW.fk_Produto_NSM;
+    ELSE
+        INSERT INTO Estoque (qtd, fk_Produto_NSM, setor)
+        VALUES (1, NEW.fk_Produto_NSM, 1);
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER after_fornece_insert
+AFTER INSERT ON _Fornece
+FOR EACH ROW
+BEGIN
+    DECLARE produto_existe INT;
+
+    SET produto_existe = 0;
+
+    SELECT COUNT(*) INTO produto_existe
+    FROM Estoque
+    WHERE fk_Produto_NSM = NEW.fk_Produto_NSM;
+
+    IF produto_existe > 0 THEN
+        UPDATE Estoque
+        SET qtd = qtd - 1
+        WHERE fk_Produto_NSM = NEW.fk_Produto_NSM;
+    ELSE
+        INSERT INTO Estoque (qtd, fk_Produto_NSM, setor)
+        VALUES (-1, NEW.fk_Produto_NSM, 1);
+    END IF;
+
+    INSERT INTO Nota_out (data, fk__Fornece_id)
+    VALUES (CURDATE(), NEW.id);
+END //
+
+DELIMITER ;
+
+-- drop database BDBravi

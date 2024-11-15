@@ -6,16 +6,18 @@ public class PJ {
     private String rua;
     private String bairro;
     private String cep;
-    private int numero;
+    private String numero;
+    private String numero2;
     private String inscricaoEstadual;
     private String razaoSocial;
 
-    public PJ(String cnpj, String rua, String bairro, String cep, int numero, String inscricaoEstadual, String razaoSocial) {
+    public PJ(String cnpj, String rua, String bairro, String cep, String numero, String numero2, String inscricaoEstadual, String razaoSocial) {
         this.cnpj = cnpj;
         this.rua = rua;
         this.bairro = bairro;
         this.cep = cep;
         this.numero = numero;
+        this.numero2 = numero2;
         this.inscricaoEstadual = inscricaoEstadual;
         this.razaoSocial = razaoSocial;
     }
@@ -54,12 +56,20 @@ public class PJ {
         this.cep = cep;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public String getNumero2() {
+        return numero2;
+    }
+
+    public void setNumero2(String numero2) {
+        this.numero2 = numero2;
     }
 
     public String getInscricaoEstadual() {
@@ -85,7 +95,8 @@ public class PJ {
                 ", rua='" + rua + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cep='" + cep + '\'' +
-                ", numero=" + numero +
+                ", numero='" + numero + '\'' +
+                ", numero2='" + numero2 + '\'' +
                 ", inscricaoEstadual='" + inscricaoEstadual + '\'' +
                 ", razaoSocial='" + razaoSocial + '\'' +
                 '}';

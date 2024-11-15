@@ -63,8 +63,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         String sql = "SELECT * FROM Fornecedor WHERE CNPJ = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, (rs, rowNum) -> new Fornecedor(
                 rs.getString("categoria"), rs.getString("CNPJ"), rs.getString("Rua"),
-                rs.getString("Bairro"), rs.getString("CEP"), rs.getInt("Numero"),
-                rs.getString("Inscricao_Estadual"), rs.getString("Razao_Social")));
+                rs.getString("Bairro"), rs.getString("CEP"), rs.getString("Numero"),
+                rs.getString("Numero2"), rs.getString("Inscricao_Estadual"), rs.getString("Razao_Social")));
     }
 
     @Override
@@ -76,7 +76,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
                 rs.getString("Rua"),
                 rs.getString("Bairro"),
                 rs.getString("CEP"),
-                rs.getInt("Numero"),
+                rs.getString("Numero"),
+                rs.getString("Numero2"),
                 rs.getString("Inscricao_Estadual"),
                 rs.getString("Razao_Social")
         ));

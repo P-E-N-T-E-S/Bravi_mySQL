@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MapperFornecedor implements RowMapper<Fornecedor> {
-
     @Override
     public Fornecedor mapRow(ResultSet rs, int rowNum) throws SQLException {
         Fornecedor fornecedor = new Fornecedor();
@@ -16,7 +15,8 @@ public class MapperFornecedor implements RowMapper<Fornecedor> {
         fornecedor.setRua(rs.getString("Rua"));
         fornecedor.setBairro(rs.getString("Bairro"));
         fornecedor.setCep(rs.getString("CEP"));
-        fornecedor.setNumero(rs.getInt("Numero"));
+        fornecedor.setNumero(rs.getString("Numero"));
+        fornecedor.setNumero2(rs.getString("Numero2"));
         fornecedor.setInscricaoEstadual(rs.getString("Inscricao_Estadual"));
         fornecedor.setRazaoSocial(rs.getString("Razao_Social"));
         return fornecedor;

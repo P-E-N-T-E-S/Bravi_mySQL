@@ -16,10 +16,11 @@ public class MapperCliente implements RowMapper<Cliente> {
         String rua = rs.getString("Rua");
         String bairro = rs.getString("Bairro");
         String cep = rs.getString("CEP");
-        int numero = rs.getInt("Numero");
+        String numero = rs.getString("Numero");
+        String numero2 = rs.getString("Numero2");
         String inscricaoEstadual = rs.getString("Inscricao_Estadual");
         String razaoSocial = rs.getString("Razao_Social");
 
-        return new Cliente(cnpj, rua, bairro, cep, numero, inscricaoEstadual, razaoSocial, nome);
+        return new Cliente(cnpj, rua, bairro, cep, numero, numero2, inscricaoEstadual, razaoSocial, nome);
     }
 }

@@ -8,8 +8,8 @@ public class Fornecedor extends PJ {
     private String inscricaoEstadual;
 
     public Fornecedor(String categoria, String cnpj, String rua, String bairro, String cep,
-                      int numero, String inscricaoEstadual, String razaoSocial) {
-        super(cnpj, rua, bairro, cep, numero, inscricaoEstadual, razaoSocial);
+                      String numero, String numero2, String inscricaoEstadual, String razaoSocial) {
+        super(cnpj, rua, bairro, cep, numero, numero2, inscricaoEstadual, razaoSocial);
         this.categoria = categoria;
         this.inscricaoEstadual = inscricaoEstadual;
     }
@@ -42,6 +42,7 @@ public class Fornecedor extends PJ {
                 ", bairro='" + getBairro() + '\'' +
                 ", cep=" + getCep() +
                 ", numero=" + getNumero() +
+                ", numero2=" + getNumero() +
                 ", razaoSocial='" + getRazaoSocial() + '\'' +
                 '}';
     }

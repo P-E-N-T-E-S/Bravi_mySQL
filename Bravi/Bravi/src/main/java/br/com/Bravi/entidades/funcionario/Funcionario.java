@@ -12,11 +12,11 @@ public class Funcionario {
     private String rua;
     private String bairro;
     private String cep;
-    private Integer numero;
+    private String numero;
     private String cpfGerente;
 
     public Funcionario(String setor, String cargo, String cpf, String nome, Date dataDeNascimento,
-                       String rua, String bairro, String cep, Integer numero, String cpfGerente) {
+                       String rua, String bairro, String cep, String numero, String cpfGerente) {
         this.setor = setor;
         this.cargo = cargo;
         this.cpf = cpf;
@@ -93,11 +93,11 @@ public class Funcionario {
         this.cep = cep;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

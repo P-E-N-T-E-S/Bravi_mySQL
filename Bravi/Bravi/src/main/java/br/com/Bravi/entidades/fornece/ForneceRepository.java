@@ -13,4 +13,10 @@ public interface ForneceRepository {
     List<Fornece> listar();
 
     Fornece buscarPorId(int id);
+
+    boolean produtoExiste(int nsm);
+
+    boolean fornecedorExiste(String cnpj);
+
+    boolean estoqueSuficiente(int nsm);
 }

@@ -24,7 +24,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void alterar(Cliente cliente) {
-        if (clienteRepository.buscarPorCNPJ(cliente.getCnpj()) == null) {
+        if (buscarPorCNPJ(cliente.getCnpj()) == null) {
             throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cliente.getCnpj() + " não encontrado");
         }
         clienteRepository.alterar(cliente);
@@ -32,7 +32,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void excluir(String cnpj) {
-        if (clienteRepository.buscarPorCNPJ(cnpj) == null) {
+        if (buscarPorCNPJ(cnpj) == null) {
             throw new ClienteNaoEncontradoException("Cliente com CNPJ " + cnpj + " não encontrado");
         }
         clienteRepository.excluir(cnpj);

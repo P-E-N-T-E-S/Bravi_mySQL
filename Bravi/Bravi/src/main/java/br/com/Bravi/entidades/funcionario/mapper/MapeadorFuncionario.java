@@ -20,7 +20,7 @@ public class MapeadorFuncionario implements RowMapper<Funcionario> {
         String rua = rs.getString("Rua");
         String bairro = rs.getString("Bairro");
         String cep = rs.getString("CEP");
-        int numero = rs.getInt("Numero");
+        String numero = rs.getString("Numero");
         String cpfGerente = rs.getString("CPF_GERENTE");
 
         return new Funcionario(setor, cargo, cpf, nome, dataDeNascimento, rua, bairro, cep, numero, cpfGerente);
