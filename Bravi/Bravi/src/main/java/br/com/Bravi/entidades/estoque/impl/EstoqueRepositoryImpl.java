@@ -41,11 +41,35 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
 
     @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
-        String sql = "SELECT * FROM Estoque WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
+        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome " +
+                "FROM Estoque e " +
+                "JOIN Produto p ON e.fk_Produto_NSM = p.nsm " +
+                "JOIN Setor s ON e.fk_Setor_id = s.id " +
+                "WHERE e.fk_Setor_id = ? AND e.fk_Produto_NSM = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, mapper, setor, produtoNsm);
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                Estoque estoque = mapper.mapRow(rs, rowNum);
+                estoque.setProdutoNome(rs.getString("produto_nome"));
+                estoque.setSetorNome(rs.getString("setor_nome"));
+                return estoque;
+            }, setor, produtoNsm);
         } catch (EmptyResultDataAccessException e) {
             throw new EstoqueNotFoundException("Estoque com setor " + setor + " e produto NSM " + produtoNsm + " não encontrado.");
         }
+    }
+
+    @Override
+    public List<Estoque> listar() {
+        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome " +
+                "FROM Estoque e " +
+                "JOIN Produto p ON e.fk_Produto_NSM = p.nsm " +
+                "JOIN Setor s ON e.fk_Setor_id = s.id";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Estoque estoque = mapper.mapRow(rs, rowNum);
+            estoque.setProdutoNome(rs.getString("produto_nome"));
+            estoque.setSetorNome(rs.getString("setor_nome"));
+            return estoque;
+        });
     }
 }

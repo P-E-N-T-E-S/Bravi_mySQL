@@ -6,6 +6,11 @@ public class Estoque {
     private int qtd;
     private int produtoNsm;
 
+    // Ex
+    private String produtoNome;
+    private String setorNome;
+
+
     public Estoque(int setor, int qtd, int produtoNsm) {
         this.setor = setor;
         this.qtd = qtd;
@@ -36,6 +41,22 @@ public class Estoque {
 
     public void setProdutoNsm(int produtoNsm) {
         this.produtoNsm = produtoNsm;
+    }
+
+    public String getProdutoNome() {
+        return produtoNome;
+    }
+
+    public void setProdutoNome(String produtoNome) {
+        this.produtoNome = produtoNome;
+    }
+
+    public String getSetorNome() {
+        return setorNome;
+    }
+
+    public void setSetorNome(String setorNome) {
+        this.setorNome = setorNome;
     }
 
     @Override

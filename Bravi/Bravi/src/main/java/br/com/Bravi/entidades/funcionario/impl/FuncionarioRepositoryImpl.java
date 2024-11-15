@@ -60,32 +60,67 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public List<Funcionario> listar() {
-        String sql = "SELECT * FROM funcionario";
-        return jdbcTemplate.query(sql, funcionarioMapper::mapRow);
+        String sql = "SELECT f.*, s.nome AS setor_nome FROM funcionario f JOIN setor s ON f.fk_Setor_id = s.id";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Funcionario funcionario = funcionarioMapper.mapRow(rs, rowNum);
+            Setor setor = new Setor();
+            setor.setId(rs.getInt("fk_Setor_id"));
+            setor.setNome(rs.getString("setor_nome"));
+            funcionario.setSetor(setor);
+            return funcionario;
+        });
     }
 
     @Override
     public Funcionario buscarPorCPF(String cpf) {
-        String sql = "SELECT * FROM funcionario WHERE CPF = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{cpf}, funcionarioMapper::mapRow);
+        String sql = "SELECT f.*, s.nome AS setor_nome FROM funcionario f JOIN setor s ON f.fk_Setor_id = s.id WHERE f.CPF = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cpf}, (rs, rowNum) -> {
+            Funcionario funcionario = funcionarioMapper.mapRow(rs, rowNum);
+            Setor setor = new Setor();
+            setor.setId(rs.getInt("fk_Setor_id"));
+            setor.setNome(rs.getString("setor_nome"));
+            funcionario.setSetor(setor);
+            return funcionario;
+        });
     }
 
     @Override
     public Funcionario buscarPorSetor(Setor setor) {
-        String sql = "SELECT * FROM funcionario WHERE fk_Setor_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{setor.getId()}, funcionarioMapper::mapRow);
+        String sql = "SELECT f.*, s.nome AS setor_nome FROM funcionario f JOIN setor s ON f.fk_Setor_id = s.id WHERE f.fk_Setor_id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{setor.getId()}, (rs, rowNum) -> {
+            Funcionario funcionario = funcionarioMapper.mapRow(rs, rowNum);
+            Setor setorResult = new Setor();
+            setorResult.setId(rs.getInt("fk_Setor_id"));
+            setorResult.setNome(rs.getString("setor_nome"));
+            funcionario.setSetor(setorResult);
+            return funcionario;
+        });
     }
 
     @Override
     public Funcionario buscarPorNome(String nome) {
-        String sql = "SELECT * FROM funcionario WHERE Nome = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{nome}, funcionarioMapper::mapRow);
+        String sql = "SELECT f.*, s.nome AS setor_nome FROM funcionario f JOIN setor s ON f.fk_Setor_id = s.id WHERE f.Nome = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{nome}, (rs, rowNum) -> {
+            Funcionario funcionario = funcionarioMapper.mapRow(rs, rowNum);
+            Setor setor = new Setor();
+            setor.setId(rs.getInt("fk_Setor_id"));
+            setor.setNome(rs.getString("setor_nome"));
+            funcionario.setSetor(setor);
+            return funcionario;
+        });
     }
 
     @Override
     public Funcionario buscarPorCargo(String cargo) {
-        String sql = "SELECT * FROM funcionario WHERE Cargo = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{cargo}, funcionarioMapper::mapRow);
+        String sql = "SELECT f.*, s.nome AS setor_nome FROM funcionario f JOIN setor s ON f.fk_Setor_id = s.id WHERE f.Cargo = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{cargo}, (rs, rowNum) -> {
+            Funcionario funcionario = funcionarioMapper.mapRow(rs, rowNum);
+            Setor setor = new Setor();
+            setor.setId(rs.getInt("fk_Setor_id"));
+            setor.setNome(rs.getString("setor_nome"));
+            funcionario.setSetor(setor);
+            return funcionario;
+        });
     }
 
     public Setor buscarSetorPorNome(String nome) {
