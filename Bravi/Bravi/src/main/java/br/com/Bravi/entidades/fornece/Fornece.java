@@ -1,27 +1,22 @@
 package br.com.Bravi.entidades.fornece;
 
-import java.util.Date;
-
 public class Fornece {
 
     private int id;
     private int produtoNsm;
     private String fornecedorCnpj;
-    private Date data;
     private double valor;
 
-    public Fornece(int id, int produtoNsm, String fornecedorCnpj, Date data, double valor) {
+    public Fornece(int id, int produtoNsm, String fornecedorCnpj, double valor) {
         this.id = id;
         this.produtoNsm = produtoNsm;
         this.fornecedorCnpj = fornecedorCnpj;
-        this.data = data;
         this.valor = valor;
     }
 
-    public Fornece(int produtoNsm, String fornecedorCnpj, Date data, double valor) {
+    public Fornece(int produtoNsm, String fornecedorCnpj, double valor) {
         this.produtoNsm = produtoNsm;
         this.fornecedorCnpj = fornecedorCnpj;
-        this.data = data;
         this.valor = valor;
     }
 
@@ -51,14 +46,6 @@ public class Fornece {
         this.fornecedorCnpj = fornecedorCnpj;
     }
 
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
     public double getValor() {
         return valor;
     }
@@ -73,7 +60,6 @@ public class Fornece {
                 "id=" + id +
                 ", produtoNsm=" + produtoNsm +
                 ", fornecedorCnpj='" + fornecedorCnpj + '\'' +
-                ", data=" + data +
                 ", valor=" + valor +
                 '}';
     }

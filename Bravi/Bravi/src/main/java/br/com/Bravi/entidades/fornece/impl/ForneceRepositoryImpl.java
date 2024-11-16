@@ -24,9 +24,9 @@ public class ForneceRepositoryImpl implements ForneceRepository {
 
     @Override
     public void inserir(Fornece fornece) {
-        String sql = "INSERT INTO _Fornece (fk_Fornecedor_CNPJ, fk_Produto_NSM) VALUES (?, ?)";
+        String sql = "INSERT INTO _Fornece (fk_Fornecedor_CNPJ, fk_Produto_NSM, valor) VALUES (?, ?, ?)";
         try {
-            jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm());
+            jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm(), fornece.getValor());
         } catch (DataIntegrityViolationException e) {
             throw new FornecedorNaoEncontradoException("Fornecedor ou produto não encontrados.");
         }
@@ -34,8 +34,8 @@ public class ForneceRepositoryImpl implements ForneceRepository {
 
     @Override
     public void atualizar(Fornece fornece) {
-        String sql = "UPDATE _Fornece SET fk_Fornecedor_CNPJ = ?, fk_Produto_NSM = ? WHERE id = ?";
-        jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm(), fornece.getId());
+        String sql = "UPDATE _Fornece SET fk_Fornecedor_CNPJ = ?, fk_Produto_NSM = ?, valor = ? WHERE id = ?";
+        jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm(), fornece.getValor(), fornece.getId());
     }
 
     @Override

@@ -2,7 +2,6 @@ package br.com.Bravi.dashboard.impl;
 
 import br.com.Bravi.dashboard.DashboardRepository;
 import br.com.Bravi.dashboard.DashboardService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,11 +14,9 @@ import java.util.Map;
 public class DashboardServiceImpl implements DashboardService {
 
     private final DashboardRepository dashboardRepository;
-    private final JdbcTemplate jdbcTemplate;
 
-    public DashboardServiceImpl(DashboardRepository dashboardRepository, JdbcTemplate jdbcTemplate) {
+    public DashboardServiceImpl(DashboardRepository dashboardRepository) {
         this.dashboardRepository = dashboardRepository;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -43,21 +40,6 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public Map<String, Object> getFaturamentoPorAno() {
-        List<Map<String, Object>> query = dashboardRepository.getFaturamentoPorAno();
-        List<String> anos = new ArrayList<>();
-        List<Double> valores = new ArrayList<>();
-        for (Map<String, Object> map : query) {
-            anos.add(map.get("ano").toString());
-            valores.add(((BigDecimal) map.get("valor")).doubleValue());
-        }
-        Map<String, Object> resposta = new HashMap<>();
-        resposta.put("anos", anos);
-        resposta.put("valores", valores);
-        return resposta;
-    }
-
-    @Override
     public List<Map<String, String>> getMaioresCompradores() {
         Map<String, Object> data = dashboardRepository.getMaioresCompradores();
         List<Map<String, String>> resultMapList = new ArrayList<>();
@@ -74,5 +56,20 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public List<String> getCategorias() {
         return dashboardRepository.getCategorias();
+    }
+
+    @Override
+    public Map<String, Object> getLucroPorAno() {
+        List<Map<String, Object>> query = dashboardRepository.getLucroPorAno();
+        List<String> anos = new ArrayList<>();
+        List<Double> lucros = new ArrayList<>();
+        for (Map<String, Object> map : query) {
+            anos.add(map.get("ano").toString());
+            lucros.add(((BigDecimal) map.get("lucro")).doubleValue());
+        }
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("anos", anos);
+        resposta.put("lucros", lucros);
+        return resposta;
     }
 }

@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS _Fornece (
     fk_Produto_NSM INTEGER,
     fk_Fornecedor_CNPJ VARCHAR(20),
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE,
     valor DECIMAL(10, 2),
     FOREIGN KEY (fk_Produto_NSM) REFERENCES Produto (NSM),
     FOREIGN KEY (fk_Fornecedor_CNPJ) REFERENCES Fornecedor (CNPJ)
@@ -74,24 +73,18 @@ CREATE TABLE IF NOT EXISTS _Compra (
     fk_Cliente_CNPJ VARCHAR(20),
     fk_Produto_NSM INTEGER,
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE,
     valor DECIMAL(10, 2),
     FOREIGN KEY (fk_Cliente_CNPJ) REFERENCES Cliente (CNPJ),
     FOREIGN KEY (fk_Produto_NSM) REFERENCES Produto (NSM)
 );
 
-CREATE TABLE IF NOT EXISTS Nota_in (
+CREATE TABLE IF NOT EXISTS Nota (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE,
-    fk__Compra_id INTEGER,
-    FOREIGN KEY (fk__Compra_id) REFERENCES _Compra (id)
-);
-
-CREATE TABLE IF NOT EXISTS Nota_out (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    data DATE,
-    fk__Fornece_id INTEGER,
-    FOREIGN KEY (fk__Fornece_id) REFERENCES _Fornece (id)
+    fk_Compra_id INTEGER,
+    fk_Fornece_id INTEGER,
+    is_in BOOLEAN NOT NULL,
+    FOREIGN KEY (fk_Compra_id) REFERENCES _Compra(id),
+    FOREIGN KEY (fk_Fornece_id) REFERENCES _Fornece(id)
 );
 
 CREATE TABLE IF NOT EXISTS Categoria_Produto (
@@ -99,7 +92,7 @@ CREATE TABLE IF NOT EXISTS Categoria_Produto (
     fk_Categoria_id INTEGER,
     PRIMARY KEY (fk_Categoria_id, fk_Produto_NSM),
     FOREIGN KEY (fk_Produto_NSM) REFERENCES Produto (NSM),
-    FOREIGN KEY (fk_Categoria_id) REFERENCES Categoria (id)
+    FOREIGN KEY (fk_Categoria_id) REFERENCES Categoria(id)
 );
 
 CREATE TABLE IF NOT EXISTS Estoque (
@@ -108,7 +101,7 @@ CREATE TABLE IF NOT EXISTS Estoque (
     fk_Produto_NSM INTEGER,
     PRIMARY KEY (fk_Setor_id, fk_Produto_NSM),
     FOREIGN KEY (fk_Setor_id) REFERENCES Setor(id),
-    FOREIGN KEY (fk_Produto_NSM) REFERENCES Produto (NSM)
+    FOREIGN KEY (fk_Produto_NSM) REFERENCES Produto(NSM)
 );
 
 CREATE TABLE IF NOT EXISTS Usuario (
@@ -160,11 +153,10 @@ BEGIN
         INSERT INTO Estoque (qtd, fk_Produto_NSM, fk_Setor_id)
         VALUES (-1, NEW.fk_Produto_NSM, 1);
     END IF;
+
+    INSERT INTO Nota (fk_Compra_id, is_in)
+    VALUES (NEW.id, TRUE);
 END //
-
-DELIMITER ;
-
-DELIMITER //
 
 CREATE TRIGGER after_fornece_insert
 AFTER INSERT ON _Fornece
@@ -187,10 +179,10 @@ BEGIN
         VALUES (1, NEW.fk_Produto_NSM, 1);
     END IF;
 
-    INSERT INTO Nota_out (data, fk__Fornece_id)
-    VALUES (CURDATE(), NEW.id);
+    INSERT INTO Nota (fk_Fornece_id, is_in)
+    VALUES (NEW.id, FALSE);
 END //
 
 DELIMITER ;
 
--- drop database BDBravi
+-- DROP DATABASE BDBravi

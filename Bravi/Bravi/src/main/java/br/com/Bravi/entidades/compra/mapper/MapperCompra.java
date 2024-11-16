@@ -16,7 +16,6 @@ public class MapperCompra implements RowMapper<Compra> {
         compra.setId(rs.getInt("id"));
         compra.setProdutoNsm(rs.getInt("fk_Produto_NSM"));
         compra.setClienteCnpj(rs.getString("fk_Cliente_CNPJ"));
-        compra.setData(rs.getDate("data"));
         compra.setValor(rs.getDouble("valor"));
         return compra;
     }
