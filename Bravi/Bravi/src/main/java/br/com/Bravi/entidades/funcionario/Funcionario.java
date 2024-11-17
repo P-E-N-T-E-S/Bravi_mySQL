@@ -1,10 +1,12 @@
 package br.com.Bravi.entidades.funcionario;
 
+import br.com.Bravi.entidades.setor.Setor;
+
 import java.util.Date;
 
 public class Funcionario {
 
-    private String setor;
+    private Setor setor;
     private String cargo;
     private String cpf;
     private String nome;
@@ -15,7 +17,7 @@ public class Funcionario {
     private String numero;
     private String cpfGerente;
 
-    public Funcionario(String setor, String cargo, String cpf, String nome, Date dataDeNascimento,
+    public Funcionario(Setor setor, String cargo, String cpf, String nome, Date dataDeNascimento,
                        String rua, String bairro, String cep, String numero, String cpfGerente) {
         this.setor = setor;
         this.cargo = cargo;
@@ -29,11 +31,11 @@ public class Funcionario {
         this.cpfGerente = cpfGerente;
     }
 
-    public String getSetor() {
+    public Setor getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor) {
+    public void setSetor(Setor setor) {
         this.setor = setor;
     }
 
@@ -112,7 +114,7 @@ public class Funcionario {
     @Override
     public String toString() {
         return "Funcionario{" +
-                "setor='" + setor + '\'' +
+                "setor=" + setor.getNome() +
                 ", cargo='" + cargo + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +

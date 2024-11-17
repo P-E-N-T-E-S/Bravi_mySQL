@@ -6,7 +6,6 @@ import br.com.Bravi.entidades.fornece.ForneceService;
 import br.com.Bravi.exceptions.ForneceNaoEncontradoException;
 import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
 import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
-import br.com.Bravi.exceptions.EstoqueInsuficienteException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,27 +54,13 @@ public class ForneceServiceImpl implements ForneceService {
         return fornece;
     }
 
-    private void validarFornece(Fornece fornece) throws ProdutoNaoEncontradoException, FornecedorNaoEncontradoException, EstoqueInsuficienteException {
-        if (!produtoExiste(fornece.getProdutoNsm())) {
-            throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM: " + fornece.getProdutoNsm());
-        }
+    private void validarFornece(Fornece fornece) throws ProdutoNaoEncontradoException, FornecedorNaoEncontradoException {
         if (!fornecedorExiste(fornece.getFornecedorCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado para o CNPJ: " + fornece.getFornecedorCnpj());
         }
-        if (!estoqueSuficiente(fornece.getProdutoNsm())) {
-            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto NSM: " + fornece.getProdutoNsm());
-        }
-    }
-
-    private boolean produtoExiste(int nsm) {
-        return forneceRepository.produtoExiste(nsm);
     }
 
     private boolean fornecedorExiste(String cnpj) {
         return forneceRepository.fornecedorExiste(cnpj);
-    }
-
-    private boolean estoqueSuficiente(int nsm) {
-        return forneceRepository.estoqueSuficiente(nsm);
     }
 }

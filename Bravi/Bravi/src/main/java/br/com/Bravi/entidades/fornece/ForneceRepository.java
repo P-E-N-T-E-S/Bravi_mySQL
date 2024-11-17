@@ -14,9 +14,5 @@ public interface ForneceRepository {
 
     Fornece buscarPorId(int id);
 
-    boolean produtoExiste(int nsm);
-
     boolean fornecedorExiste(String cnpj);
-
-    boolean estoqueSuficiente(int nsm);
 }

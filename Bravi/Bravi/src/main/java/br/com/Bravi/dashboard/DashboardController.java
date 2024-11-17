@@ -58,12 +58,12 @@ public class DashboardController {
         }
     }
 
-    @GetMapping("/faturamento-por-ano")
-    public Map<String, Object> getFaturamentoPorAno() {
+    @GetMapping("/lucro-por-ano")
+    public Map<String, Object> getLucroPorAno() {
         try {
-            return dashboardService.getFaturamentoPorAno();
+            return dashboardService.getLucroPorAno();
         } catch (Exception e) {
-            return Map.of("error", "Erro ao obter faturamento por ano: " + e.getMessage());
+            return Map.of("error", "Erro ao obter lucro por ano: " + e.getMessage());
         }
     }
 

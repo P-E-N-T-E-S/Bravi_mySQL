@@ -3,6 +3,9 @@ package br.com.Bravi.entidades.fornece.impl;
 import br.com.Bravi.entidades.fornece.Fornece;
 import br.com.Bravi.entidades.fornece.ForneceRepository;
 import br.com.Bravi.entidades.fornece.mapper.MapperFornece;
+import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,20 +24,27 @@ public class ForneceRepositoryImpl implements ForneceRepository {
 
     @Override
     public void inserir(Fornece fornece) {
-        String sql = "INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, data, valor) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getValor());
+        String sql = "INSERT INTO _Fornece (fk_Fornecedor_CNPJ, fk_Produto_NSM, valor) VALUES (?, ?, ?)";
+        try {
+            jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm(), fornece.getValor());
+        } catch (DataIntegrityViolationException e) {
+            throw new FornecedorNaoEncontradoException("Fornecedor ou produto não encontrados.");
+        }
     }
 
     @Override
     public void atualizar(Fornece fornece) {
-        String sql = "UPDATE _Fornece SET fk_Produto_NSM = ?, fk_Fornecedor_CNPJ = ?, data = ?, valor = ? WHERE id = ?";
-        jdbcTemplate.update(sql, fornece.getProdutoNsm(), fornece.getFornecedorCnpj(), fornece.getData(), fornece.getValor(), fornece.getId());
+        String sql = "UPDATE _Fornece SET fk_Fornecedor_CNPJ = ?, fk_Produto_NSM = ?, valor = ? WHERE id = ?";
+        jdbcTemplate.update(sql, fornece.getFornecedorCnpj(), fornece.getProdutoNsm(), fornece.getValor(), fornece.getId());
     }
 
     @Override
     public void excluir(int id) {
         String sql = "DELETE FROM _Fornece WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        if (rowsAffected == 0) {
+            throw new FornecedorNaoEncontradoException("Fornecedor com ID " + id + " não encontrado para exclusão.");
+        }
     }
 
     @Override
@@ -46,18 +56,11 @@ public class ForneceRepositoryImpl implements ForneceRepository {
     @Override
     public Fornece buscarPorId(int id) {
         String sql = "SELECT * FROM _Fornece WHERE id = ?";
-        List<Fornece> forneceList = jdbcTemplate.query(sql, new Object[]{id}, mapperFornece);
-        if (forneceList.isEmpty()) {
-            return null;
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapperFornece);
+        } catch (EmptyResultDataAccessException e) {
+            throw new FornecedorNaoEncontradoException("Fornecedor com ID " + id + " não encontrado.");
         }
-        return forneceList.get(0);
-    }
-
-    @Override
-    public boolean produtoExiste(int nsm) {
-        String sql = "SELECT COUNT(*) FROM Produto WHERE NSM = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
-        return count != null && count > 0;
     }
 
     @Override
@@ -65,12 +68,5 @@ public class ForneceRepositoryImpl implements ForneceRepository {
         String sql = "SELECT COUNT(*) FROM Fornecedor WHERE CNPJ = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, Integer.class);
         return count != null && count > 0;
-    }
-
-    @Override
-    public boolean estoqueSuficiente(int nsm) {
-        String sql = "SELECT qtd FROM Estoque WHERE produtoNsm = ?";
-        Integer estoque = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
-        return estoque != null && estoque > 0;
     }
 }

@@ -5,6 +5,8 @@ import br.com.Bravi.entidades.compra.CompraRepository;
 import br.com.Bravi.entidades.compra.mapper.MapperCompra;
 import br.com.Bravi.exceptions.CompraNaoEncontradaException;
 import br.com.Bravi.exceptions.InternalServerErrorException;
+import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
+import br.com.Bravi.exceptions.EstoqueInsuficienteException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,14 +27,22 @@ public class CompraRepositoryImpl implements CompraRepository {
 
     @Override
     public void inserir(Compra compra) {
-        String sql = "INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, data, valor) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData(), compra.getValor());
+        if (!produtoExiste(compra.getProdutoNsm())) {
+            throw new ProdutoNaoEncontradoException("Produto com NSM " + compra.getProdutoNsm() + " não encontrado.");
+        }
+
+        if (!estoqueSuficiente(compra.getProdutoNsm())) {
+            throw new EstoqueInsuficienteException("Estoque insuficiente para o produto com NSM " + compra.getProdutoNsm());
+        }
+
+        String sql = "INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, valor) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getValor());
     }
 
     @Override
     public void atualizar(Compra compra) {
-        String sql = "UPDATE _Compra SET fk_Cliente_CNPJ = ?, fk_Produto_NSM = ?, data = ?, valor = ? WHERE id = ?";
-        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getData(), compra.getValor(), compra.getId());
+        String sql = "UPDATE _Compra SET fk_Cliente_CNPJ = ?, fk_Produto_NSM = ?, valor = ? WHERE id = ?";
+        jdbcTemplate.update(sql, compra.getClienteCnpj(), compra.getProdutoNsm(), compra.getValor(), compra.getId());
     }
 
     @Override
@@ -58,5 +68,17 @@ public class CompraRepositoryImpl implements CompraRepository {
         } catch (EmptyResultDataAccessException e) {
             throw new CompraNaoEncontradaException("Compra com ID " + id + " não encontrada.");
         }
+    }
+
+    private boolean produtoExiste(int nsm) {
+        String sql = "SELECT COUNT(*) FROM Produto WHERE NSM = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
+        return count != null && count > 0;
+    }
+
+    private boolean estoqueSuficiente(int nsm) {
+        String sql = "SELECT qtd FROM Estoque WHERE produtoNsm = ?";
+        Integer estoque = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
+        return estoque != null && estoque > 0;
     }
 }

@@ -19,13 +19,18 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Object> getFaturamento() {
-        String sql = "SELECT SUM(valor) AS valor FROM _Compra";
+        String sql = "SELECT SUM(c.valor) AS valor " +
+                "FROM Nota n " +
+                "JOIN _Compra c ON n.fk_Compra_id = c.id";
         return jdbcTemplate.queryForMap(sql);
     }
 
     @Override
     public Map<String, Object> getMeta() {
-        String sql = "SELECT SUM(valor) AS meta_2023 FROM _Compra WHERE YEAR(data) = 2023";
+        String sql = "SELECT SUM(c.valor) AS meta_2023 " +
+                "FROM Nota n " +
+                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
+                "WHERE YEAR(n.data) = 2023";
         return jdbcTemplate.queryForMap(sql);
     }
 
@@ -38,7 +43,11 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public List<Double> getEvolucaoVendas() {
-        String sql = "SELECT SUM(valor) FROM _Compra GROUP BY YEAR(data)";
+        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) AS valor " +
+                "FROM Nota n " +
+                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
+                "GROUP BY ano " +
+                "ORDER BY ano";
         return jdbcTemplate.queryForList(sql, Double.class);
     }
 
@@ -53,8 +62,14 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getFaturamentoPorAno() {
-        String sql = "SELECT YEAR(data) AS ano, SUM(valor) AS valor FROM _Compra GROUP BY ano ORDER BY ano";
+    public List<Map<String, Object>> getLucroPorAno() {
+        String sql = "SELECT YEAR(n.data) AS ano, " +
+                "SUM(c.valor) - IFNULL((SELECT SUM(f.valor) FROM _Fornece f " +
+                "JOIN Nota n2 ON f.id = n2.fk_Fornece_id WHERE YEAR(n2.data) = YEAR(n.data)), 0) AS lucro " +
+                "FROM Nota n " +
+                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
+                "GROUP BY ano " +
+                "ORDER BY ano";
         return jdbcTemplate.queryForList(sql);
     }
 
