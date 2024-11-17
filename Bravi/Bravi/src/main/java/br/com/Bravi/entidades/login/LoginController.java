@@ -33,7 +33,7 @@ public class LoginController {
                 return "login";
             }
 
-            return "layout";
+            return "redirect:/dashboard/";
         } catch (Exception e) {
             model.addAttribute("error", "Erro interno: " + e.getMessage());
             return "login";

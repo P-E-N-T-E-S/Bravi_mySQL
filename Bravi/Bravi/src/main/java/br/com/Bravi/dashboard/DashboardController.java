@@ -1,20 +1,25 @@
 package br.com.Bravi.dashboard;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/dashboard")
+@Controller
+@RequestMapping("/dashboard")
 public class DashboardController {
 
     private final DashboardService dashboardService;
 
     public DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;
+    }
+
+    @GetMapping("/")
+    public String showDashboard() {
+        return "dashboard";
     }
 
     @GetMapping("/faturamento")

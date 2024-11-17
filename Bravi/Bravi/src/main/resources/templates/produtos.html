@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar With Bootstrap</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <style>
+        .tabelas {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        thead {
+            background-color: #e0e0e0;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:white;
+            margin-top: 2.6rem;
+            margin-bottom: 1.8rem;
+            padding: .6rem;
+            border-radius: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .head h2 {
+            font-weight: bold;
+            margin-top: .4rem;
+        }
+
+        td i {
+            margin: auto 1rem;
+            color: black;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .popup{
+            width: 34rem;
+            height: 32rem;
+            background: #fff;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 1.2rem;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            text-align: left;
+            padding: 0 30px 60px;
+            color: #333;
+            visibility: hidden;
+            transition: all 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .open-popup{
+            visibility: visible;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup h3{
+            font-weight: bold;
+        }
+
+        #add {
+            width: 100%;
+            outline: none;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+            margin-top: 1rem;
+        }
+
+        .popup button {
+            background: none;
+            border: none;
+            height: 1rem;
+        }
+
+        .popup-head {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <img src="/static/img/icon.png">
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">Bravi</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="material-symbols-outlined"> monitoring </i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#entradas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined"> receipt_long </i>
+                    <span>Entradas</span>
+                </a>
+                <ul id="entradas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Pedidos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Fornecedores</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#saidas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        sell
+                    </i>
+                    <span>Saídas</span>
+                </a>
+                <ul id="saidas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Vendas</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Clientes</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#gerenciamento" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        inventory_2
+                    </i>
+                    <span>Gerenciamento</span>
+                </a>
+                <ul id="gerenciamento" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Estoque</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Produtos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Categorias</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="material-symbols-outlined"> engineering </i>
+                    <span>Administrativo</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link">
+                <i class="material-symbols-outlined"> logout </i>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+    <div class="main p-3">
+        <div class="container">
+            <div class="head">
+                <h2>Gerenciamento > Produtos</h2>
+            </div>
+
+            <div class="overlay" id="overlay">
+                <div class="popup" id="popup">
+                    <div class="popup-head">
+                        <h3>Dados do produto</h3>
+                        <button onclick="closePopup()">
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome do produto</label>
+                            <input
+                                    type="name"
+                                    placeholder="Nome"
+                                    class="form-control"
+                                    name="nome"
+                                    id="nome"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <input
+                                    type="name"
+                                    placeholder="Descrição"
+                                    class="form-control"
+                                    name="descricao"
+                                    id="descricao"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoria</label>
+                            <select class="form-select" aria-label="Categoria">
+                                <option selected>Selecione a categoria</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+
+                        <button
+                                type="submit"
+                                class="btn btn-dark"
+                                style="background-color: #033E8C; height: 2.4rem;"
+                                id="add"
+                        >Incluir</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tabelas">
+                <table class="table">
+                    <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 10rem;" onclick="openPopup()">Incluir produto</a>
+                    <thead>
+                    <tr>
+                        <th scope="col">NSM</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Deletar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ item.NSM }}</td>
+                        <td>{{ item.Nome }}</td>
+                        <td>{{ item.Descrição }}</td>
+                        <td>{{ item.Categoria }}</td>
+                        <td><a href="{% url 'adicionar_linha_caixa' %}"><i class="material-symbols-outlined" style="margin-top: .2rem;"> edit </i></a></td>
+                        <td><a href="{% url 'adicionar_linha_caixa' %}"><i class="material-symbols-outlined" style="margin-top: .2rem;"> delete </i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+<script src="static/js/script.js"></script>
+</body>
+
+</html>
