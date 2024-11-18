@@ -3,11 +3,13 @@ package br.com.Bravi.entidades.produto;
 import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/produtos")
 public class ProdutoController {
 
@@ -18,33 +20,38 @@ public class ProdutoController {
     }
 
     @ExceptionHandler(ProdutoNaoEncontradoException.class)
-    public ResponseEntity<String> handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public String handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException e, Model model) {
+        model.addAttribute("erro", e.getMessage());
+        return "erro";
     }
 
     @PostMapping
-    public ResponseEntity<String> adicionarProduto(@RequestBody Produto produto) {
+    public String adicionarProduto(@ModelAttribute Produto produto, Model model) {
         produtoService.adicionarProduto(produto);
-        return new ResponseEntity<>("Produto adicionado com sucesso!", HttpStatus.CREATED);
+        model.addAttribute("mensagem", "Produto adicionado com sucesso!");
+        return "redirect:/produtos";
     }
 
-    @PutMapping("/{nsm}")
-    public ResponseEntity<String> atualizarProduto(@PathVariable int nsm, @RequestBody Produto produto) {
+    @PostMapping("/editar/{nsm}")
+    public String atualizarProduto(@PathVariable int nsm, @ModelAttribute Produto produto, Model model) {
         produto.setNsm(nsm);
         produtoService.atualizarProduto(produto);
-        return new ResponseEntity<>("Produto atualizado com sucesso!", HttpStatus.OK);
+        model.addAttribute("mensagem", "Produto atualizado com sucesso!");
+        return "redirect:/produtos";
     }
 
-    @DeleteMapping("/{nsm}")
-    public ResponseEntity<String> removerProduto(@PathVariable int nsm) {
+    @PostMapping("/deletar/{nsm}")
+    public String removerProduto(@PathVariable int nsm, Model model) {
         produtoService.removerProduto(nsm);
-        return new ResponseEntity<>("Produto removido com sucesso!", HttpStatus.OK);
+        model.addAttribute("mensagem", "Produto removido com sucesso!");
+        return "redirect:/produtos";
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listarProdutos() {
+    public String listarProdutos(Model model) {
         List<Produto> produtos = produtoService.listarProdutos();
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
+        model.addAttribute("produtos", produtos);
+        return "produtos";
     }
 
     @GetMapping("/{nsm}")

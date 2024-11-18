@@ -21,11 +21,6 @@ function closePopup(){
 let edit_popup = document.getElementById('edit-popup')
 let edit_overlay = document.getElementById('edit-overlay')
 
-function openEditPopup(){
-    edit_popup.classList.add('open-popup')
-    edit_overlay.style.visibility = 'visible';
-}
-
 function closeEditPopup(){
     edit_popup.classList.remove('open-popup')
     edit_overlay.style.visibility = 'hidden';
