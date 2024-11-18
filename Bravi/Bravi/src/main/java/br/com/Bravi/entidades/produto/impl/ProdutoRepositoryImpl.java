@@ -36,7 +36,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
         int rowsAffected = jdbcTemplate.update(sql,
                 produto.getNome(),
                 produto.getDescricao(),
-                produto.getCategoria().getId(),
+                produto.getCategoriaId(),
                 produto.getNsm());
 
         if (rowsAffected == 0) {

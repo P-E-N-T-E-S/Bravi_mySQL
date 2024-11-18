@@ -1,6 +1,8 @@
 package br.com.Bravi.entidades.produto.impl;
 
 import br.com.Bravi.entidades.categoria.Categoria;
+import br.com.Bravi.entidades.categoria_produto.CategoriaProduto;
+import br.com.Bravi.entidades.categoria_produto.CategoriaProdutoService;
 import br.com.Bravi.entidades.produto.Produto;
 import br.com.Bravi.entidades.produto.ProdutoRepository;
 import br.com.Bravi.entidades.produto.ProdutoService;
@@ -14,17 +16,21 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     private final ProdutoRepository produtoRepository;
 
-    public ProdutoServiceImpl(ProdutoRepository produtoRepository) {
+    private final CategoriaProdutoService categoriaProdutoService;
+
+    public ProdutoServiceImpl(ProdutoRepository produtoRepository, CategoriaProdutoService categoriaProdutoService) {
         this.produtoRepository = produtoRepository;
-    }
-
-    private List<Categoria> pegarListaCategorias(Integer nsm) {
-
+        this.categoriaProdutoService = categoriaProdutoService;
     }
 
     @Override
     public void adicionarProduto(Produto produto) {
         produtoRepository.inserir(produto);
+        if (produto.getCategoria() != null) {
+            for (Categoria categoria : produto.getCategoria()) {
+                categoriaProdutoService.adicionarCategoriaProduto(new CategoriaProduto(produto.getNsm(), categoria.getId()));
+            }
+        }
     }
 
     @Override
@@ -48,11 +54,17 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public List<Produto> listarProdutos() {
-        return produtoRepository.listar();
+        List<Produto> query = produtoRepository.listar();
+        for (Produto produto : query) {
+            produto.setCategoria(categoriaProdutoService.buscarCategoriaPorProduto(produto.getNsm()));
+        }
+        return query;
     }
 
     @Override
     public Produto obterProdutoPorNsm(int nsm) {
-        return produtoRepository.buscarPorNsm(nsm);
+        Produto query = produtoRepository.buscarPorNsm(nsm);
+        query.setCategoria(categoriaProdutoService.buscarCategoriaPorProduto(query.getNsm()));
+        return query;
     }
 }

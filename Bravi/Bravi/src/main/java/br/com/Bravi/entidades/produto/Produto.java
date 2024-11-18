@@ -3,6 +3,8 @@ package br.com.Bravi.entidades.produto;
 import br.com.Bravi.entidades.categoria.Categoria;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class Produto {
 
     @JsonProperty("nsm")
@@ -11,9 +13,8 @@ public class Produto {
     private String nome;
     @JsonProperty("descricao")
     private String descricao;
-    @JsonProperty("categoria_id")
-    private Integer categoriaId;
-    private Categoria categoria;
+    @JsonProperty("categorias")
+    private List<Categoria> categoria;
 
     public int getNsm() {
         return nsm;
@@ -39,19 +40,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public Categoria getCategoria() {
+    public List<Categoria> getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(List<Categoria> categoria) {
         this.categoria = categoria;
-    }
-
-    public Integer getCategoriaId() {
-        return categoriaId;
-    }
-
-    public void setCategoriaId(Integer categoriaId) {
-        this.categoriaId = categoriaId;
     }
 }

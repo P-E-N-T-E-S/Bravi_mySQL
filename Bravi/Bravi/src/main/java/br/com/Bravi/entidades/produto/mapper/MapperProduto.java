@@ -16,11 +16,6 @@ public class MapperProduto implements RowMapper<Produto> {
         produto.setNome(rs.getString("Nome"));
         produto.setDescricao(rs.getString("Descrição"));
 
-        Categoria categoria = new Categoria();
-        categoria.setId(rs.getInt("fk_Categoria_id"));
-        categoria.setNome(rs.getString("categoria_nome"));
-        produto.setCategoria(categoria);
-
         return produto;
     }
 }
