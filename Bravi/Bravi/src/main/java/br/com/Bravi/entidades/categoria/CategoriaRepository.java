@@ -9,5 +9,6 @@ public interface CategoriaRepository {
     void excluir(int id);
     List<Categoria> listar();
     Optional<Categoria> buscarPorId(int id);
+    Categoria buscarPorNome(String nome);
     boolean existsById(int id);
 }

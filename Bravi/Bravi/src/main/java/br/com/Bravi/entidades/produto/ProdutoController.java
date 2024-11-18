@@ -26,29 +26,26 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public String adicionarProduto(@ModelAttribute Produto produto, Model model) {
+    public ResponseEntity<String> adicionarProduto(@RequestBody Produto produto, Model model) {
         produtoService.adicionarProduto(produto);
         model.addAttribute("mensagem", "Produto adicionado com sucesso!");
-        return "redirect:/produtos";
+        return new ResponseEntity<>("Produto adicionado com sucesso!", HttpStatus.OK);
     }
 
-    @PostMapping("/editar/{nsm}")
-    public String atualizarProduto(@PathVariable int nsm, @ModelAttribute Produto produto, Model model) {
-        produto.setNsm(nsm);
-        produtoService.atualizarProduto(produto);
-        model.addAttribute("mensagem", "Produto atualizado com sucesso!");
-        return "redirect:/produtos";
+    @PutMapping("/{nsm}")
+    public ResponseEntity<String> atualizarProduto(@PathVariable int nsm, @RequestBody Produto produto) {
+        produtoService.atualizarProduto(produto, nsm);
+        return new ResponseEntity<>("Produto atualizado com sucesso!", HttpStatus.OK);
     }
 
-    @PostMapping("/deletar/{nsm}")
-    public String removerProduto(@PathVariable int nsm, Model model) {
+    @DeleteMapping("/{nsm}")
+    public ResponseEntity<String> removerProduto(@PathVariable int nsm) {
         produtoService.removerProduto(nsm);
-        model.addAttribute("mensagem", "Produto removido com sucesso!");
-        return "redirect:/produtos";
+        return new ResponseEntity<>("Produto deletado com sucesso!", HttpStatus.OK);
     }
 
     @GetMapping
-    public String listarProdutos(Model model) {
+    public String paginaInicialProdutos(Model model) {
         List<Produto> produtos = produtoService.listarProdutos();
         model.addAttribute("produtos", produtos);
         return "produtos";

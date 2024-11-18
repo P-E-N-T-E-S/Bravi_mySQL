@@ -1,5 +1,6 @@
 package br.com.Bravi.entidades.produto.impl;
 
+import br.com.Bravi.entidades.categoria.Categoria;
 import br.com.Bravi.entidades.produto.Produto;
 import br.com.Bravi.entidades.produto.ProdutoRepository;
 import br.com.Bravi.entidades.produto.ProdutoService;
@@ -17,13 +18,18 @@ public class ProdutoServiceImpl implements ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
+    private List<Categoria> pegarListaCategorias(Integer nsm) {
+
+    }
+
     @Override
     public void adicionarProduto(Produto produto) {
         produtoRepository.inserir(produto);
     }
 
     @Override
-    public void atualizarProduto(Produto produto) {
+    public void atualizarProduto(Produto produto, int nsm) {
+        produto.setNsm(nsm);
         Produto produtoExistente = produtoRepository.buscarPorNsm(produto.getNsm());
         if (produtoExistente == null) {
             throw new ProdutoNaoEncontradoException("Produto não encontrado para o NSM " + produto.getNsm());

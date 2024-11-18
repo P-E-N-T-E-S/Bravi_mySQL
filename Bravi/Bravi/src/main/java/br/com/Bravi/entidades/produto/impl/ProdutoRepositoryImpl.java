@@ -27,7 +27,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
         jdbcTemplate.update(sql,
                 produto.getNome(),
                 produto.getDescricao(),
-                produto.getCategoria().getId());
+                produto.getCategoriaId());
     }
 
     @Override

@@ -6,21 +6,15 @@ import br.com.Bravi.entidades.categoria.Categoria;
 public class Estoque {
 
     private Setor setor;
+    private Integer idSetor;
     private int qtd;
     private int produtoNsm;
 
-    // Ex
-    private Categoria categoria;
-
-    private String produtoNome;
-    private String setorNome;
-    private String categoriaNome;
-
-    public Estoque(Setor setor, int qtd, int produtoNsm, Categoria categoria) {
+    public Estoque(Setor setor, Integer idSetor, int qtd, int produtoNsm) {
         this.setor = setor;
+        this.idSetor = idSetor;
         this.qtd = qtd;
         this.produtoNsm = produtoNsm;
-        this.categoria = categoria;
     }
 
     public Estoque() {}
@@ -49,36 +43,12 @@ public class Estoque {
         this.produtoNsm = produtoNsm;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Integer getIdSetor() {
+        return idSetor;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getProdutoNome() {
-        return produtoNome;
-    }
-
-    public void setProdutoNome(String produtoNome) {
-        this.produtoNome = produtoNome;
-    }
-
-    public String getSetorNome() {
-        return setorNome;
-    }
-
-    public void setSetorNome(String setorNome) {
-        this.setorNome = setorNome;
-    }
-
-    public String getCategoriaNome() {
-        return categoriaNome;
-    }
-
-    public void setCategoriaNome(String categoriaNome) {
-        this.categoriaNome = categoriaNome;
+    public void setIdSetor(Integer idSetor) {
+        this.idSetor = idSetor;
     }
 
     @Override
@@ -87,7 +57,6 @@ public class Estoque {
                 "setor=" + setor +
                 ", qtd=" + qtd +
                 ", produtoNsm=" + produtoNsm +
-                ", categoria=" + categoria +
                 '}';
     }
 }

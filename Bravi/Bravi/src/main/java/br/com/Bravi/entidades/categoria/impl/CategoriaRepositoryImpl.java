@@ -65,6 +65,12 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
     }
 
     @Override
+    public Categoria buscarPorNome(String nome) {
+        String sql = "SELECT * FROM Categoria WHERE nome = ?";
+        return jdbcTemplate.queryForObject(sql, new MapperCategoria(), nome);
+    }
+
+    @Override
     public boolean existsById(int id) {
         String sql = "SELECT COUNT(*) FROM Categoria WHERE id = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);

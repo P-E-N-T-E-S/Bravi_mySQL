@@ -13,22 +13,12 @@ public class MapperEstoque implements RowMapper<Estoque> {
     @Override
     public Estoque mapRow(ResultSet rs, int rowNum) throws SQLException {
         Setor setor = new Setor(rs.getInt("fk_Setor_id"), rs.getString("setor_nome"));
-        Categoria categoria = new Categoria(rs.getInt("categoria_id"), rs.getString("categoria_nome"));
 
         Estoque estoque = new Estoque();
         estoque.setSetor(setor);
+        estoque.setIdSetor(rs.getInt("fk_Setor_id"));
         estoque.setQtd(rs.getInt("qtd"));
-        estoque.setProdutoNsm(rs.getInt("fk_Produto_NSM"));
-        estoque.setCategoria(categoria);  // Atribuindo Categoria
+        estoque.setProdutoNsm(rs.getInt("fk_Produto_NSM"));// Atribuindo Categoria
         return estoque;
-    }
-
-    public Object[] mapEstoqueToParams(Estoque estoque) {
-        return new Object[]{
-                estoque.getSetor().getId(),
-                estoque.getQtd(),
-                estoque.getProdutoNsm(),
-                estoque.getCategoria().getId()
-        };
     }
 }

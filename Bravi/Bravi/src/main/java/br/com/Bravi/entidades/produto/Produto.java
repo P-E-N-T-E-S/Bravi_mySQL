@@ -11,7 +11,8 @@ public class Produto {
     private String nome;
     @JsonProperty("descricao")
     private String descricao;
-    @JsonProperty("categoria")
+    @JsonProperty("categoria_id")
+    private Integer categoriaId;
     private Categoria categoria;
 
     public int getNsm() {
@@ -44,5 +45,13 @@ public class Produto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public Integer getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
     }
 }
