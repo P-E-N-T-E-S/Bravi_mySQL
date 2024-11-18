@@ -1,29 +1,35 @@
 package br.com.Bravi.entidades.estoque;
 
+import br.com.Bravi.entidades.setor.Setor;
+import br.com.Bravi.entidades.categoria.Categoria;
+
 public class Estoque {
 
-    private int setor;
+    private Setor setor;
     private int qtd;
     private int produtoNsm;
 
     // Ex
+    private Categoria categoria;
+
     private String produtoNome;
     private String setorNome;
+    private String categoriaNome;
 
-
-    public Estoque(int setor, int qtd, int produtoNsm) {
+    public Estoque(Setor setor, int qtd, int produtoNsm, Categoria categoria) {
         this.setor = setor;
         this.qtd = qtd;
         this.produtoNsm = produtoNsm;
+        this.categoria = categoria;
     }
 
     public Estoque() {}
 
-    public int getSetor() {
+    public Setor getSetor() {
         return setor;
     }
 
-    public void setSetor(int setor) {
+    public void setSetor(Setor setor) {
         this.setor = setor;
     }
 
@@ -43,6 +49,14 @@ public class Estoque {
         this.produtoNsm = produtoNsm;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public String getProdutoNome() {
         return produtoNome;
     }
@@ -59,12 +73,21 @@ public class Estoque {
         this.setorNome = setorNome;
     }
 
+    public String getCategoriaNome() {
+        return categoriaNome;
+    }
+
+    public void setCategoriaNome(String categoriaNome) {
+        this.categoriaNome = categoriaNome;
+    }
+
     @Override
     public String toString() {
         return "Estoque{" +
                 "setor=" + setor +
                 ", qtd=" + qtd +
                 ", produtoNsm=" + produtoNsm +
+                ", categoria=" + categoria +
                 '}';
     }
 }

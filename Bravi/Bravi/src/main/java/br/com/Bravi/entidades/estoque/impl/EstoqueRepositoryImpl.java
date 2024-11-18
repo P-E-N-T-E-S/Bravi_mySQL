@@ -30,7 +30,7 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     @Override
     public void atualizar(Estoque estoque) {
         String sql = "UPDATE Estoque SET qtd = ? WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
-        jdbcTemplate.update(sql, estoque.getQtd(), estoque.getSetor(), estoque.getProdutoNsm());
+        jdbcTemplate.update(sql, estoque.getQtd(), estoque.getSetor().getId(), estoque.getProdutoNsm());
     }
 
     @Override
@@ -41,16 +41,19 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
 
     @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
-        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome " +
+        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome, c.id AS categoria_id, c.nome AS categoria_nome " +
                 "FROM Estoque e " +
                 "JOIN Produto p ON e.fk_Produto_NSM = p.nsm " +
                 "JOIN Setor s ON e.fk_Setor_id = s.id " +
+                "JOIN Categoria c ON p.fk_Categoria_id = c.id " +
                 "WHERE e.fk_Setor_id = ? AND e.fk_Produto_NSM = ?";
+
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
                 Estoque estoque = mapper.mapRow(rs, rowNum);
                 estoque.setProdutoNome(rs.getString("produto_nome"));
                 estoque.setSetorNome(rs.getString("setor_nome"));
+                estoque.setCategoriaNome(rs.getString("categoria_nome"));
                 return estoque;
             }, setor, produtoNsm);
         } catch (EmptyResultDataAccessException e) {
@@ -60,15 +63,17 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
 
     @Override
     public List<Estoque> listar() {
-        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome " +
+        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome, c.id AS categoria_id, c.nome AS categoria_nome " +
                 "FROM Estoque e " +
                 "JOIN Produto p ON e.fk_Produto_NSM = p.nsm " +
-                "JOIN Setor s ON e.fk_Setor_id = s.id";
+                "JOIN Setor s ON e.fk_Setor_id = s.id " +
+                "JOIN Categoria c ON p.fk_Categoria_id = c.id";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Estoque estoque = mapper.mapRow(rs, rowNum);
             estoque.setProdutoNome(rs.getString("produto_nome"));
             estoque.setSetorNome(rs.getString("setor_nome"));
+            estoque.setCategoriaNome(rs.getString("categoria_nome"));
             return estoque;
         });
     }

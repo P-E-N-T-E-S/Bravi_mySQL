@@ -1,5 +1,6 @@
 package br.com.Bravi.entidades.produto.mapper;
 
+import br.com.Bravi.entidades.categoria.Categoria;
 import br.com.Bravi.entidades.produto.Produto;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,7 +15,12 @@ public class MapperProduto implements RowMapper<Produto> {
         produto.setNsm(rs.getInt("NSM"));
         produto.setNome(rs.getString("Nome"));
         produto.setDescricao(rs.getString("Descrição"));
-        produto.setFkCategoriaId(rs.getInt("fk_Categoria_id"));
+
+        Categoria categoria = new Categoria();
+        categoria.setId(rs.getInt("fk_Categoria_id"));
+        categoria.setNome(rs.getString("categoria_nome"));
+        produto.setCategoria(categoria);
+
         return produto;
     }
 }
