@@ -38,13 +38,13 @@ VALUES
 ('56789012345678', 'Cliente C', 'Av. Rio Branco', 'Zona Oeste', '23456789', '350', '103', '321098765', 'Cliente C LTDA'),
 ('67890123456789', 'Cliente D', 'Rua das Palmeiras', 'Zona Norte', '12345678', '450', '104', '210987654', 'Cliente D LTDA');
 
-INSERT INTO Produto (NSM, Nome, Descrição, fk_Categoria_id)
+INSERT INTO Produto (NSM, Nome, Descrição)
 VALUES
-(1, 'Sabão Líquido', 'Produto de limpeza para uso geral', 1),
-(2, 'Notebook', 'Computador portátil de última geração', 2),
-(3, 'Detergente', 'Produto de limpeza com fórmula concentrada', 1),
-(4, 'Impressora', 'Equipamento multifuncional a laser', 3),
-(5, 'Tablet', 'Dispositivo portátil com tela touch screen', 4);
+(1, 'Sabão Líquido', 'Produto de limpeza para uso geral'),
+(2, 'Notebook', 'Computador portátil de última geração'),
+(3, 'Detergente', 'Produto de limpeza com fórmula concentrada'),
+(4, 'Impressora', 'Equipamento multifuncional a laser'),
+(5, 'Tablet', 'Dispositivo portátil com tela touch screen');
 
 INSERT INTO Categoria_Produto (fk_Produto_NSM, fk_Categoria_id)
 VALUES

@@ -5,11 +5,13 @@ import br.com.Bravi.exceptions.CategoriaNaoEncontradaException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/categorias")
 public class CategoriaController {
 
@@ -51,9 +53,10 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> listar() {
+    public String listar(Model model) {
         List<Categoria> categorias = categoriaService.listar();
-        return ResponseEntity.ok(categorias);
+        model.addAttribute("categorias", categorias);
+        return "categorias";
     }
 
     @GetMapping("/{id}")

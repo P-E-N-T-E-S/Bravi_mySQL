@@ -36,14 +36,11 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 
     @Override
     public void excluir(int id) {
-        String sqlVerificaProdutos = "SELECT COUNT(*) FROM Produto WHERE fk_Categoria_id = ?";
-        Integer count = jdbcTemplate.queryForObject(sqlVerificaProdutos, Integer.class, id);
+        String sql = "DELETE FROM Categoria WHERE id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, id);
 
-        if (count != null && count > 0) {
-            String sql = "DELETE FROM Categoria WHERE id = ?";
-            jdbcTemplate.update(sql, id);
-        } else {
-            throw new CategoriaNaoEncontradaException("Categoria com ID " + id + " não encontrada ou não está associada a produtos.");
+        if (rowsAffected == 0) {
+            throw new CategoriaNaoEncontradaException("Categoria com ID " + id + " não encontrada.");
         }
     }
 

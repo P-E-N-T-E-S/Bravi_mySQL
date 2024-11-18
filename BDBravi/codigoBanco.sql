@@ -55,9 +55,7 @@ CREATE TABLE IF NOT EXISTS Cliente (
 CREATE TABLE IF NOT EXISTS Produto (
     NSM INTEGER PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(50),
-    Descrição VARCHAR(50),
-    fk_Categoria_id INTEGER,
-    FOREIGN KEY (fk_Categoria_id) REFERENCES Categoria(id) ON DELETE SET NULL
+    Descrição VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS _Fornece (
@@ -128,7 +126,7 @@ BEGIN
     VALUES (NEW.CPF, NEW.Nome, NEW.CPF, cargoGerente);
 END //
 
-DELIMITER ;
+DELIMITER //
 
 DELIMITER //
 
@@ -156,6 +154,8 @@ BEGIN
     INSERT INTO Nota (fk_Compra_id, is_in)
     VALUES (NEW.id, TRUE);
 END //
+
+DELIMITER //
 
 CREATE TRIGGER after_fornece_insert
 AFTER INSERT ON _Fornece
