@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS Nota (
     fk_Compra_id INTEGER,
     fk_Fornece_id INTEGER,
     is_in BOOLEAN NOT NULL,
+    data DATE,
     FOREIGN KEY (fk_Compra_id) REFERENCES _Compra(id),
     FOREIGN KEY (fk_Fornece_id) REFERENCES _Fornece(id)
 );
@@ -125,8 +126,7 @@ BEGIN
     INSERT INTO Usuario (usuario, senha, fk_Funcionario_CPF, isGerente)
     VALUES (NEW.CPF, NEW.Nome, NEW.CPF, cargoGerente);
 END //
-
-DELIMITER //
+DELIMITER ;
 
 DELIMITER //
 
@@ -151,11 +151,9 @@ BEGIN
         VALUES (-1, NEW.fk_Produto_NSM, 1);
     END IF;
 
-    INSERT INTO Nota (fk_Compra_id, is_in)
-    VALUES (NEW.id, TRUE);
+    INSERT INTO Nota (fk_Compra_id, is_in, data)
+    VALUES (NEW.id, TRUE, NOW());
 END //
-
-DELIMITER //
 
 CREATE TRIGGER after_fornece_insert
 AFTER INSERT ON _Fornece
@@ -178,12 +176,11 @@ BEGIN
         VALUES (1, NEW.fk_Produto_NSM, 1);
     END IF;
 
-    INSERT INTO Nota (fk_Fornece_id, is_in)
-    VALUES (NEW.id, FALSE);
+    INSERT INTO Nota (fk_Fornece_id, is_in, data)
+    VALUES (NEW.id, FALSE, NOW());
 END //
 
 DELIMITER ;
 
 -- DROP DATABASE BDBravi
 
-SELECT qtd FROM Estoque WHERE produtoNsm = ?
