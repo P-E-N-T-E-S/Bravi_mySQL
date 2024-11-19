@@ -182,10 +182,5 @@ END //
 
 DELIMITER ;
 
-<<<<<<< HEAD
--- drop database BDBravi
-=======
 -- DROP DATABASE BDBravi
 
-SELECT qtd FROM Estoque WHERE produtoNsm = ?
->>>>>>> 7876a4bb62d36e99139d3efbcbdaf075a5b728f1
