@@ -11,10 +11,10 @@ public class MapperProduto implements RowMapper<Produto> {
 
     @Override
     public Produto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Produto produto = new Produto();
-        produto.setNsm(rs.getInt("NSM"));
-        produto.setNome(rs.getString("Nome"));
-        produto.setDescricao(rs.getString("Descrição"));
+        int nsm = (rs.getInt("NSM"));
+        String nome = (rs.getString("Nome"));
+        String descricao = (rs.getString("Descrição"));
+        Produto produto = new Produto(nsm, nome, descricao, null);
 
         return produto;
     }

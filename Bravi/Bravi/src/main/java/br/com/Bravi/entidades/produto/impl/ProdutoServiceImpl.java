@@ -26,9 +26,9 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public void adicionarProduto(Produto produto) {
         produtoRepository.inserir(produto);
-        if (produto.getCategoria() != null) {
-            for (Categoria categoria : produto.getCategoria()) {
-                categoriaProdutoService.adicionarCategoriaProduto(new CategoriaProduto(produto.getNsm(), categoria.getId()));
+        if (produto.getCategoriasId() != null) {
+            for (Integer id : produto.getCategoriasId()) {
+                categoriaProdutoService.adicionarCategoriaProduto(new CategoriaProduto(produto.getNsm(), id));
             }
         }
     }

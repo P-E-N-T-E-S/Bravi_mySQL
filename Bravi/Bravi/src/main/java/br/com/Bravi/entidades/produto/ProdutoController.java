@@ -26,9 +26,8 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> adicionarProduto(@RequestBody Produto produto, Model model) {
+    public ResponseEntity<String> adicionarProduto(@RequestBody Produto produto) {
         produtoService.adicionarProduto(produto);
-        model.addAttribute("mensagem", "Produto adicionado com sucesso!");
         return new ResponseEntity<>("Produto adicionado com sucesso!", HttpStatus.OK);
     }
 
