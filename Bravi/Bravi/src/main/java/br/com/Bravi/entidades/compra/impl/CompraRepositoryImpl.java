@@ -77,7 +77,7 @@ public class CompraRepositoryImpl implements CompraRepository {
     }
 
     private boolean estoqueSuficiente(int nsm) {
-        String sql = "SELECT qtd FROM Estoque WHERE produtoNsm = ?";
+        String sql = "SELECT qtd FROM Estoque WHERE fk_Produto_NSM = ?";
         Integer estoque = jdbcTemplate.queryForObject(sql, new Object[]{nsm}, Integer.class);
         return estoque != null && estoque > 0;
     }
