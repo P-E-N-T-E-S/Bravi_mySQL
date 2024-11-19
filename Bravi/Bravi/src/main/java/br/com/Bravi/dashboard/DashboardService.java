@@ -11,7 +11,7 @@ public interface DashboardService {
 
     Map<String, Object> getLucro();
 
-    List<Double> getEvolucaoVendas();
+    Map<String, Object> getEvolucaoVendas();
 
     Map<String, Object> getLucroPorAno();
 

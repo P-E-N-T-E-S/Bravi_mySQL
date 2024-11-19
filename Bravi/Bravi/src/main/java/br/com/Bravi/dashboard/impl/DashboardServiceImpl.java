@@ -35,8 +35,18 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<Double> getEvolucaoVendas() {
-        return dashboardRepository.getEvolucaoVendas();
+    public Map<String, Object> getEvolucaoVendas() {
+        List<Map<String, Object>> data = dashboardRepository.getEvolucaoVendas();
+        Map<String, Object> resposta = new HashMap<>();
+        List<String> anos = new ArrayList<>();
+        List<Double> lucros = new ArrayList<>();
+        for (Map<String, Object> row : data) {
+            anos.add((String) row.get("ano").toString());
+            lucros.add(((BigDecimal) row.get("valor")).doubleValue());
+        }
+        resposta.put("ano", anos);
+        resposta.put("lucro", lucros);
+        return resposta;
     }
 
     @Override

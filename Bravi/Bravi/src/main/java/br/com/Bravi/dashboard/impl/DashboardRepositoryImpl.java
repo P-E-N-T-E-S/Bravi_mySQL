@@ -42,13 +42,9 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public List<Double> getEvolucaoVendas() {
-        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) AS valor " +
-                "FROM Nota n " +
-                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
-                "GROUP BY ano " +
-                "ORDER BY ano";
-        return jdbcTemplate.queryForList(sql, Double.class);
+    public List<Map<String, Object>> getEvolucaoVendas() {
+        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) AS valor FROM Nota n JOIN _Compra c ON n.fk_Compra_id = c.id GROUP BY ano ORDER BY ano";
+        return jdbcTemplate.queryForList(sql);
     }
 
     @Override
@@ -63,13 +59,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public List<Map<String, Object>> getLucroPorAno() {
-        String sql = "SELECT YEAR(n.data) AS ano, " +
-                "SUM(c.valor) - IFNULL((SELECT SUM(f.valor) FROM _Fornece f " +
-                "JOIN Nota n2 ON f.id = n2.fk_Fornece_id WHERE YEAR(n2.data) = YEAR(n.data)), 0) AS lucro " +
-                "FROM Nota n " +
-                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
-                "GROUP BY ano " +
-                "ORDER BY ano";
+        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) - IFNULL((SELECT SUM(f.valor) FROM _Fornece f JOIN Nota n2 ON f.id = n2.fk_Fornece_id WHERE YEAR(n2.data) = YEAR(n.data)), 0) AS lucro FROM Nota n JOIN _Compra c ON n.fk_Compra_id = c.id GROUP BY n.data ORDER BY ano";
         return jdbcTemplate.queryForList(sql);
     }
 
