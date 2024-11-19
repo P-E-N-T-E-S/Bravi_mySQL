@@ -4,14 +4,16 @@ import br.com.Bravi.entidades.pj.PJ;
 
 public class Fornecedor extends PJ {
 
+    private String nome;
     private String categoria;
     private String inscricaoEstadual;
 
-    public Fornecedor(String categoria, String cnpj, String rua, String bairro, String cep,
+    public Fornecedor(String categoria, String cnpj, String nome, String rua, String bairro, String cep,
                       String numero, String numero2, String inscricaoEstadual, String razaoSocial) {
         super(cnpj, rua, bairro, cep, numero, numero2, inscricaoEstadual, razaoSocial);
         this.categoria = categoria;
         this.inscricaoEstadual = inscricaoEstadual;
+        this.nome = nome;
     }
 
     public Fornecedor() {}
@@ -32,11 +34,20 @@ public class Fornecedor extends PJ {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     @Override
     public String toString() {
         return "Fornecedor{" +
                 "categoria='" + categoria + '\'' +
                 ", inscricaoEstadual='" + inscricaoEstadual + '\'' +
+                ", nome='" + nome + '\'' +
                 ", cnpj='" + getCnpj() + '\'' +
                 ", rua='" + getRua() + '\'' +
                 ", bairro='" + getBairro() + '\'' +

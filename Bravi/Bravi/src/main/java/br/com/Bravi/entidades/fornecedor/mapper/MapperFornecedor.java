@@ -12,6 +12,7 @@ public class MapperFornecedor implements RowMapper<Fornecedor> {
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setCategoria(rs.getString("categoria"));
         fornecedor.setCnpj(rs.getString("CNPJ"));
+        fornecedor.setNome(rs.getString("nome"));
         fornecedor.setRua(rs.getString("Rua"));
         fornecedor.setBairro(rs.getString("Bairro"));
         fornecedor.setCep(rs.getString("CEP"));

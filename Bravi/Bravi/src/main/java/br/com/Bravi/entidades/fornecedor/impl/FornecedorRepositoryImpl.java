@@ -29,8 +29,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         if (cnpjExiste(fornecedor.getCnpj())) {
             throw new FornecedorJaExistenteException("Fornecedor com o CNPJ " + fornecedor.getCnpj() + " já existe.");
         }
-        String sql = "INSERT INTO Fornecedor (categoria, CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, fornecedor.getCategoria(), fornecedor.getCnpj(), fornecedor.getRua(),
+        String sql = "INSERT INTO Fornecedor (nome, categoria, CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, fornecedor.getNome(), fornecedor.getCategoria(), fornecedor.getCnpj(), fornecedor.getRua(),
                 fornecedor.getBairro(), fornecedor.getCep(), fornecedor.getNumero(),
                 fornecedor.getInscricaoEstadual(), fornecedor.getRazaoSocial());
     }
@@ -40,8 +40,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         if (!cnpjExiste(fornecedor.getCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado com o CNPJ fornecido.");
         }
-        String sql = "UPDATE Fornecedor SET categoria = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
-        jdbcTemplate.update(sql, fornecedor.getCategoria(), fornecedor.getRua(), fornecedor.getBairro(),
+        String sql = "UPDATE Fornecedor SET nome = ?, categoria = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
+        jdbcTemplate.update(sql, fornecedor.getNome(), fornecedor.getCategoria(), fornecedor.getRua(), fornecedor.getBairro(),
                 fornecedor.getCep(), fornecedor.getNumero(), fornecedor.getInscricaoEstadual(),
                 fornecedor.getRazaoSocial(), fornecedor.getCnpj());
     }
@@ -62,7 +62,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         }
         String sql = "SELECT * FROM Fornecedor WHERE CNPJ = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{cnpj}, (rs, rowNum) -> new Fornecedor(
-                rs.getString("categoria"), rs.getString("CNPJ"), rs.getString("Rua"),
+                rs.getString("categoria"), rs.getString("CNPJ"), rs.getString("nome"), rs.getString("Rua"),
                 rs.getString("Bairro"), rs.getString("CEP"), rs.getString("Numero"),
                 rs.getString("Numero2"), rs.getString("Inscricao_Estadual"), rs.getString("Razao_Social")));
     }
@@ -73,6 +73,7 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Fornecedor(
                 rs.getString("categoria"),
                 rs.getString("CNPJ"),
+                rs.getString("nome"),
                 rs.getString("Rua"),
                 rs.getString("Bairro"),
                 rs.getString("CEP"),
