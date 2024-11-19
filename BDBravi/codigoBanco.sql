@@ -112,7 +112,6 @@ CREATE TABLE IF NOT EXISTS Usuario (
 );
 
 DELIMITER //
-
 CREATE TRIGGER after_funcionario_insert
 AFTER INSERT ON Funcionario
 FOR EACH ROW

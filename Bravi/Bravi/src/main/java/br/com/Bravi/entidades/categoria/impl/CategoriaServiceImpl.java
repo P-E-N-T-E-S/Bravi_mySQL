@@ -48,4 +48,9 @@ public class CategoriaServiceImpl implements CategoriaService {
         return categoriaRepository.buscarPorId(id)
                 .orElseThrow(() -> new CategoriaNaoEncontradaException("Categoria com ID " + id + " não encontrada"));
     }
+
+    @Override
+    public Categoria buscarPorNome(String nome) {
+        return categoriaRepository.buscarPorNome(nome);
+    }
 }

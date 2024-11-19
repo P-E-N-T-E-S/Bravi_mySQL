@@ -8,4 +8,5 @@ public interface CategoriaService {
     void excluir(int id);
     List<Categoria> listar();
     Categoria buscarPorId(int id);
+    Categoria buscarPorNome(String nome);
 }
