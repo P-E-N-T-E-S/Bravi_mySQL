@@ -68,11 +68,27 @@ O projeto está dividido nas seguintes seções:
   </li>
 </ul>
 
-<br>
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Thomazrlima">
+        <img src="https://avatars3.githubusercontent.com/Thomazrlima" width="100px;" alt="Foto de Thomaz"/><br>
+        <sub>
+          <b>Thomaz R. Lima</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Sofia-Saraiva">
+        <img src="https://avatars.githubusercontent.com/Sofia-Saraiva" width="100px;" alt="Foto de Sofia"/><br>
+        <sub>
+          <b>Sofia Saraiva</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
-<a href="https://github.com/P-E-N-T-E-S/Bravi_mySQL/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=P-E-N-T-E-S/Bravi_mySQL" />
-</a>
 
 ## License
 
