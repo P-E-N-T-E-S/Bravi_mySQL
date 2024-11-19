@@ -21,6 +21,6 @@ public class MapperCliente implements RowMapper<Cliente> {
         String inscricaoEstadual = rs.getString("Inscricao_Estadual");
         String razaoSocial = rs.getString("Razao_Social");
 
-        return new Cliente(cnpj, rua, bairro, cep, numero, numero2, inscricaoEstadual, razaoSocial, nome);
+        return new Cliente(cnpj, nome, rua, bairro, cep, numero, numero2, inscricaoEstadual, razaoSocial);
     }
 }

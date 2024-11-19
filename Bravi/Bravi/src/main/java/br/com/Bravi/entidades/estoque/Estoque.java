@@ -1,14 +1,18 @@
 package br.com.Bravi.entidades.estoque;
 
+import br.com.Bravi.entidades.produto.Produto;
 import br.com.Bravi.entidades.setor.Setor;
 import br.com.Bravi.entidades.categoria.Categoria;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Estoque {
 
     private Setor setor;
+    @JsonProperty("setor_id")
     private Integer idSetor;
     private int qtd;
     private int produtoNsm;
+    private Produto produto;
 
     public Estoque(Setor setor, Integer idSetor, int qtd, int produtoNsm) {
         this.setor = setor;
@@ -49,6 +53,14 @@ public class Estoque {
 
     public void setIdSetor(Integer idSetor) {
         this.idSetor = idSetor;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     @Override

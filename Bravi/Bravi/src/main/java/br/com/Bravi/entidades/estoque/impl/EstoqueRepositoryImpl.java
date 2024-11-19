@@ -28,7 +28,7 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     @Override
     public void atualizar(Estoque estoque) {
         String sql = "UPDATE Estoque SET qtd = ? WHERE fk_Setor_id = ? AND fk_Produto_NSM = ?";
-        jdbcTemplate.update(sql, estoque.getQtd(), estoque.getSetor().getId(), estoque.getProdutoNsm());
+        jdbcTemplate.update(sql, estoque.getQtd(), estoque.getIdSetor(), estoque.getProdutoNsm());
     }
 
     @Override

@@ -3,6 +3,7 @@ package br.com.Bravi.entidades.estoque.impl;
 import br.com.Bravi.entidades.estoque.Estoque;
 import br.com.Bravi.entidades.estoque.EstoqueRepository;
 import br.com.Bravi.entidades.estoque.EstoqueService;
+import br.com.Bravi.entidades.produto.ProdutoService;
 import br.com.Bravi.exceptions.EstoqueNotFoundException;
 import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,9 +15,11 @@ import java.util.List;
 public class EstoqueServiceImpl implements EstoqueService {
 
     private final EstoqueRepository estoqueRepository;
+    private final ProdutoService produtoService;
 
-    public EstoqueServiceImpl(EstoqueRepository estoqueRepository) {
+    public EstoqueServiceImpl(EstoqueRepository estoqueRepository, ProdutoService produtoService) {
         this.estoqueRepository = estoqueRepository;
+        this.produtoService = produtoService;
     }
 
     @Override
@@ -40,7 +43,11 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     @Override
     public List<Estoque> listarEstoque() {
-        return estoqueRepository.listar();
+        List<Estoque> query = estoqueRepository.listar();
+        for (Estoque estoque : query) {
+            estoque.setProduto(produtoService.obterProdutoPorNsm(estoque.getProdutoNsm()));
+        }
+        return query;
     }
 
     @Override
@@ -49,6 +56,7 @@ public class EstoqueServiceImpl implements EstoqueService {
         if (estoque == null) {
             throw new EstoqueNotFoundException("Estoque não encontrado para setor " + setor + " e produto NSM " + produtoNsm);
         }
+        estoque.setProduto(produtoService.obterProdutoPorNsm(estoque.getProdutoNsm()));
         return estoque;
     }
 }
