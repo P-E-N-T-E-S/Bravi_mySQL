@@ -186,4 +186,4 @@ DELIMITER ;
 
 -- DROP DATABASE BDBravi
 
-DELETE FROM Produto
+SELECT qtd FROM Estoque WHERE produtoNsm = ?
