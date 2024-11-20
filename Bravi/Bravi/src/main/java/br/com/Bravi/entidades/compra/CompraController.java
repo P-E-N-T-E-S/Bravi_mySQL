@@ -36,7 +36,7 @@ public class CompraController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<Void> atualizarCompra(@RequestBody Compra compra) {
         try {
             compraService.atualizarCompra(compra);
