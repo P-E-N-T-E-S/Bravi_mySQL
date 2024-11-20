@@ -1,7 +1,6 @@
 package br.com.Bravi.dashboard;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,64 +26,43 @@ public class DashboardController {
 
     @GetMapping("/faturamento")
     public ResponseEntity<Map<String, Object>> getFaturamento() {
-        try {
-            return new ResponseEntity(dashboardService.getFaturamento(), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Map<String, Object> response = dashboardService.getFaturamento();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/meta")
     public ResponseEntity<Map<String, Object>> getMeta() {
-        try {
-            return new ResponseEntity(dashboardService.getMeta(), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Map<String, Object> response = dashboardService.getMeta();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/lucro")
     public ResponseEntity<Map<String, Object>> getLucro() {
-        try {
-            return new ResponseEntity(dashboardService.getLucro(), HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        Map<String, Object> response = dashboardService.getLucro();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/evolucao-vendas")
-    public ResponseEntity<List<Double>> getEvolucaoVendas() {
-        try {
-            return new ResponseEntity(dashboardService.getEvolucaoVendas(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<Map<String, Object>>> getEvolucaoVendas() {
+        List<Map<String, Object>> response = dashboardService.getEvolucaoVendas();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/lucro-por-ano")
     public ResponseEntity<Map<String, Object>> getLucroPorAno() {
-        try {
-            return new ResponseEntity(dashboardService.getLucroPorAno(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Map<String, Object> response = dashboardService.getLucroPorAno();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/maiores-compradores")
     public ResponseEntity<List<Map<String, String>>> getMaioresCompradores() {
-        try {
-            return new ResponseEntity(dashboardService.getMaioresCompradores(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Map<String, String>> response = dashboardService.getMaioresCompradores();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/categorias")
     public ResponseEntity<List<String>> getCategorias() {
-        try {
-            return new ResponseEntity(dashboardService.getCategorias(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<String> response = dashboardService.getCategorias();
+        return ResponseEntity.ok(response);
     }
 }
