@@ -250,7 +250,7 @@
                         <div class="mb-3">
                             <label class="form-label">Categoria</label>
                             <select class="form-select" aria-label="Categoria" id="categoria-select">
-                                <option selected>Selecione a categoria</option>
+                                <option disabled selected>Selecione a categoria</option>
                             </select>
                         </div>
 
@@ -301,7 +301,7 @@
                         <div class="mb-3">
                             <label class="form-label">Categoria</label>
                             <select class="form-select" aria-label="Categoria" id="edit-categoria-select">
-                                <option>Selecione a categoria</option>
+                                <option disabled selected>Selecione a categoria</option>
                             </select>
                         </div>
 
@@ -333,7 +333,6 @@
                         <td th:text="${produto.nsm}"></td>
                         <td th:text="${produto.nome}"></td>
                         <td th:text="${produto.descricao}"></td>
-                        <td th:text="${produto.categoria.getNome()}"></td>
                         <td>
                             <button th:onclick="'openEditPopup(' + ${produto.nsm} + ')'">
                                 <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
@@ -354,34 +353,6 @@
 </div>
 <script src="/js/script.js"></script>
 <script>
-    const apiBaseUrl = 'http://localhost:8080/produtos';
-
-    async function carregarProdutos() {
-        try {
-            const response = await fetch(apiBaseUrl);
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar produtos: ${response.status}`);
-            }
-            const produtos = await response.json();
-            const tbody = document.getElementById('produtos-tbody');
-            tbody.innerHTML = '';
-
-            produtos.forEach(produto => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                      <td>${produto.nsm}</td>
-                      <td>${produto.nome}</td>
-                      <td>${produto.descricao}</td>
-                      <td>${produto.categoria}</td>
-                      <td><button onclick="openEditPopup(${produto.nsm})"><i class="material-symbols-outlined">edit</i></button></td>
-                      <td><button onclick="deletarProduto(${produto.nsm})"><i class="material-symbols-outlined">delete</i></button></td>
-                  `;
-                tbody.appendChild(tr);
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     function deletarProduto(nsm) {
         if (confirm('Tem certeza que deseja deletar este produto?')) {
@@ -411,7 +382,7 @@
             .then(data => {
                 document.getElementById('edit-nome').value = data.nome;
                 document.getElementById('edit-descricao').value = data.descricao;
-                carregarCategorias('editar', data.categoriaId);
+                carregarCategorias('editar', null);
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
@@ -426,31 +397,31 @@
         e.preventDefault();
 
         const nome = document.getElementById('edit-nome').value;
-        if (!window.editCategoryId) {
-            alert('Erro: Categoria não encontrada!');
-            return;
-        }
+        const descricao = document.getElementById('edit-descricao').value;
+
+        const body = {
+            nome,
+            descricao
+        };
+
         try {
-            const response = await fetch(`/categorias/${window.editCategoryId}`, {
+            const response = await fetch(`/produtos/${nsm}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome })
+                body: JSON.stringify(body)
             });
 
             if (!response.ok) {
-                throw new Error(`Erro ao atualizar categoria: ${response.status}`);
+                throw new Error(`Erro ao atualizar produto: ${response.status}`);
             }
 
-            alert('Categoria atualizada com sucesso!');
+            alert('Produto atualizado com sucesso!');
             closeEditPopup();
             location.reload();
         } catch (error) {
-            console.error('Erro ao atualizar a categoria:', error);
+            console.error('Erro ao atualizar produto:', error);
         }
     });
-
-
-    document.addEventListener('DOMContentLoaded', carregarProdutos);
 
     function carregarCategorias(tipo, categoriaSelecionada = null) {
         fetch('http://localhost:8080/categorias')
