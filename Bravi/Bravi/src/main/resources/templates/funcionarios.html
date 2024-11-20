@@ -569,7 +569,7 @@
             .then(data => {
                 document.getElementById('edit-nome').value = data.nome;
                 document.getElementById('edit-cpf').value = data.cpf;
-                document.getElementById('edit-dataNascimento').value = data.dataNascimento;
+                document.getElementById('edit-dataNascimento').value = data.dataDeNascimento;
                 document.getElementById('edit-rua').value = data.rua;
                 document.getElementById('edit-bairro').value = data.bairro;
                 document.getElementById('edit-numero').value = data.numero;
@@ -597,7 +597,7 @@
 
         const cpf = document.getElementById('edit-cpf').value;
         const nome = document.getElementById('edit-nome').value;
-        const dataNascimento = document.getElementById('edit-dataNascimento').value;
+        const dataDeNascimento = document.getElementById('edit-dataNascimento').value;
         const rua = document.getElementById('edit-rua').value;
         const bairro = document.getElementById('edit-bairro').value;
         const numero = document.getElementById('edit-numero').value;
@@ -615,7 +615,7 @@
             cargo,
             cpf,
             nome,
-            dataNascimento,
+            dataDeNascimento,
             rua,
             bairro,
             cep,
@@ -650,7 +650,7 @@
 
         const cpf = document.getElementById('cpf').value;
         const nome = document.getElementById('nome').value;
-        const dataNascimento = new Date(document.getElementById('dataNascimento').value).toISOString().split('T')[0];
+        const dataDeNascimento = new Date(document.getElementById('dataNascimento').value).toISOString().split('T')[0];
         const rua = document.getElementById('rua').value;
         const bairro = document.getElementById('bairro').value;
         const numero = document.getElementById('numero').value;
@@ -668,7 +668,7 @@
             cargo,
             cpf,
             nome,
-            dataNascimento,
+            dataDeNascimento,
             rua,
             bairro,
             cep,
@@ -684,7 +684,7 @@
             });
 
             if (response.status === 201) {
-                const message = await response.text(); // Lê a resposta em texto
+                const message = await response.text();
                 alert(message || 'Funcionário incluído com sucesso!');
                 closePopup();
                 location.reload();
