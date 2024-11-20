@@ -43,7 +43,11 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public List<Map<String, Object>> getEvolucaoVendas() {
-        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) AS valor FROM Nota n JOIN _Compra c ON n.fk_Compra_id = c.id GROUP BY ano ORDER BY ano";
+        String sql = "SELECT YEAR(n.data) AS ano, SUM(c.valor) AS total_vendas " +
+                "FROM Nota n " +
+                "JOIN _Compra c ON n.fk_Compra_id = c.id " +
+                "GROUP BY YEAR(n.data) " +
+                "ORDER BY ano";
         return jdbcTemplate.queryForList(sql);
     }
 
@@ -64,8 +68,12 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public List<String> getCategorias() {
-        String sql = "SELECT nome FROM Categoria";
-        return jdbcTemplate.queryForList(sql, String.class);
+    public List<Map<String, Object>> getCategorias() {
+        String sql = "SELECT c.nome AS categoria, COUNT(p.nsm) AS quantidade_produtos " +
+                "FROM Categoria c " +
+                "LEFT JOIN Produto p ON c.id = p.fk_Categoria_id " +
+                "GROUP BY c.nome";
+
+        return jdbcTemplate.queryForList(sql);
     }
 }

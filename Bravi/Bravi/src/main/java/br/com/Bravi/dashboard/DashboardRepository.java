@@ -11,11 +11,11 @@ public interface DashboardRepository {
 
     Map<String, Object> getLucro();
 
-    List<Map<String, Object>>  getEvolucaoVendas();
+    List<Map<String, Object>> getEvolucaoVendas();
 
     List<Map<String, Object>> getLucroPorAno();
 
     Map<String, Object> getMaioresCompradores();
 
-    List<String> getCategorias();
+    List<Map<String, Object>> getCategorias();
 }
