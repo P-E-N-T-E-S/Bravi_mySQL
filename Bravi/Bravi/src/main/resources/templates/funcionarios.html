@@ -79,7 +79,7 @@
 
         .popup{
             width: 34rem;
-            height: 32rem;
+            height: 36.6rem;
             background: #fff;
             -webkit-border-radius: 6px;
             -moz-border-radius: 6px;
@@ -111,7 +111,7 @@
             width: 100%;
             outline: none;
             box-shadow: 0 5px 5px rgba(0,0,0,0.2);
-            margin-top: 1rem;
+            margin-top: .4rem;
             background-color: #033E8C;
             height: 2.4rem;
         }
@@ -218,7 +218,7 @@
     <div class="main p-3">
         <div class="container">
             <div class="head">
-                <h2>Gerenciamento > Funcionários</h2>
+                <h2>Funcionários</h2>
             </div>
 
             <div class="overlay" id="overlay">
@@ -340,14 +340,26 @@
                                         required
                                 >
                                     <option disabled selected>Selecione</option>
-                                    <option value="RH">Recursos Humanos</option>
-                                    <option value="TI">TI</option>
-                                    <option value="Financeiro">Financeiro</option>
-                                    <option value="Marketing">Marketing</option>
+                                    <option value="1">Gestão</option>
+                                    <option value="2">TI</option>
+                                    <option value="3">Vendas</option>
+                                    <option value="4">Recursos Humanos</option>
+                                    <option value="5">Desenvolvimento</option>
                                 </select>
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="cpfgerente" class="form-label">CPF do Gerente</label>
+                            <input
+                                    type="text"
+                                    placeholder="CPF do Gerente"
+                                    class="form-control"
+                                    name="cpfgerente"
+                                    id="cpfgerente"
+                                    required
+                            />
+                        </div>
                         <button
                                 type="submit"
                                 class="btn btn-dark"
@@ -402,6 +414,7 @@
                                         class="form-control"
                                         name="cpf"
                                         id="edit-cpf"
+                                        th:value="${cpf}"
                                         required
                                 />
                             </div>
@@ -476,14 +489,25 @@
                                         required
                                 >
                                     <option disabled selected>Selecione</option>
-                                    <option value="RH">Recursos Humanos</option>
-                                    <option value="TI">TI</option>
-                                    <option value="Financeiro">Financeiro</option>
-                                    <option value="Marketing">Marketing</option>
+                                    <option value="1">Gestão</option>
+                                    <option value="2">TI</option>
+                                    <option value="3">Vendas</option>
+                                    <option value="4">Recursos Humanos</option>
+                                    <option value="5">Desenvolvimento</option>
                                 </select>
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="cpfgerente" class="form-label">CPF do Gerente</label>
+                            <input
+                                    type="text"
+                                    placeholder="CPF do Gerente"
+                                    class="form-control"
+                                    name="cpfgerente"
+                                    id="edit-cpfgerente"
+                                    required
+                            />
+                        </div>
                         <button
                                 type="submit"
                                 class="btn btn-dark"
@@ -494,7 +518,7 @@
             </div>
 
             <div class="tabelas">
-                <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 10rem;" onclick="openPopup()">Incluir produto</a>
+                <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 11rem;" onclick="openPopup()">Incluir funcionário</a>
                 <table class="table">
                     <thead>
                     <tr>
@@ -504,24 +528,12 @@
                         <th scope="col">Endereço</th>
                         <th scope="col">Cargo</th>
                         <th scope="col">Setor</th>
+                        <th scope="col">CPF do gerente</th>
                         <th scope="col">Editar</th>
                         <th scope="col">Deletar</th>
                     </tr>
                     </thead>
-                    <tbody id="categorias-tbody">
-                    <tr th:each="funcionario : ${funcionarios}">
-                        <td th:text="${funcionario.nome}"></td>
-                        <td th:text="${funcionario.cpf}"></td>
-                        <td th:text="${funcionario.dataDeNascimento}"></td>
-                        <td th:text="${funcionario.rua + ', ' + funcionario.bairro + ', ' + funcionario.numero}"></td>
-                        <td th:text="${funcionario.cargo}"></td>
-                        <td th:text="${funcionario.setor.nome}"></td>
-                        <td>
-                            <button th:onclick="'deletarFuncionario(' + ${funcionario.cpf} + ')'">
-                                <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
-                            </button>
-                        </td>
-                    </tr>
+                    <tbody id="funcionarios-tbody">
                     </tbody>
                 </table>
             </div>
@@ -538,12 +550,8 @@
                     method: 'DELETE'
                 });
 
-                if (response.ok) {
-                    alert('Funcionário deletado com sucesso!');
-                    location.reload();
-                } else {
-                    alert('Erro ao deletar funcionário.');
-                }
+                alert('Funcionário deletado com sucesso!');
+                location.reload();
             } catch (error) {
                 console.error('Erro ao deletar funcionário:', error);
             }
@@ -561,14 +569,17 @@
             .then(data => {
                 document.getElementById('edit-nome').value = data.nome;
                 document.getElementById('edit-cpf').value = data.cpf;
-                document.getElementById('edit-dataNascimento').value = data.dataDeNascimento;
+                document.getElementById('edit-dataNascimento').value = data.dataNascimento;
                 document.getElementById('edit-rua').value = data.rua;
                 document.getElementById('edit-bairro').value = data.bairro;
                 document.getElementById('edit-numero').value = data.numero;
                 document.getElementById('edit-cep').value = data.cep;
                 document.getElementById('edit-cargo').value = data.cargo;
-                document.getElementById('edit-setor').value = data.setor;
+                if (data.setor && data.setor.id) {
+                    document.getElementById('edit-setor').value = data.setor.id;
+                }
 
+                document.getElementById('edit-cpfgerente').value = data.cpfGerente;
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
             })
@@ -581,7 +592,7 @@
     }
 
     // Atualizar o funcionário
-    document.getElementById('edit').addEventListener('click', function (e) {
+    document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
         const cpf = document.getElementById('edit-cpf').value;
@@ -592,21 +603,30 @@
         const numero = document.getElementById('edit-numero').value;
         const cep = document.getElementById('edit-cep').value;
         const cargo = document.getElementById('edit-cargo').value;
-        const setor = document.getElementById('edit-setor').value;
+        const setorId = document.getElementById('edit-setor').value;
+        const cpfGerente = document.getElementById('edit-cpfgerente').value;
+
+        const setor = {
+            "id": setorId
+        }
 
         const body = {
+            setor,
+            cargo,
+            cpf,
             nome,
             dataNascimento,
             rua,
             bairro,
-            numero,
             cep,
-            cargo,
-            setor
+            numero,
+            cpfGerente
         };
+        console.log(JSON.stringify(body));
+
 
         try {
-            const response = fetch(`/funcionarios/cpf?valor=${cpf}`, {
+            const response = await fetch(`/funcionarios/cpf?valor=${cpf}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
@@ -624,50 +644,99 @@
         }
     });
 
-    // Incluir funcionário
-    document.getElementById('add').addEventListener('click', function (e) {
+    // Incluir
+    document.getElementById('add').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const cpf = document.getElementById('edit-cpf').value;
-        const nome = document.getElementById('edit-nome').value;
-        const dataNascimento = document.getElementById('edit-dataNascimento').value;
-        const rua = document.getElementById('edit-rua').value;
-        const bairro = document.getElementById('edit-bairro').value;
-        const numero = document.getElementById('edit-numero').value;
-        const cep = document.getElementById('edit-cep').value;
-        const cargo = document.getElementById('edit-cargo').value;
-        const setor = document.getElementById('edit-setor').value;
+        const cpf = document.getElementById('cpf').value;
+        const nome = document.getElementById('nome').value;
+        const dataNascimento = new Date(document.getElementById('dataNascimento').value).toISOString().split('T')[0];
+        const rua = document.getElementById('rua').value;
+        const bairro = document.getElementById('bairro').value;
+        const numero = document.getElementById('numero').value;
+        const cep = document.getElementById('cep').value;
+        const cargo = document.getElementById('cargo').value;
+        const setorId = document.getElementById('setor').value;
+        const cpfGerente = document.getElementById('cpfgerente').value;
+
+        const setor = {
+            "id": setorId
+        };
 
         const body = {
+            setor,
+            cargo,
             cpf,
             nome,
             dataNascimento,
             rua,
             bairro,
-            numero,
             cep,
-            cargo,
-            setor
+            numero,
+            cpfGerente
         };
 
         try {
-            const response = fetch(`/funcionarios`, {
+            const response = await fetch(`/funcionarios`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
             });
 
-            if (!response.ok) {
-                throw new Error(`Erro ao incluir funcionário: ${response.status}`);
+            if (response.status === 201) {
+                const message = await response.text(); // Lê a resposta em texto
+                alert(message || 'Funcionário incluído com sucesso!');
+                closePopup();
+                location.reload();
+            } else {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || `Erro ao incluir funcionário: ${response.status}`);
             }
-
-            alert('Funcionário incluído com sucesso!');
-            closePopup();
-            location.reload();
         } catch (error) {
             console.error('Erro ao incluir funcionário:', error);
+            alert(`Erro: ${error.message}`);
         }
     });
+
+    function fetchFuncionarios() {
+        fetch('/funcionarios/listar')
+            .then(response => response.json())
+            .then(funcionarios => {
+                const tbody = document.querySelector('#funcionarios-tbody');
+                tbody.innerHTML = '';
+
+                funcionarios.forEach(funcionario => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                            <td>${funcionario.nome}</td>
+                            <td>${funcionario.cpf}</td>
+                            <td>${funcionario.dataDeNascimento}</td>
+                            <td>${funcionario.rua}, ${funcionario.bairro}, ${funcionario.numero}</td>
+                            <td>${funcionario.cargo}</td>
+                            <td>${funcionario.setor.nome}</td>
+                            <td>${funcionario.cpfGerente}</td>
+                            <td>
+                                <button onclick="openEditPopup(${funcionario.cpf})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="deletarFuncionario(${funcionario.cpf})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
+                                </button>
+                            </td>
+                        `;
+
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os funcionários:', error);
+            });
+    }
+
+    window.onload = fetchFuncionarios;
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

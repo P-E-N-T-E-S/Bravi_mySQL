@@ -59,6 +59,16 @@ public class CategoriaController {
         return "categorias";
     }
 
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarCategorias() {
+        try {
+            List<Categoria> categorias = categoriaService.listar();
+            return ResponseEntity.ok(categorias);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao carregar categorias");
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable int id) {
         try {
