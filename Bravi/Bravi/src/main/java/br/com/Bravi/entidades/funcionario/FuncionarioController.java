@@ -3,12 +3,14 @@ package br.com.Bravi.entidades.funcionario;
 import br.com.Bravi.entidades.setor.Setor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/funcionario")
+@Controller
+@RequestMapping("/funcionarios")
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
@@ -24,8 +26,10 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Funcionario>> listarFuncionarios() {
-        return new ResponseEntity<>(funcionarioService.listar(), HttpStatus.OK);
+    public String listarFuncionarios(Model model) {
+        List<Funcionario> funcionarios = funcionarioService.listar();
+        model.addAttribute("funcionarios", funcionarios);
+        return "funcionarios";
     }
 
     @GetMapping("/{filtro}")
