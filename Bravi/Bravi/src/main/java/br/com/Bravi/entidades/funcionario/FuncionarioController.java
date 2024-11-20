@@ -21,8 +21,18 @@ public class FuncionarioController {
 
     @PostMapping
     public ResponseEntity<String> novoFuncionario(@RequestBody Funcionario funcionario) {
-        funcionarioService.inserir(funcionario);
-        return new ResponseEntity<>("Funcionário salvo com sucesso!", HttpStatus.CREATED);
+        try {
+            funcionarioService.inserir(funcionario);
+            return new ResponseEntity<>("Funcionário salvo com sucesso!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<?>  listarFuncionarios() {
+        List<Funcionario> funcionarios = funcionarioService.listar();
+        return ResponseEntity.ok(funcionarios);
     }
 
     @GetMapping

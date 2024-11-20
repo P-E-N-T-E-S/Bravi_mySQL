@@ -325,23 +325,17 @@
                         <th scope="col">Descrição</th>
                         <th scope="col">Categoria</th>
                         <th scope="col">Editar</th>
-                        <th scope="col">Deletar</th>
                     </tr>
                     </thead>
                     <tbody id="produtos-tbody">
-                    <tr th:each="produto : ${produtos}">
+                    <tr th:each="produto : ${produtos}" >
                         <td th:text="${produto.nsm}"></td>
                         <td th:text="${produto.nome}"></td>
                         <td th:text="${produto.descricao}"></td>
+                        <td th:text="${produto.categoria.nome}"></td>
                         <td>
                             <button th:onclick="'openEditPopup(' + ${produto.nsm} + ')'">
                                 <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
-                            </button>
-                        </td>
-
-                        <td>
-                            <button th:onclick="'deletarProduto(' + ${produto.nsm} + ')'">
-                                <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
                             </button>
                         </td>
                     </tr>
@@ -354,23 +348,6 @@
 <script src="/js/script.js"></script>
 <script>
 
-    function deletarProduto(nsm) {
-        if (confirm('Tem certeza que deseja deletar este produto?')) {
-            fetch(`/produtos/${nsm}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Produto deletado com sucesso!');
-                        location.reload();
-                    } else {
-                        alert('Erro ao deletar o produto.');
-                    }
-                })
-                .catch(error => console.error('Erro ao deletar o produto:', error));
-        }
-    }
-
     function openEditPopup(nsm) {
         fetch(`/produtos/${nsm}`)
             .then(response => {
@@ -382,7 +359,7 @@
             .then(data => {
                 document.getElementById('edit-nome').value = data.nome;
                 document.getElementById('edit-descricao').value = data.descricao;
-                carregarCategorias('editar', null);
+                carregarCategorias('editar', data.categoria.id);
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
@@ -396,14 +373,23 @@
     document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
+        const nsm = document.getElementById('edit-nome').dataset.id;
         const nome = document.getElementById('edit-nome').value;
         const descricao = document.getElementById('edit-descricao').value;
+        const categoriaId = document.getElementById('categoria-select').value;
+
+        const categoria = {
+            "id": categoriaId
+        }
 
         const body = {
+            nsm,
             nome,
-            descricao
+            descricao,
+            categoria
         };
 
+        console.log(body);
         try {
             const response = await fetch(`/produtos/${nsm}`, {
                 method: 'PUT',
@@ -423,8 +409,45 @@
         }
     });
 
+    // Incluir
+    document.getElementById('add').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('nome').value;
+        const descricao = document.getElementById('descricao').value;
+        const categoriaId = document.getElementById('categoria-select').value;
+
+        const categoria = {
+            "id": categoriaId
+        }
+
+        const body = {
+            nome,
+            descricao,
+            categoria
+        };
+
+        console.log(body);
+
+        try {
+            const response = await fetch(`/produtos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            const message = await response.text();
+            alert(message || 'Produto incluído com sucesso!');
+            closePopup();
+            location.reload();
+        } catch (error) {
+            console.error('Erro ao incluir produto:', error);
+            alert(`Erro: ${error.message}`);
+        }
+    });
+
     function carregarCategorias(tipo, categoriaSelecionada = null) {
-        fetch('http://localhost:8080/categorias')
+        fetch('/categorias/listar')
             .then(response => response.json())
             .then(categorias => {
                 const selectElement = document.getElementById(tipo === 'editar' ? 'edit-categoria-select' : 'categoria-select');
