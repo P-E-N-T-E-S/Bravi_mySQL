@@ -3,11 +3,13 @@ package br.com.Bravi.entidades.fornecedor;
 import br.com.Bravi.exceptions.FornecedorNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/fornecedores")
 public class FornecedorController {
 
@@ -58,9 +60,16 @@ public class FornecedorController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Fornecedor>> listarFornecedores() {
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarFornecedores() {
         List<Fornecedor> fornecedores = fornecedorService.listarFornecedores();
-        return new ResponseEntity<>(fornecedores, HttpStatus.OK);
+        return ResponseEntity.ok(fornecedores);
+    }
+
+    @GetMapping
+    public String listarFornecedores(Model model) {
+        List<Fornecedor> fornecedores = fornecedorService.listarFornecedores();
+        model.addAttribute("fornecedores", fornecedores);
+        return "fornecedores";
     }
 }
