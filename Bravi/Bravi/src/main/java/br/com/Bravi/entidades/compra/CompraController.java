@@ -1,21 +1,29 @@
 package br.com.Bravi.entidades.compra;
 
+import br.com.Bravi.entidades.cliente.ClienteService;
+import br.com.Bravi.entidades.produto.ProdutoService;
 import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import br.com.Bravi.exceptions.CompraNaoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/compra")
+@Controller
+@RequestMapping("/vendas")
 public class CompraController {
 
     private final CompraService compraService;
+    private final ProdutoService produtoService;
+    private final ClienteService clienteService;
 
-    public CompraController(CompraService compraService) {
+    public CompraController(CompraService compraService, ProdutoService produtoService, ClienteService clienteService) {
         this.compraService = compraService;
+        this.produtoService = produtoService;
+        this.clienteService = clienteService;
     }
 
     @PostMapping
@@ -51,11 +59,15 @@ public class CompraController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Compra>> listarCompra() {
+    public String listarCompra(Model model) {
         List<Compra> compras = compraService.listarCompra();
-        return ResponseEntity.ok(compras);
-    }
+        model.addAttribute("compras", compras);
 
+        model.addAttribute("produtos", produtoService.listarProdutos());
+        model.addAttribute("clientes", clienteService.listar());
+
+        return "vendas";
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Compra> buscarCompraPorId(@PathVariable("id") int id) {
         try {

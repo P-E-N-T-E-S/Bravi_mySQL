@@ -230,22 +230,23 @@
                         <div class="mb-3">
                             <label class="form-label">Produto</label>
                             <select class="form-select" aria-label="Produto" id="produto-select">
-                                <option>Selecione o produto</option>
+                                <option disabled selected>Selecione o produto</option>
+                                <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Cliente</label>
                             <select for="cliente" class="form-select" aria-label="Cliente" id="cliente-select">
-                                <option>Selecione o cliente</option>
+                                <option disabled selected>Selecione o cliente</option>
+                                <option th:each="cliente : ${clientes}" th:value="${cliente.cnpj}" th:text="${cliente.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Valor</label>
                             <input
-                                    type="number"
                                     placeholder="R$00.00"
                                     class="form-control"
-                                    name="edit-valor"
+                                    name="valor"
                                     id="valor"
                                     required
                             />
@@ -274,19 +275,20 @@
                         <div class="mb-3">
                             <label class="form-label">Produto</label>
                             <select class="form-select" aria-label="Produto" id="edit-produto-select">
-                                <option>Selecione o produto</option>
+                                <option disabled>Selecione o produto</option>
+                                <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Cliente</label>
                             <select class="form-select" aria-label="Cliente" id="edit-cliente-select">
-                                <option>Selecione o cliente</option>
+                                <option disabled>Selecione o cliente</option>
+                                <option th:each="cliente : ${clientes}" th:value="${cliente.cnpj}" th:text="${cliente.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Valor</label>
                             <input
-                                    type="number"
                                     placeholder="R$00.00"
                                     class="form-control"
                                     name="edit-valor"
@@ -313,7 +315,6 @@
                         <th scope="col">Cliente</th>
                         <th scope="col">Valor</th>
                         <th scope="col">Editar</th>
-                        <th scope="col">Deletar</th>
                     </tr>
                     </thead>
                     <tbody id="categorias-tbody">
@@ -327,12 +328,6 @@
                                 <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
                             </button>
                         </td>
-
-                        <td>
-                            <button th:onclick="'deletarCompra(' + ${compra.id} + ')'">
-                                <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
-                            </button>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -342,23 +337,6 @@
 </div>
 <script src="/js/script.js"></script>
 <script>
-
-    function deletarCompra(id) {
-        if (confirm('Tem certeza que deseja deletar esta venda?')) {
-            fetch(`/vendas/${id}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Venda deletada com sucesso!');
-                        location.reload();
-                    } else {
-                        alert('Erro ao deletar venda');
-                    }
-                })
-                .catch(error => console.error('Erro ao deletar venda:', error));
-        }
-    }
 
     function openEditPopup(id) {
         fetch(`/vendas/${id}`)
@@ -372,6 +350,9 @@
                 document.getElementById('edit-produto-select').value = data.produto;
                 document.getElementById('edit-cliente-select').value = data.cliente;
                 document.getElementById('edit-valor').value = data.valor;
+
+                const productSelect = document.getElementById('edit-produto-select')
+                productSelect.dataset.id = id;
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
@@ -388,30 +369,28 @@
     document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const id = window.editCategoryId
-        const produto = document.getElementById('edit-produto-select').value;
-        const cliente = document.getElementById('edit-cliente-select').value;
+        const id = document.getElementById('edit-produto-select').dataset.id;
+        const produtoNsm = document.getElementById('edit-produto-select').value;
+        const clienteCnpj = document.getElementById('edit-cliente-select').value;
         const valor = document.getElementById('edit-valor').value;
 
         const body = {
-            produto,
-            cliente,
+            clienteCnpj,
+            produtoNsm,
             valor
-        }
+        };
 
-        if (!window.editCategoryId) {
-            alert('Erro: Categoria não encontrada!');
-            return;
-        }
+        console.log(body);
+        console.log(id);
         try {
             const response = await fetch(`/vendas/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ body })
+                body: JSON.stringify(body)
             });
 
             if (!response.ok) {
-                throw new Error(`Erro ao atualizar categoria: ${response.status}`);
+                throw new Error(`Erro ao atualizar venda: ${response.status}`);
             }
 
             alert('Venda atualizada com sucesso!');
@@ -426,21 +405,21 @@
     document.getElementById('add').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const produto = document.getElementById('edit-produto-select').value;
-        const cliente = document.getElementById('edit-cliente-select').value;
-        const valor = document.getElementById('edit-valor').value;
+        const produtoNsm = document.getElementById('produto-select').value;
+        const clienteCnpj = document.getElementById('cliente-select').value;
+        const valor = document.getElementById('valor').value;
 
         const body = {
-            produto,
-            cliente,
+            clienteCnpj,
+            produtoNsm,
             valor
-        }
+        };
 
         try {
             const response = await fetch(`/vendas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ body })
+                body: JSON.stringify(body)
             });
 
             if (!response.ok) {
@@ -454,57 +433,6 @@
             console.error('Erro ao incluir a venda:', error);
         }
     });
-
-    function carregarProdutos(tipo, produtoSelecionado) {
-        fetch('/produtos')
-            .then(response => response.json())
-            .then(produtos => {
-                const selectElement = document.getElementById(tipo === 'editar' ? 'edit-produto-select' : 'produto-select');
-                selectElement.innerHTML = '<option>Selecione o produto</option>';
-
-                produtos.forEach(produto => {
-                    const option = document.createElement('option');
-                    option.value = produto.nsm;
-                    option.textContent = produto.nome;
-                    if (produto.nsm === produtoSelecionado) {
-                        option.selected = true;
-                    }
-                    selectElement.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao carregar produtos:', error);
-            });
-    }
-
-    function carregarClientes(tipo, clienteSelecionado) {
-        fetch('/clientes')
-            .then(response => response.json())
-            .then(clientes => {
-                const selectElement = document.getElementById(tipo === 'editar' ? 'edit-cliente-select' : 'cliente-select');
-                // Limpa as opções antes de adicioná-las
-                selectElement.innerHTML = '<option>Selecione o cliente</option>';
-
-                clientes.forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente.cnpj;
-                    option.textContent = cliente.nome;
-                    if (cliente.cnpj === clienteSelecionado) {
-                        option.selected = true;
-                    }
-                    selectElement.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao carregar clientes:', error);
-            });
-    }
-
-    // Chamada das funções ao carregar a página
-    window.onload = function () {
-        carregarProdutos('editar');
-        carregarClientes('editar');
-    };
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
