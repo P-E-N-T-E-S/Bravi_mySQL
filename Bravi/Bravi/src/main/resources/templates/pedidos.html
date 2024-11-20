@@ -1,10 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bravi: Pedidos</title>
+    <link
+            rel="icon"
+            type="image/x-icon"
+            href="/img/icon.png"
+    />
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/css/styles.css">
 
+    <style>
+        .tabelas {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        thead {
+            background-color: #e0e0e0;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:white;
+            margin-top: 2.6rem;
+            margin-bottom: 1.8rem;
+            padding: .6rem;
+            border-radius: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .head h2 {
+            font-weight: bold;
+            margin-top: .4rem;
+        }
+
+        td i {
+            margin: auto 1rem;
+            color: black;
+        }
+
+        table button {
+            background: none;
+            border: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .popup{
+            width: 34rem;
+            height: 32rem;
+            background: #fff;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 1.2rem;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            text-align: left;
+            padding: 0 30px 60px;
+            color: #333;
+            visibility: hidden;
+            transition: all 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .open-popup{
+            visibility: visible;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup h3{
+            font-weight: bold;
+        }
+
+        #add, #edit {
+            width: 100%;
+            outline: none;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+            margin-top: 1rem;
+            background-color: #033E8C;
+            height: 2.4rem;
+        }
+
+        .popup button {
+            background: none;
+            border: none;
+            height: 1rem;
+        }
+
+        .popup-head {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <img src="/img/icon.png">
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">Bravi</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="material-symbols-outlined"> monitoring </i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#entradas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined"> receipt_long </i>
+                    <span>Entradas</span>
+                </a>
+                <ul id="entradas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/pedidos" class="sidebar-link">Pedidos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/fornecedores" class="sidebar-link">Fornecedores</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#saidas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        sell
+                    </i>
+                    <span>Saídas</span>
+                </a>
+                <ul id="saidas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/vendas" class="sidebar-link">Vendas</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/clientes" class="sidebar-link">Clientes</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#gerenciamento" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        inventory_2
+                    </i>
+                    <span>Gerenciamento</span>
+                </a>
+                <ul id="gerenciamento" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/estoque" class="sidebar-link">Estoque</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/produtos" class="sidebar-link">Produtos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/categorias" class="sidebar-link">Categorias</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="/funcionarios" class="sidebar-link">
+                    <i class="material-symbols-outlined"> engineering </i>
+                    <span>Funcionários</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link">
+                <i class="material-symbols-outlined"> logout </i>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+    <div class="main p-3">
+        <div class="container">
+            <div class="head">
+                <h2>Entradas > Pedidos</h2>
+            </div>
+
+            <div class="overlay" id="overlay">
+                <div class="popup" id="popup">
+                    <div class="popup-head">
+                        <h3>Dados do pedido</h3>
+                        <button onclick="closePopup()">
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Produto</label>
+                            <select class="form-select" aria-label="Produto" id="produto-select">
+                                <option disabled selected>Selecione o produto</option>
+                                <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fornecedor</label>
+                            <select class="form-select" aria-label="Fornecedor" id="fornecedor-select">
+                                <option disabled selected>Selecione o fornecedor</option>
+                                <option th:each="fornecedor : ${fornecedores}" th:value="${fornecedor.cnpj}" th:text="${fornecedor.nome}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Valor</label>
+                            <input
+                                    placeholder="R$00.00"
+                                    class="form-control"
+                                    name="valor"
+                                    id="valor"
+                                    required
+                            />
+                        </div>
+                        <button
+                                type="submit"
+                                class="btn btn-dark"
+                                id="add"
+                        >Incluir</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="overlay" id="edit-overlay">
+                <div class="popup" id="edit-popup">
+                    <div class="popup-head">
+                        <h3>Editar pedido</h3>
+                        <button onclick="closeEditPopup()">
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Produto</label>
+                            <select class="form-select" aria-label="Produto" id="edit-produto-select">
+                                <option disabled>Selecione o produto</option>
+                                <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fornecedor</label>
+                            <select class="form-select" aria-label="Fornecedor" id="edit-fornecedor-select">
+                                <option disabled selected>Selecione o fornecedor</option>
+                                <option th:each="fornecedor : ${fornecedores}" th:value="${fornecedor.cnpj}" th:text="${fornecedor.nome}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Valor</label>
+                            <input
+                                    placeholder="R$00.00"
+                                    class="form-control"
+                                    name="edit-valor"
+                                    id="edit-valor"
+                                    required
+                            />
+                        </div>
+                        <button
+                                type="submit"
+                                class="btn btn-dark"
+                                id="edit"
+                        >Salvar</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tabelas">
+                <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 10rem;" onclick="openPopup()">Incluir venda</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Editar</th>
+                    </tr>
+                    </thead>
+                    <tbody id="categorias-tbody">
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.id}"></td>
+                        <td th:text="${pedido.produtoNsm}"></td>
+                        <td th:text="${pedido.fornecedorCnpj}"></td>
+                        <td th:text="${pedido.valor}"></td>
+                        <td>
+                            <button th:onclick="'openEditPopup(' + ${pedido.id} + ')'">
+                                <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/script.js"></script>
+<script>
+
+    function openEditPopup(id) {
+        fetch(`/pedidos/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar pedido: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('edit-produto-select').value = data.produto;
+                document.getElementById('edit-fornecedor-select').value = data.fornecedor;
+                document.getElementById('edit-valor').value = data.valor;
+
+                const productSelect = document.getElementById('edit-produto-select')
+                productSelect.dataset.id = id;
+
+                document.getElementById('edit-popup').classList.add('open-popup');
+                document.getElementById('edit-overlay').style.visibility = 'visible';
+            })
+            .catch(error => console.error('Erro ao buscar pedido:', error));
+    }
+
+    function closeEditPopup() {
+        document.getElementById('edit-popup').classList.remove('open-popup');
+        document.getElementById('edit-overlay').style.visibility = 'hidden';
+    }
+
+    // Atualizar
+    document.getElementById('edit').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById('edit-produto-select').dataset.id;
+        const produtoNsm = document.getElementById('edit-produto-select').value;
+        const fornecedorCnpj = document.getElementById('edit-fornecedor-select').value;
+        const valor = document.getElementById('edit-valor').value;
+
+        const body = {
+            produtoNsm,
+            fornecedorCnpj,
+            valor
+        };
+
+        try {
+            const response = await fetch(`/pedidos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ao atualizar pedido: ${response.status}`);
+            }
+
+            alert('Pedido atualizado com sucesso!');
+            closeEditPopup();
+            location.reload();
+        } catch (error) {
+            console.error('Erro ao atualizar pedido:', error);
+        }
+    });
+
+    // Incluir
+    document.getElementById('add').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const produtoNsm = document.getElementById('produto-select').value;
+        const fornecedorCnpj = document.getElementById('fornecedor-select').value;
+        const valor = document.getElementById('valor').value;
+
+        const body = {
+            produtoNsm,
+            fornecedorCnpj,
+            valor
+        };
+
+        try {
+            const response = await fetch(`/pedidos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ao incluir pedido: ${response.status}`);
+            }
+
+            alert('Pedido criado com sucesso!');
+            closePopup();
+            location.reload();
+        } catch (error) {
+            console.error('Erro ao incluir pedido:', error);
+        }
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
