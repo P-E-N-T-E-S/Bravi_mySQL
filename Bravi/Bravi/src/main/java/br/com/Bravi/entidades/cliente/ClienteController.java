@@ -4,12 +4,14 @@ import br.com.Bravi.entidades.cliente.impl.ClienteServiceImpl;
 import br.com.Bravi.exceptions.ClienteNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/cliente")
+@Controller
+@RequestMapping("/clientes")
 public class ClienteController {
 
     private final ClienteServiceImpl clienteService;
@@ -45,10 +47,17 @@ public class ClienteController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Cliente>> listarClientes() {
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarClientes() {
         List<Cliente> clientes = clienteService.listar();
-        return new ResponseEntity<>(clientes, HttpStatus.OK);
+        return ResponseEntity.ok(clientes);
+    }
+
+    @GetMapping
+    public String listar(Model model) {
+        List<Cliente> clientes = clienteService.listar();
+        model.addAttribute("clientes", clientes);
+        return "clientes";
     }
 
     @GetMapping("/{cnpj}")

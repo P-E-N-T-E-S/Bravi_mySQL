@@ -1,10 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bravi: Clientes</title>
+    <link
+            rel="icon"
+            type="image/x-icon"
+            href="/img/icon.png"
+    />
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="/css/styles.css">
 
+
+    <style>
+        .tabelas {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        thead {
+            background-color: #e0e0e0;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:white;
+            margin-top: 2.6rem;
+            margin-bottom: 1.8rem;
+            padding: .6rem;
+            border-radius: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .head h2 {
+            font-weight: bold;
+            margin-top: .4rem;
+        }
+
+        td i {
+            margin: auto 1rem;
+            color: black;
+        }
+
+        table button {
+            background: none;
+            border: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .form-short {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .popup{
+            width: 34rem;
+            height: 36.6rem;
+            background: #fff;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 1.2rem;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            text-align: left;
+            padding: 0 30px 60px;
+            color: #333;
+            visibility: hidden;
+            transition: all 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .open-popup{
+            visibility: visible;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup h3{
+            font-weight: bold;
+        }
+
+        #add, #edit {
+            width: 100%;
+            outline: none;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+            margin-top: .4rem;
+            background-color: #033E8C;
+            height: 2.4rem;
+        }
+
+        .popup button {
+            background: none;
+            border: none;
+            height: 1rem;
+        }
+
+        .popup-head {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            margin-bottom: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <img src="/img/icon.png">
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">Bravi</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="material-symbols-outlined"> monitoring </i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#entradas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined"> receipt_long </i>
+                    <span>Entradas</span>
+                </a>
+                <ul id="entradas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/pedidos" class="sidebar-link">Pedidos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/fornecedores" class="sidebar-link">Fornecedores</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#saidas" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        sell
+                    </i>
+                    <span>Saídas</span>
+                </a>
+                <ul id="saidas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/vendas" class="sidebar-link">Vendas</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/clientes" class="sidebar-link">Clientes</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                   data-bs-target="#gerenciamento" aria-expanded="false" aria-controls="auth">
+                    <i class="material-symbols-outlined">
+                        inventory_2
+                    </i>
+                    <span>Gerenciamento</span>
+                </a>
+                <ul id="gerenciamento" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="/estoque" class="sidebar-link">Estoque</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/produtos" class="sidebar-link">Produtos</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/categorias" class="sidebar-link">Categorias</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="/funcionarios" class="sidebar-link">
+                    <i class="material-symbols-outlined"> engineering </i>
+                    <span>Funcionários</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link">
+                <i class="material-symbols-outlined"> logout </i>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+    <div class="main p-3">
+        <div class="container">
+            <div class="head">
+                <h2>Saídas > Clientes</h2>
+            </div>
+
+            <div class="overlay" id="overlay">
+                <div class="popup" id="popup">
+                    <div class="popup-head">
+                        <h3>Dados do cliente</h3>
+                        <button onclick="closePopup()">
+                    <span class="material-symbols-outlined">
+                      close
+                    </span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome do Funcionário</label>
+                                <input
+                                        type="text"
+                                        placeholder="Nome"
+                                        class="form-control"
+                                        name="nome"
+                                        id="nome"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CNPJ</label>
+                                <input
+                                        type="text"
+                                        placeholder="CNPJ"
+                                        class="form-control"
+                                        name="cnpj"
+                                        id="cnpj"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label class="form-label">Razão social</label>
+                                <input
+                                        type="text"
+                                        placeholder="Razão social LTDA"
+                                        class="form-control"
+                                        name="razaosocial"
+                                        id="razaosocial"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Inscrição estadual</label>
+                                <input
+                                        type="text"
+                                        placeholder="Inscrição estadual"
+                                        class="form-control"
+                                        name="inscricaoEstadual"
+                                        id="inscricaoEstadual"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3" style="margin-right: .4rem">
+                                <label for="rua" class="form-label">Rua</label>
+                                <input
+                                        type="text"
+                                        placeholder="Rua"
+                                        class="form-control"
+                                        name="rua"
+                                        id="rua"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3" style="margin-right: .4rem">
+                                <label for="bairro" class="form-label">Bairro</label>
+                                <input
+                                        type="text"
+                                        placeholder="Bairro"
+                                        class="form-control"
+                                        name="bairro"
+                                        id="bairro"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="numero" class="form-label">Número</label>
+                                <input
+                                        type="text"
+                                        placeholder="Número"
+                                        class="form-control"
+                                        name="numero"
+                                        id="numero"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label class="form-label">Número 2</label>
+                                <input
+                                        type="text"
+                                        placeholder="Número 2"
+                                        class="form-control"
+                                        name="numero2"
+                                        id="numero2"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CEP</label>
+                                <input
+                                        type="text"
+                                        placeholder="CEP"
+                                        class="form-control"
+                                        name="cep"
+                                        id="cep"
+                                        required
+                                />
+                            </div>
+                        </div>
+                        <button
+                                type="submit"
+                                class="btn btn-dark"
+                                id="add"
+                        >Incluir</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="overlay" id="edit-overlay">
+                <div class="popup" id="edit-popup">
+                    <div class="popup-head">
+                        <h3>Editar fornecedor</h3>
+                        <button onclick="closeEditPopup()">
+                <span class="material-symbols-outlined">
+                  close
+                </span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome do fornecedor</label>
+                                <input
+                                        type="text"
+                                        placeholder="Nome"
+                                        class="form-control"
+                                        name="edit-nome"
+                                        id="edit-nome"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CNPJ</label>
+                                <input
+                                        type="text"
+                                        placeholder="CNPJ"
+                                        class="form-control"
+                                        name="edit-cnpj"
+                                        id="edit-cnpj"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label class="form-label">Razão social</label>
+                                <input
+                                        type="text"
+                                        placeholder="Razão social LTDA"
+                                        class="form-control"
+                                        name="edit-razaosocial"
+                                        id="edit-razaosocial"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Inscrição estadual</label>
+                                <input
+                                        type="text"
+                                        placeholder="Inscrição estadual"
+                                        class="form-control"
+                                        name="edit-inscricaoEstadual"
+                                        id="edit-inscricaoEstadual"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3" style="margin-right: .4rem">
+                                <label for="rua" class="form-label">Rua</label>
+                                <input
+                                        type="text"
+                                        placeholder="Rua"
+                                        class="form-control"
+                                        name="edit-rua"
+                                        id="edit-rua"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3" style="margin-right: .4rem">
+                                <label for="bairro" class="form-label">Bairro</label>
+                                <input
+                                        type="text"
+                                        placeholder="Bairro"
+                                        class="form-control"
+                                        name="edit-bairro"
+                                        id="edit-bairro"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="numero" class="form-label">Número</label>
+                                <input
+                                        type="text"
+                                        placeholder="Número"
+                                        class="form-control"
+                                        name="edit-numero"
+                                        id="edit-numero"
+                                        required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-short">
+                            <div class="mb-3">
+                                <label class="form-label">Número 2</label>
+                                <input
+                                        type="text"
+                                        placeholder="Número 2"
+                                        class="form-control"
+                                        name="edit-numero2"
+                                        id="edit-numero2"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CEP</label>
+                                <input
+                                        type="text"
+                                        placeholder="CEP"
+                                        class="form-control"
+                                        name="edit-cep"
+                                        id="edit-cep"
+                                        required
+                                />
+                            </div>
+                        </div>
+                        <button
+                                type="submit"
+                                class="btn btn-dark"
+                                id="edit"
+                        >Salvar</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tabelas">
+                <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 11rem;" onclick="openPopup()">Incluir cliente</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CNPJ</th>
+                        <th scope="col">Inscrição estadual</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Razão social</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Deletar</th>
+                    </tr>
+                    </thead>
+                    <tbody id="funcionarios-tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/script.js"></script>
+<script>
+    function deletarCliente(cnpj) {
+        if (confirm('Tem certeza que deseja deletar este cliente?')) {
+            try {
+                const response = fetch(`/clientes/${cnpj}`, {
+                    method: 'DELETE'
+                });
+
+                alert('Cliente deletado com sucesso!');
+                fetchClientes();
+                location.reload();
+            } catch (error) {
+                console.error('Erro ao deletar cliente:', error);
+            }
+        }
+    }
+
+    function openEditPopup(cnpj) {
+        fetch(`/clientes/${cnpj}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar cliente: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('edit-nome').value = data.nome;
+                document.getElementById('edit-cnpj').value = data.cnpj;
+                document.getElementById('edit-inscricaoEstadual').value = data.inscricaoEstadual;
+                document.getElementById('edit-razaosocial').value = data.razaoSocial;
+                document.getElementById('edit-rua').value = data.rua;
+                document.getElementById('edit-bairro').value = data.bairro;
+                document.getElementById('edit-numero').value = data.numero;
+                document.getElementById('edit-numero2').value = data.numero2;
+                document.getElementById('edit-cep').value = data.cep;
+
+                document.getElementById('edit-popup').classList.add('open-popup');
+                document.getElementById('edit-overlay').style.visibility = 'visible';
+            })
+            .catch(error => console.error('Erro ao buscar fornecedor:', error));
+    }
+
+    function closeEditPopup() {
+        document.getElementById('edit-popup').classList.remove('open-popup');
+        document.getElementById('edit-overlay').style.visibility = 'hidden';
+    }
+
+    // Atualizar
+    document.getElementById('edit').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('edit-nome').value;
+        const cnpj = document.getElementById('edit-cnpj').value;
+        const inscricaoEstadual = document.getElementById('edit-inscricaoEstadual').value;
+        const rua = document.getElementById('edit-rua').value;
+        const bairro = document.getElementById('edit-bairro').value;
+        const numero = document.getElementById('edit-numero').value;
+        const numero2 = document.getElementById('edit-numero2').value;
+        const cep = document.getElementById('edit-cep').value;
+        const razaoSocial = document.getElementById('edit-razaosocial').value;
+
+        const body = {
+            nome,
+            cnpj,
+            rua,
+            bairro,
+            cep,
+            numero,
+            numero2,
+            inscricaoEstadual,
+            razaoSocial
+        };
+
+        try {
+            const response = await fetch(`/clientes/${cnpj}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ao atualizar cliente: ${response.status}`);
+            }
+
+            alert('Cliente atualizado com sucesso!');
+            closeEditPopup();
+            location.reload();
+        } catch (error) {
+            console.error('Erro ao atualizar cliente:', error);
+        }
+    });
+
+    // Incluir
+    document.getElementById('add').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('nome').value
+        const cnpj = document.getElementById('cnpj').value
+        const inscricaoEstadual = document.getElementById('inscricaoEstadual').value
+        const rua = document.getElementById('rua').value
+        const bairro = document.getElementById('bairro').value
+        const numero = document.getElementById('numero').value
+        const numero2 = document.getElementById('numero2').value
+        const cep = document.getElementById('cep').value
+        const razaoSocial = document.getElementById('razaosocial').value
+
+        const body = {
+            nome,
+            cnpj,
+            rua,
+            bairro,
+            cep,
+            numero,
+            numero2,
+            inscricaoEstadual,
+            razaoSocial
+        };
+
+        try {
+            const response = await fetch(`/clientes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (response.status === 201) {
+                const message = await response.text();
+                alert(message || 'Cliente incluído com sucesso!');
+                closePopup();
+                location.reload();
+            } else {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || `Erro ao incluir cliente: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Erro ao incluir cliente:', error);
+            alert(`Erro: ${error.message}`);
+        }
+    });
+
+    function fetchClientes() {
+        fetch('/clientes/listar')
+            .then(response => response.json())
+            .then(clientes => {
+                const tbody = document.querySelector('#funcionarios-tbody');
+                tbody.innerHTML = '';
+
+                clientes.forEach(cliente => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                            <td>${cliente.nome}</td>
+                            <td>${cliente.cnpj}</td>
+                            <td>${cliente.inscricaoEstadual}</td>
+                            <td>${cliente.rua}, ${cliente.bairro}, ${cliente.numero}</td>
+                            <td>${cliente.razaoSocial}</td>
+                            <td>
+                                <button onclick="openEditPopup(${cliente.cnpj})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="deletarCliente(${cliente.cnpj})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
+                                </button>
+                            </td>
+                        `;
+
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os clientes:', error);
+            });
+    }
+
+    window.onload = fetchClientes;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
