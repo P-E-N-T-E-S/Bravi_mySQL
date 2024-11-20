@@ -23,19 +23,21 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public void inserir(Produto produto) {
-        String sql = "INSERT INTO Produto (NSM, Nome, Descrição) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Produto (NSM, Nome, Descrição, fk_Categoria_id) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 produto.getNsm(),
                 produto.getNome(),
-                produto.getDescricao());
+                produto.getDescricao(),
+                produto.getCategoria().getId());
     }
 
     @Override
     public void alterar(Produto produto) {
-        String sql = "UPDATE Produto SET Nome = ?, Descrição = ? WHERE NSM = ?";
+        String sql = "UPDATE Produto SET Nome = ?, Descrição = ?, fk_Categoria_id = ? WHERE NSM = ?";
         int rowsAffected = jdbcTemplate.update(sql,
                 produto.getNome(),
                 produto.getDescricao(),
+                produto.getCategoria().getId(),
                 produto.getNsm());
 
         if (rowsAffected == 0) {
@@ -55,15 +57,20 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public List<Produto> listar() {
-        String sql = "SELECT p.NSM, p.Nome, p.Descrição FROM Produto p";
+        String sql = "SELECT p.NSM, p.Nome, p.Descrição, p.fk_Categoria_id, c.nome AS categoria_nome " +
+                "FROM Produto p " +
+                "LEFT JOIN Categoria c ON p.fk_Categoria_id = c.id";
         return jdbcTemplate.query(sql, produtoMapper);
     }
 
     @Override
     public Produto buscarPorNsm(int nsm) {
-        String sql = "SELECT p.NSM, p.Nome, p.Descrição FROM Produto p WHERE p.NSM = ?";
+        String sql = "SELECT p.NSM, p.Nome, p.Descrição, p.fk_Categoria_id, c.nome AS categoria_nome " +
+                "FROM Produto p " +
+                "LEFT JOIN Categoria c ON p.fk_Categoria_id = c.id " +
+                "WHERE p.NSM = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new MapperProduto(), nsm);
+            return jdbcTemplate.queryForObject(sql, new Object[]{nsm}, produtoMapper);
         } catch (EmptyResultDataAccessException e) {
             throw new ProdutoNaoEncontradoException("Produto com NSM " + nsm + " não encontrado.");
         }

@@ -1,5 +1,6 @@
 USE BDBravi;
 
+-- Inserindo categorias
 INSERT INTO Categoria (id, nome)
 VALUES
 (1, 'Limpeza'),
@@ -7,6 +8,16 @@ VALUES
 (3, 'Equipamentos'),
 (4, 'Portáteis');
 
+-- Inserindo produtos
+INSERT INTO Produto (NSM, Nome, Descrição, fk_Categoria_id)
+VALUES
+(1, 'Sabão Líquido', 'Produto de limpeza para uso geral', 1),
+(2, 'Notebook', 'Computador portátil de última geração', 2),
+(3, 'Detergente', 'Produto de limpeza com fórmula concentrada', 1),
+(4, 'Impressora', 'Equipamento multifuncional a laser', 3),
+(5, 'Tablet', 'Dispositivo portátil com tela touch screen', 4);
+
+-- Inserindo setores
 INSERT INTO Setor (id, nome)
 VALUES
 (1, 'Gestão'),
@@ -15,6 +26,7 @@ VALUES
 (4, 'Recursos Humanos'),
 (5, 'Desenvolvimento');
 
+-- Inserindo funcionários
 INSERT INTO Funcionario (fk_Setor_id, Cargo, CPF, Nome, Data_de_Nascimento, Rua, Bairro, CEP, Numero, CPF_GERENTE)
 VALUES
 (1, 'Gerente', '44444444444', 'João Silva', '1978-06-21', 'Rua A', 'Centro', '12345678', '10', NULL),
@@ -24,6 +36,7 @@ VALUES
 (5, 'Assistente', '88888888888', 'Pedro Santos', '1995-09-25', 'Rua E', 'Centro', '56789012', '50', '44444444444'),
 (5, 'Desenvolvedor', '99999999999', 'Julia Martins', '1993-12-10', 'Rua F', 'Zona Leste', '67890123', '60', '44444444444');
 
+-- Inserindo fornecedores
 INSERT INTO Fornecedor (categoria, CNPJ, Nome, Rua, Bairro, CEP, Numero, Numero2, Inscricao_Estadual, Razao_Social)
 VALUES
 ('Limpeza', '12345678901234', 'Fornecedor A', 'Av. das Indústrias', 'Industrial', '56789012', '100', '123', '987654321', 'Fornecedor A LTDA'),
@@ -31,6 +44,7 @@ VALUES
 ('Limpeza', '56789012345678', 'Fornecedor C', 'Av. Paulista', 'Centro', '34567890', '150', '125', '543216789', 'Fornecedor C LTDA'),
 ('Equipamentos', '67890123456789', 'Fornecedor D', 'Rua das Flores', 'Zona Norte', '45678901', '250', '126', '432109876', 'Fornecedor D EIRELI');
 
+-- Inserindo clientes
 INSERT INTO Cliente (CNPJ, Nome, Rua, Bairro, CEP, Numero, Numero2, Inscricao_Estadual, Razao_Social)
 VALUES
 ('34567890123456', 'Cliente A', 'Av. Central', 'Centro', '78901234', '300', '101', '765432109', 'Cliente A LTDA'),
@@ -38,22 +52,7 @@ VALUES
 ('56789012345678', 'Cliente C', 'Av. Rio Branco', 'Zona Oeste', '23456789', '350', '103', '321098765', 'Cliente C LTDA'),
 ('67890123456789', 'Cliente D', 'Rua das Palmeiras', 'Zona Norte', '12345678', '450', '104', '210987654', 'Cliente D LTDA');
 
-INSERT INTO Produto (NSM, Nome, Descrição)
-VALUES
-(1, 'Sabão Líquido', 'Produto de limpeza para uso geral'),
-(2, 'Notebook', 'Computador portátil de última geração'),
-(3, 'Detergente', 'Produto de limpeza com fórmula concentrada'),
-(4, 'Impressora', 'Equipamento multifuncional a laser'),
-(5, 'Tablet', 'Dispositivo portátil com tela touch screen');
-
-INSERT INTO Categoria_Produto (fk_Produto_NSM, fk_Categoria_id)
-VALUES
-(1, 1),
-(2, 2),
-(3, 1),
-(4, 3),
-(5, 4);
-
+-- Inserindo estoque
 INSERT INTO Estoque (fk_Setor_id, qtd, fk_Produto_NSM)
 VALUES
 (1, 50, 1),
@@ -62,6 +61,7 @@ VALUES
 (2, 15, 4),
 (3, 40, 5);
 
+-- Inserindo fornecimento de produtos
 INSERT INTO _Fornece (fk_Produto_NSM, fk_Fornecedor_CNPJ, id, valor)
 VALUES
 (1, '12345678901234', 1, 150.00),
@@ -70,6 +70,7 @@ VALUES
 (4, '67890123456789', 4, 1200.00),
 (5, '23456789012346', 5, 800.00);
 
+-- Inserindo compras de clientes
 INSERT INTO _Compra (fk_Cliente_CNPJ, fk_Produto_NSM, id, valor)
 VALUES
 ('34567890123456', 1, 1, 25.00),
@@ -78,6 +79,7 @@ VALUES
 ('67890123456789', 4, 4, 1300.00),
 ('34567890123456', 5, 5, 850.00);
 
+-- Atualizando data da nota
 UPDATE Nota
 SET data = '2023-05-15'
 WHERE id = 6;
