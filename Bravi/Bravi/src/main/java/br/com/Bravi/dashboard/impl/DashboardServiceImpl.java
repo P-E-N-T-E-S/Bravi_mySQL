@@ -53,8 +53,15 @@ public class DashboardServiceImpl implements DashboardService {
 
         for (Map<String, Object> row : data) {
             Map<String, Object> map = new HashMap<>();
-            map.put("mes", row.get("mes"));
-            map.put("valor", ((BigDecimal) row.get("valor")).doubleValue());
+            map.put("ano", row.get("ano"));
+            Object valor = row.get("total_vendas");
+
+            if (valor != null) {
+                map.put("valor", ((BigDecimal) valor).doubleValue());
+            } else {
+                map.put("valor", 0.0);
+            }
+
             evolucaoVendas.add(map);
         }
 
@@ -99,11 +106,20 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<String> getCategorias() {
-        try {
-            return dashboardRepository.getCategorias();
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao obter categorias", e);
+    public List<Map<String, String>> getCategorias() {
+        List<Map<String, Object>> categorias = dashboardRepository.getCategorias();
+        List<Map<String, String>> resultMapList = new ArrayList<>();
+
+        for (Map<String, Object> row : categorias) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("nome_categoria", (String) row.get("categoria"));
+            map.put("quantidade", String.valueOf(row.get("quantidade_produtos")));
+
+            resultMapList.add(map);
         }
+
+        return resultMapList;
     }
+
 }

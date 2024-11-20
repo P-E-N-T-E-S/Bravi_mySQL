@@ -61,8 +61,8 @@ public class DashboardController {
     }
 
     @GetMapping("/categorias")
-    public ResponseEntity<List<String>> getCategorias() {
-        List<String> response = dashboardService.getCategorias();
+    public ResponseEntity<List<Map<String, String>>> getCategorias() {
+        List<Map<String, String>> response = dashboardService.getCategorias();
         return ResponseEntity.ok(response);
     }
 }

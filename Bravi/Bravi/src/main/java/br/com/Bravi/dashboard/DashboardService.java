@@ -17,5 +17,5 @@ public interface DashboardService {
 
     List<Map<String, String>> getMaioresCompradores();
 
-    List<String> getCategorias();
+    List<Map<String, String>> getCategorias();
 }
