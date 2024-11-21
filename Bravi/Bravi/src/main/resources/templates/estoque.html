@@ -103,6 +103,15 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
+        #add, #edit {
+            width: 100%;
+            outline: none;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+            margin-top: .4rem;
+            background-color: #033E8C;
+            height: 2.4rem;
+        }
+
         .popup h3{
             font-weight: bold;
         }
@@ -232,34 +241,43 @@
 
                     <form method="post">
                         <div class="mb-3">
-                            <label for="nome" class="form-label">Nome do produto</label>
-                            <input
-                                    type="name"
-                                    placeholder="Nome"
+                            <label class="form-label">Produtos</label>
+                            <select
                                     class="form-control"
-                                    name="nome"
-                                    id="nome"
+                                    name="produto"
+                                    id="produto"
                                     required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <input
-                                    type="name"
-                                    placeholder="Descrição"
-                                    class="form-control"
-                                    name="descricao"
-                                    id="descricao"
-                                    required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Categoria</label>
-                            <select class="form-select" aria-label="Categoria" id="categoria-select">
-                                <option selected>Selecione a categoria</option>
+                            >
+                                <option disabled selected>Selecione</option>
                             </select>
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label">Quantidade</label>
+                            <input
+                                    type="number"
+                                    placeholder="Quantidade"
+                                    class="form-control"
+                                    name="qtd"
+                                    id="qtd"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Setor</label>
+                            <select
+                                    class="form-control"
+                                    name="setor"
+                                    id="setor"
+                                    required
+                            >
+                                <option disabled selected>Selecione um setor</option>
+                                <option value="1">Gestão</option>
+                                <option value="2">TI</option>
+                                <option value="3">Vendas</option>
+                                <option value="4">Recursos Humanos</option>
+                                <option value="5">Desenvolvimento</option>
+                            </select>
+                        </div>
                         <button
                                 type="submit"
                                 class="btn btn-dark"
@@ -273,7 +291,7 @@
             <div class="overlay" id="edit-overlay">
                 <div class="popup" id="edit-popup">
                     <div class="popup-head">
-                        <h3>Editar produto</h3>
+                        <h3>Editar estoque</h3>
                         <button onclick="closeEditPopup()">
                     <span class="material-symbols-outlined">
                       close
@@ -283,34 +301,43 @@
 
                     <form method="post">
                         <div class="mb-3">
-                            <label for="nome" class="form-label">Nome do produto</label>
-                            <input
-                                    type="name"
-                                    placeholder="Nome"
+                            <label class="form-label">Produtos</label>
+                            <select
                                     class="form-control"
-                                    name="nome"
-                                    id="edit-nome"
+                                    name="edit-produto"
+                                    id="edit-produto"
                                     required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <input
-                                    type="name"
-                                    placeholder="Descrição"
-                                    class="form-control"
-                                    name="descricao"
-                                    id="edit-descricao"
-                                    required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Categoria</label>
-                            <select class="form-select" aria-label="Categoria" id="edit-categoria-select">
-                                <option>Selecione a categoria</option>
+                            >
+                                <option disabled selected>Selecione</option>
                             </select>
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label">Quantidade</label>
+                            <input
+                                    type="number"
+                                    placeholder="Nome"
+                                    class="form-control"
+                                    name="edit-qtd"
+                                    id="edit-qtd"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Setor</label>
+                            <select
+                                    class="form-control"
+                                    name="edit-setor"
+                                    id="edit-setor"
+                                    required
+                            >
+                                <option disabled selected>Selecione um setor</option>
+                                <option value="1">Gestão</option>
+                                <option value="2">TI</option>
+                                <option value="3">Vendas</option>
+                                <option value="4">Recursos Humanos</option>
+                                <option value="5">Desenvolvimento</option>
+                            </select>
+                        </div>
                         <button
                                 type="submit"
                                 class="btn btn-dark"
@@ -324,40 +351,19 @@
             <div class="tabelas">
                 <table class="table">
                     <div class="top-table">
-                        <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 10rem;" onclick="openPopup()">Incluir produto</a>
-                        <form class="form">
-                            <input class="form-control" type="search" placeholder="Pesquise por ID" aria-label="Search">
-                            <button class="btn btn-dark" type="submit">Search</button>
-                        </form>
+                        <a class="btn btn-secondary" style="background-color: #033E8C; margin-bottom: .8rem; width: 10rem;" onclick="openPopup()">Incluir estoque</a>
                     </div>
                     <thead>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
+                        <th scope="col">NSM</th>
+                        <th scope="col">Nome do produto</th>
                         <th scope="col">Quantidade</th>
                         <th scope="col">Setor</th>
                         <th scope="col">Editar</th>
                         <th scope="col">Deletar</th>
                     </tr>
                     </thead>
-                    <tbody id="produtos-tbody">
-                    <tr th:each="estoque : ${estoqueList}">
-                        <td th:text="${estoque.id}"></td>
-                        <td th:text="${estoque.produtoNome}"></td>
-                        <td th:text="${estoque.qtd}"></td>
-                        <td th:text="${estoque.setorNome}"></td>
-                        <td>
-                            <button th:onclick="'openEditPopup(' + ${produto.nsm} + ')'">
-                                <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
-                            </button>
-                        </td>
-
-                        <td>
-                            <button th:onclick="'deletarProduto(' + ${produto.nsm} + ')'">
-                                <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
-                            </button>
-                        </td>
-                    </tr>
+                    <tbody id="funcionarios-tbody">
                     </tbody>
                 </table>
             </div>
@@ -366,125 +372,189 @@
 </div>
 <script src="/js/script.js"></script>
 <script>
-    const apiBaseUrl = 'http://localhost:8080/produtos';
-
-    async function carregarProdutos() {
-        try {
-            const response = await fetch(apiBaseUrl);
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar produtos: ${response.status}`);
-            }
-            const produtos = await response.json();
-            const tbody = document.getElementById('produtos-tbody');
-            tbody.innerHTML = '';
-
-            produtos.forEach(produto => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                      <td>${produto.nsm}</td>
-                      <td>${produto.nome}</td>
-                      <td>${produto.descricao}</td>
-                      <td>${produto.categoria}</td>
-                      <td><button onclick="openEditPopup(${produto.nsm})"><i class="material-symbols-outlined">edit</i></button></td>
-                      <td><button onclick="deletarProduto(${produto.nsm})"><i class="material-symbols-outlined">delete</i></button></td>
-                  `;
-                tbody.appendChild(tr);
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    function deletarProduto(nsm) {
-        if (confirm('Tem certeza que deseja deletar este produto?')) {
-            fetch(`/produtos/${nsm}`, {
+    function deletarEstoque(setor_id, nsm) {
+        if (confirm('Tem certeza que deseja deletar estoque?')) {
+            fetch(`/estoque/${setor_id}/${nsm}`, {
                 method: 'DELETE'
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Produto deletado com sucesso!');
+                        alert('Estoque deletado com sucesso!');
                         location.reload();
                     } else {
-                        alert('Erro ao deletar o produto.');
+                        alert('Erro ao deletar estoque.');
                     }
                 })
-                .catch(error => console.error('Erro ao deletar o produto:', error));
+                .catch(error => console.error('Erro ao deletar estoque:', error));
         }
     }
 
-    function openEditPopup(nsm) {
-        fetch(`/produtos/${nsm}`)
+    function openEditPopup(setor_id, nsm) {
+        fetch(`/estoque/${setor_id}/${nsm}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Erro ao buscar o produto: ${response.status}`);
+                    throw new Error(`Erro ao buscar estoque: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                document.getElementById('edit-nome').value = data.nome;
-                document.getElementById('edit-descricao').value = data.descricao;
-                carregarCategorias('editar', data.categoriaId);
+                document.getElementById('edit-produto').value = data.produtoNsm;
+                document.getElementById('edit-qtd').value = data.qtd;
+                document.getElementById('edit-setor').value = data.setor.id;
+                carregarProdutos("editar", data.produtoNsm)
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
-
-                document.getElementById('edit-nome').dataset.nsm = nsm;
             })
-            .catch(error => console.error('Erro ao buscar o produto:', error));
+            .catch(error => console.error('Erro ao buscar estoque:', error));
     }
 
-    // Edit product
+    // Atualizar
     document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const nome = document.getElementById('edit-nome').value;
-        if (!window.editCategoryId) {
-            alert('Erro: Categoria não encontrada!');
-            return;
-        }
+        const setor_id = parseInt(document.getElementById('edit-setor').value, 10);
+        const produtoNsm = parseInt(document.getElementById('edit-produto').value, 10);
+        const qtd = parseInt(document.getElementById('edit-qtd').value, 10);
+
+        const body = {
+            setor_id,
+            produtoNsm,
+            qtd
+        };
+
         try {
-            const response = await fetch(`/categorias/${window.editCategoryId}`, {
+            const response = await fetch(`/estoque/${setor_id}/${produtoNsm}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome })
+                body: JSON.stringify(body)
             });
 
             if (!response.ok) {
-                throw new Error(`Erro ao atualizar categoria: ${response.status}`);
+                throw new Error(`Erro ao atualizar estoque: ${response.status}`);
             }
 
-            alert('Categoria atualizada com sucesso!');
+            alert('Estoque atualizado com sucesso!');
             closeEditPopup();
             location.reload();
         } catch (error) {
-            console.error('Erro ao atualizar a categoria:', error);
+            console.error('Erro ao atualizar estoque:', error);
         }
     });
 
+    // Incluir
+    document.getElementById('add').addEventListener('click', async function (e) {
+        e.preventDefault();
 
-    document.addEventListener('DOMContentLoaded', carregarProdutos);
+        const setor_id = parseInt(document.getElementById('setor').value, 10);
+        const produtoNsm = parseInt(document.getElementById('produto').value, 10);
+        const qtd = parseInt(document.getElementById('qtd').value, 10);
 
-    function carregarCategorias(tipo, categoriaSelecionada = null) {
-        fetch('http://localhost:8080/categorias')
+        const body = {
+            setor_id,
+            produtoNsm,
+            qtd
+        };
+
+        try {
+            const response = await fetch(`/estoque`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (response.status === 201) {
+                const message = await response.text();
+                alert(message || 'Estoque incluído com sucesso!');
+                closePopup();
+                location.reload();
+            } else {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || `Erro ao incluir estoque: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Erro ao incluir estoque:', error);
+            alert(`Erro: ${error.message}`);
+        }
+    });
+
+    function fetchEstoque() {
+        fetch('/estoque/listar')
             .then(response => response.json())
-            .then(categorias => {
-                const selectElement = document.getElementById(tipo === 'editar' ? 'edit-categoria-select' : 'categoria-select');
-                categorias.forEach(categoria => {
+            .then(estoqueList => {
+                const tbody = document.querySelector('#funcionarios-tbody');
+                tbody.innerHTML = '';
+
+                estoqueList.forEach(estoque => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                            <td>${estoque.produtoNsm}</td>
+                            <td>${estoque.produto.nome}</td>
+                            <td>${estoque.qtd}</td>
+                            <td>${estoque.setor.nome}</td>
+                            <td>
+                                <button onclick="openEditPopup(${estoque.setor.id}, ${estoque.produtoNsm})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">edit</i>
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="deletarEstoque(${estoque.setor.id}, ${estoque.produtoNsm})">
+                                    <i class="material-symbols-outlined" style="margin-top: .2rem;">delete</i>
+                                </button>
+                            </td>
+                        `;
+
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar estoque:', error);
+            });
+    }
+
+    window.onload = fetchEstoque;
+
+    function carregarProdutos(tipo, produtoSelecionado) {
+        const selectId = tipo === 'editar' ? 'edit-produto' : 'produto';
+        const selectElement = document.getElementById(selectId);
+
+        if (!selectElement) {
+            console.error(`Elemento select com ID "${selectId}" não encontrado.`);
+            return;
+        }
+
+        selectElement.innerHTML = '<option disabled selected>Selecione um produto</option>';
+        fetch('/produtos/listar')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro na resposta do servidor: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(produtos => {
+                produtos.forEach(produto => {
                     const option = document.createElement('option');
-                    option.value = categoria.id;
-                    if (categoria.id === categoriaSelecionada) {
+                    option.value = produto.nsm;
+                    option.textContent = produto.nome;
+
+                    if (produto.nsm === produtoSelecionado) {
                         option.selected = true;
                     }
-                    option.textContent = categoria.nome;
+
                     selectElement.appendChild(option);
                 });
             })
             .catch(error => {
-                console.error('Erro ao carregar categorias:', error);
+                console.error('Erro ao carregar produtos:', error);
             });
     }
 
-    window.onload = carregarCategorias;
+    window.onload = function () {
+        carregarProdutos('listar', null);
+        fetchEstoque();
+    };
+
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

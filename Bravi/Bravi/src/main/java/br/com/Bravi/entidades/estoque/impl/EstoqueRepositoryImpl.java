@@ -39,7 +39,11 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
 
     @Override
     public Estoque buscarPorId(int setor, int produtoNsm) {
-        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome FROM Estoque e JOIN Produto p ON e.fk_Produto_NSM = p.nsm JOIN Setor s ON e.fk_Setor_id = s.id";
+        String sql = "SELECT e.*, p.nome AS produto_nome, s.nome AS setor_nome " +
+                "FROM Estoque e " +
+                "JOIN Produto p ON e.fk_Produto_NSM = p.nsm " +
+                "JOIN Setor s ON e.fk_Setor_id = s.id " +
+                "WHERE e.fk_Setor_id = ? AND e.fk_Produto_NSM = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, new MapperEstoque(), setor, produtoNsm);

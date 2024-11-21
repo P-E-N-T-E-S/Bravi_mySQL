@@ -4,11 +4,13 @@ import br.com.Bravi.exceptions.ProdutoNaoEncontradoException;
 import br.com.Bravi.exceptions.EstoqueNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/estoque")
 public class EstoqueController {
 
@@ -28,10 +30,19 @@ public class EstoqueController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<String> atualizarEstoque(@RequestBody Estoque estoque) {
-        estoqueService.atualizarEstoque(estoque);
-        return ResponseEntity.ok("Estoque atualizado com sucesso.");
+    @PutMapping("/{setor}/{produtoNsm}")
+    public ResponseEntity<String> atualizarEstoque(@PathVariable int setor, @PathVariable int produtoNsm, @RequestBody Estoque estoque) {
+        try {
+            Estoque estoqueExistente = estoqueService.buscarEstoquePorId(setor, produtoNsm);
+            estoqueExistente.setQtd(estoque.getQtd());
+            estoqueExistente.setProdutoNsm(estoque.getProdutoNsm());
+            estoqueExistente.setIdSetor(estoque.getIdSetor());
+
+            estoqueService.atualizarEstoque(estoqueExistente);
+            return ResponseEntity.ok("Estoque atualizado com sucesso.");
+        } catch (EstoqueNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{setor}/{produtoNsm}")
@@ -40,10 +51,17 @@ public class EstoqueController {
         return ResponseEntity.ok("Estoque removido com sucesso.");
     }
 
-    @GetMapping
-    public ResponseEntity<List<Estoque>> listarEstoque() {
+    @GetMapping("/listar")
+    public ResponseEntity<?> listarEstoque() {
         List<Estoque> estoqueList = estoqueService.listarEstoque();
         return ResponseEntity.ok(estoqueList);
+    }
+
+    @GetMapping
+    public String listar(Model model) {
+        List<Estoque> estoqueList = estoqueService.listarEstoque();
+        model.addAttribute("estoqueList", estoqueList);
+        return "estoque";
     }
 
     @GetMapping("/{setor}/{produtoNsm}")

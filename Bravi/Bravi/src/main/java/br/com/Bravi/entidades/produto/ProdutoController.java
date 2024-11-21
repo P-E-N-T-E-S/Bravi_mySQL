@@ -50,6 +50,12 @@ public class ProdutoController {
         return "produtos";
     }
 
+    @GetMapping("/listar")
+    public ResponseEntity<?> listar() {
+        List<Produto> produtos = produtoService.listarProdutos();
+        return ResponseEntity.ok(produtos);
+    }
+
     @GetMapping("/{nsm}")
     public ResponseEntity<Produto> obterProdutoPorNsm(@PathVariable int nsm) {
         Produto produto = produtoService.obterProdutoPorNsm(nsm);
