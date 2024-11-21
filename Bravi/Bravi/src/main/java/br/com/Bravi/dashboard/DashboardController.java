@@ -19,7 +19,7 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String showDashboard() {
         return "dashboard";
     }
