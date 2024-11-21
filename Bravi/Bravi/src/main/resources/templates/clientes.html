@@ -356,7 +356,7 @@
             <div class="overlay" id="edit-overlay">
                 <div class="popup" id="edit-popup">
                     <div class="popup-head">
-                        <h3>Editar fornecedor</h3>
+                        <h3>Editar cliente</h3>
                         <button onclick="closeEditPopup()">
                 <span class="material-symbols-outlined">
                   close
@@ -367,7 +367,7 @@
                     <form method="post">
                         <div class="form-short">
                             <div class="mb-3">
-                                <label for="nome" class="form-label">Nome do fornecedor</label>
+                                <label for="nome" class="form-label">Nome do cliente</label>
                                 <input
                                         type="text"
                                         placeholder="Nome"
@@ -545,7 +545,7 @@
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
             })
-            .catch(error => console.error('Erro ao buscar fornecedor:', error));
+            .catch(error => console.error('Erro ao buscar cliente:', error));
     }
 
     function closeEditPopup() {
