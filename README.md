@@ -62,6 +62,7 @@ O projeto está dividido nas seguintes seções:
 ### 🛠️ Pré-requisitos
 - ☕ **Java 21** ou superior
 - ⚙️ JDK instalado
+- 🟩 Node.js
 - 🗄️ **Banco de Dados MySQL** configurado e rodando localmente ou em um servidor remoto
 
 ### 📂 Clone a aplicação no GitHub
@@ -102,6 +103,7 @@ DATABASE_PASSWORD={Sua Senha}
 ### Instale as dependências do projeto:
 ```bash
 npm install
+./mvnw clean install
 ```
 
 ### Inicie a aplicação:
