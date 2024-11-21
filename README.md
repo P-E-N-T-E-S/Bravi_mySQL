@@ -57,6 +57,78 @@ O projeto está dividido nas seguintes seções:
 3. **Procedures e Triggers**: Funções automatizadas para garantir integridade e eficiência no gerenciamento de dados.
 4. **Consultas SQL**: Exemplos de consultas otimizadas para extração de dados úteis ao negócio.
 
+## 🚀 Como Rodar
+
+### 🛠️ Pré-requisitos
+- ☕ **Java 21** ou superior
+- ⚙️ JDK instalado
+- 🗄️ **Banco de Dados MySQL** configurado e rodando localmente ou em um servidor remoto
+
+### 📂 Clone a aplicação no GitHub
+Primeiro, clone o repositório do projeto para o seu ambiente local:
+👉 [Repositório no GitHub](https://github.com/P-E-N-T-E-S/Bravi_mySQL)
+
+```bash
+git clone <Url do repositório>
+cd <diretório do projeto>
+```
+
+## 🛢️ Configurar o Banco de Dados
+Você precisa de um banco de dados configurado para rodar a aplicação. Caso ainda não tenha configurado, siga os passos abaixo:
+
+1. 📂 **Acesse a pasta `BDBravi`.**
+   - Na pasta, você encontrará dois arquivos:
+     - **`codigoBanco.sql`**: Execute este arquivo para criar a estrutura do banco de dados.
+     - **`povoamentoBanco.sql`**: Execute este arquivo para inserir os dados iniciais e povoar as tabelas criadas.
+
+## ▶️ Executando a Aplicação
+
+### 🗒️ 1. Criando o Arquivo `.env`
+Crie o arquivo `.env` na pasta `Bravi` (que contém o `src`) com o seguinte conteúdo:
+
+```env
+DATABASE_URL=jdbc:mysql://localhost:3306/BDBravi
+DATABASE_USERNAME={Seu Usuário}
+DATABASE_PASSWORD={Sua Senha}
+```
+### 💻 2. Rodando no Terminal
+
+### 2.1 MacOS ou Linux
+1. Certifique-se de que o terminal esteja na pasta `Bravi`.
+2. Execute o comando para preparar o script:
+   ```bash
+   chmod +x mvnw
+  
+### Instale as dependências do projeto:
+```bash
+npm install
+```
+
+### Inicie a aplicação:
+```bash
+./mvnw spring-boot:run
+```
+### 🖥️ 3. Rodando no IntelliJ IDEA
+Abra o projeto na IDE.
+Clique no ícone de play para rodar a aplicação.
+A IDE cuidará de compilar e executar automaticamente. Certifique-se de que o arquivo .env está na pasta correta para evitar erros.
+
+### 🌐 Acessando a Aplicação
+Abra o navegador e digite o seguinte endereço: 
+👉 http://localhost:8080/login
+
+### Login
+
+Ao acessar o login, insira o **CPF** como nome de usuário e o **Nome** como a senha. Aqui estão alguns exemplos de login:
+
+- **Usuário**: 44444444444, **Senha**: João Silva
+- **Usuário**: 55555555555, **Senha**: Maria Oliveira
+- **Usuário**: 66666666666, **Senha**: Carlos Souza
+- **Usuário**: 77777777777, **Senha**: Ana Costa
+- **Usuário**: 88888888888, **Senha**: Pedro Santos
+- **Usuário**: 99999999999, **Senha**: Julia Martins
+
+
 ## 👩‍💻 TechSphere
 
 <ul>
