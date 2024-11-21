@@ -68,6 +68,14 @@ public class CompraController {
 
         return "vendas";
     }
+
+    @GetMapping("/listar")
+    public ResponseEntity<?> listar() {
+        List<Compra> compras = compraService.listarCompra();
+        return ResponseEntity.ok(compras);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Compra> buscarCompraPorId(@PathVariable("id") int id) {
         try {

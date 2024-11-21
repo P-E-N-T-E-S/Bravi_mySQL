@@ -1,6 +1,7 @@
 package br.com.Bravi.entidades.fornece;
 
 import br.com.Bravi.entidades.cliente.ClienteService;
+import br.com.Bravi.entidades.compra.Compra;
 import br.com.Bravi.entidades.fornecedor.FornecedorService;
 import br.com.Bravi.entidades.produto.ProdutoService;
 import br.com.Bravi.exceptions.ForneceNaoEncontradoException;
@@ -71,6 +72,12 @@ public class ForneceController {
         model.addAttribute("fornecedores", fornecedorService.listarFornecedores());
         model.addAttribute("pedidos", pedidos);
         return "pedidos";
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<?> listar() {
+        List<Fornece> pedidos = forneceService.listarFornece();
+        return ResponseEntity.ok(pedidos);
     }
 
     @GetMapping("/{id}")

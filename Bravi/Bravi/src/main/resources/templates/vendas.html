@@ -229,16 +229,14 @@
                     <form method="post">
                         <div class="mb-3">
                             <label class="form-label">Produto</label>
-                            <select class="form-select" aria-label="Produto" id="produto-select">
+                            <select class="form-select" aria-label="Produto" id="produto">
                                 <option disabled selected>Selecione o produto</option>
-                                <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Cliente</label>
-                            <select for="cliente" class="form-select" aria-label="Cliente" id="cliente-select">
+                            <select for="cliente" class="form-select" aria-label="Cliente" id="cliente">
                                 <option disabled selected>Selecione o cliente</option>
-                                <option th:each="cliente : ${clientes}" th:value="${cliente.cnpj}" th:text="${cliente.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -274,16 +272,15 @@
                     <form method="post">
                         <div class="mb-3">
                             <label class="form-label">Produto</label>
-                            <select class="form-select" aria-label="Produto" id="edit-produto-select">
+                            <select class="form-select" aria-label="Produto" id="edit-produto">
                                 <option disabled>Selecione o produto</option>
                                 <option th:each="produto : ${produtos}" th:value="${produto.nsm}" th:text="${produto.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Cliente</label>
-                            <select class="form-select" aria-label="Cliente" id="edit-cliente-select">
+                            <select class="form-select" aria-label="Cliente" id="edit-cliente">
                                 <option disabled>Selecione o cliente</option>
-                                <option th:each="cliente : ${clientes}" th:value="${cliente.cnpj}" th:text="${cliente.nome}"></option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -347,12 +344,13 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('edit-produto-select').value = data.produto;
-                document.getElementById('edit-cliente-select').value = data.cliente;
                 document.getElementById('edit-valor').value = data.valor;
 
-                const productSelect = document.getElementById('edit-produto-select')
+                const productSelect = document.getElementById('edit-produto')
                 productSelect.dataset.id = id;
+
+                carregarProdutos('editar', data.produtoNsm);
+                carregarClientes('editar', data.clienteCnpj);
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
@@ -369,9 +367,9 @@
     document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const id = document.getElementById('edit-produto-select').dataset.id;
-        const produtoNsm = document.getElementById('edit-produto-select').value;
-        const clienteCnpj = document.getElementById('edit-cliente-select').value;
+        const id = document.getElementById('edit-produto').dataset.id;
+        const produtoNsm = document.getElementById('edit-produto').value;
+        const clienteCnpj = document.getElementById('edit-cliente').value;
         const valor = document.getElementById('edit-valor').value;
 
         const body = {
@@ -404,8 +402,8 @@
     document.getElementById('add').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const produtoNsm = document.getElementById('produto-select').value;
-        const clienteCnpj = document.getElementById('cliente-select').value;
+        const produtoNsm = document.getElementById('produto').value;
+        const clienteCnpj = document.getElementById('cliente').value;
         const valor = document.getElementById('valor').value;
 
         const body = {
@@ -433,6 +431,80 @@
         }
     });
 
+    function carregarProdutos(tipo, produtoSelecionado) {
+        const selectId = tipo === 'editar' ? 'edit-produto' : 'produto';
+        const selectElement = document.getElementById(selectId);
+
+        if (!selectElement) {
+            console.error(`Elemento select com ID "${selectId}" não encontrado.`);
+            return;
+        }
+
+        selectElement.innerHTML = '<option disabled selected>Selecione um produto</option>';
+        fetch('/produtos/listar')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro na resposta do servidor: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(produtos => {
+                produtos.forEach(produto => {
+                    const option = document.createElement('option');
+                    option.value = produto.nsm;
+                    option.textContent = produto.nome;
+
+                    if (produto.nsm === produtoSelecionado) {
+                        option.selected = true;
+                    }
+
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar produtos:', error);
+            });
+    }
+
+    function carregarClientes(tipo, fornecedorSelecionado) {
+        const selectId = tipo === 'editar' ? 'edit-cliente' : 'cliente';
+        const selectElement = document.getElementById(selectId);
+
+        if (!selectElement) {
+            console.error(`Elemento select com ID "${selectId}" não encontrado.`);
+            return;
+        }
+
+        selectElement.innerHTML = '<option disabled selected>Selecione um fornecedor</option>';
+        fetch('/clientes/listar')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erro na resposta do servidor: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(fornecedores => {
+                fornecedores.forEach(fornecedor => {
+                    const option = document.createElement('option');
+                    option.value = fornecedor.cnpj;
+                    option.textContent = fornecedor.nome;
+
+                    if (fornecedor.cnpj === fornecedorSelecionado) {
+                        option.selected = true;
+                    }
+
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar fornecedores:', error);
+            });
+    }
+
+    window.onload = function () {
+        carregarProdutos('listar', null);
+        carregarClientes('listar', null);
+    };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
