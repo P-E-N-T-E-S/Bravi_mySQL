@@ -101,11 +101,13 @@
             font-weight: bold;
         }
 
-        #add {
+        #add, #edit {
             width: 100%;
             outline: none;
             box-shadow: 0 5px 5px rgba(0,0,0,0.2);
-            margin-top: 1rem;
+            margin-top: .4rem;
+            background-color: #033E8C;
+            height: 2.4rem;
         }
 
         .popup button {
@@ -118,7 +120,7 @@
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.2rem;
         }
     </style>
 </head>
@@ -226,6 +228,17 @@
 
                     <form method="post">
                         <div class="mb-3">
+                            <label for="nome" class="form-label">NSM</label>
+                            <input
+                                    type="number"
+                                    placeholder="NSM"
+                                    class="form-control"
+                                    name="nsm"
+                                    id="nsm"
+                                    required
+                            />
+                        </div>
+                        <div class="mb-3">
                             <label for="nome" class="form-label">Nome do produto</label>
                             <input
                                     type="name"
@@ -276,6 +289,17 @@
                     </div>
 
                     <form method="post">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">NSM</label>
+                            <input
+                                    type="number"
+                                    placeholder="NSM"
+                                    class="form-control"
+                                    name="edit-nsm"
+                                    id="edit-nsm"
+                                    disabled
+                            />
+                        </div>
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome do produto</label>
                             <input
@@ -359,12 +383,11 @@
             .then(data => {
                 document.getElementById('edit-nome').value = data.nome;
                 document.getElementById('edit-descricao').value = data.descricao;
+                document.getElementById('edit-nsm').value = data.nsm;
                 carregarCategorias('editar', data.categoria.id);
 
                 document.getElementById('edit-popup').classList.add('open-popup');
                 document.getElementById('edit-overlay').style.visibility = 'visible';
-
-                document.getElementById('edit-nome').dataset.nsm = nsm;
             })
             .catch(error => console.error('Erro ao buscar o produto:', error));
     }
@@ -373,10 +396,10 @@
     document.getElementById('edit').addEventListener('click', async function (e) {
         e.preventDefault();
 
-        const nsm = document.getElementById('edit-nome').dataset.id;
+        const nsm = document.getElementById('edit-nsm').value;
         const nome = document.getElementById('edit-nome').value;
         const descricao = document.getElementById('edit-descricao').value;
-        const categoriaId = document.getElementById('categoria-select').value;
+        const categoriaId = document.getElementById('edit-categoria-select').value;
 
         const categoria = {
             "id": categoriaId
@@ -413,6 +436,7 @@
     document.getElementById('add').addEventListener('click', async function (e) {
         e.preventDefault();
 
+        const nsm = document.getElementById('nsm').value;
         const nome = document.getElementById('nome').value;
         const descricao = document.getElementById('descricao').value;
         const categoriaId = document.getElementById('categoria-select').value;
@@ -422,12 +446,11 @@
         }
 
         const body = {
+            nsm,
             nome,
             descricao,
             categoria
         };
-
-        console.log(body);
 
         try {
             const response = await fetch(`/produtos`, {
