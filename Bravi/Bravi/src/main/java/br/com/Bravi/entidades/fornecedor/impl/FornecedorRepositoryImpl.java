@@ -29,9 +29,9 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         if (cnpjExiste(fornecedor.getCnpj())) {
             throw new FornecedorJaExistenteException("Fornecedor com o CNPJ " + fornecedor.getCnpj() + " já existe.");
         }
-        String sql = "INSERT INTO Fornecedor (nome, categoria, CNPJ, Rua, Bairro, CEP, Numero, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Fornecedor (nome, categoria, CNPJ, Rua, Bairro, CEP, Numero, Numero2, Inscricao_Estadual, Razao_Social) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
         jdbcTemplate.update(sql, fornecedor.getNome(), fornecedor.getCategoria(), fornecedor.getCnpj(), fornecedor.getRua(),
-                fornecedor.getBairro(), fornecedor.getCep(), fornecedor.getNumero(),
+                fornecedor.getBairro(), fornecedor.getCep(), fornecedor.getNumero(), fornecedor.getNumero2(),
                 fornecedor.getInscricaoEstadual(), fornecedor.getRazaoSocial());
     }
 
@@ -40,9 +40,9 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         if (!cnpjExiste(fornecedor.getCnpj())) {
             throw new FornecedorNaoEncontradoException("Fornecedor não encontrado com o CNPJ fornecido.");
         }
-        String sql = "UPDATE Fornecedor SET nome = ?, categoria = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
+        String sql = "UPDATE Fornecedor SET nome = ?, categoria = ?, Rua = ?, Bairro = ?, CEP = ?, Numero = ?, Numero2 = ?, Inscricao_Estadual = ?, Razao_Social = ? WHERE CNPJ = ?";
         jdbcTemplate.update(sql, fornecedor.getNome(), fornecedor.getCategoria(), fornecedor.getRua(), fornecedor.getBairro(),
-                fornecedor.getCep(), fornecedor.getNumero(), fornecedor.getInscricaoEstadual(),
+                fornecedor.getCep(), fornecedor.getNumero(), fornecedor.getNumero2(), fornecedor.getInscricaoEstadual(),
                 fornecedor.getRazaoSocial(), fornecedor.getCnpj());
     }
 
